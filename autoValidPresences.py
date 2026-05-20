@@ -124,9 +124,12 @@ def autoValidPresences(presences_dir: str,
     """
     os.makedirs(results_dir, exist_ok=True)
 
-    # Nom du fichier de sortie basé sur le répertoire source
-    form_name = os.path.basename(presences_dir.rstrip("/\\"))
-    xlsx_filename = form_name + "_PRESENCES.xlsx"
+    # Nom du fichier de sortie : EXAM_FORMXX_PRESENCES.xlsx
+    # Dérivé depuis results_dir (ex: .../EXAM_FORM1_RESULTS → EXAM_FORM1)
+    results_base  = os.path.basename(results_dir.rstrip("/\\"))
+    exam_base     = results_base.replace("_RESULTS", "") if "_RESULTS" in results_base \
+                    else os.path.basename(presences_dir.rstrip("/\\"))
+    xlsx_filename = exam_base + "_PRESENCES.xlsx"
     xlsx_path = os.path.join(results_dir, xlsx_filename)
 
     print(f"[P1] Chargement des signatures depuis : {signatures_dir}")
