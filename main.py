@@ -25,7 +25,7 @@ from autoReadForm       import autoReadForm
 BASE_DIR  = os.path.dirname(os.path.abspath(__file__))
 
 # Nom de l'examen à traiter
-EXAM_NAME = "EXAM_FORM2"
+EXAM_NAME = "EXAM_FORM1"
 
 # Répertoire racine des données (changer si nécessaire)
 DATA_ROOT = os.path.join(BASE_DIR, "PROJECT 2026 -DATABASE-20260518")
