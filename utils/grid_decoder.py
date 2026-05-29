@@ -119,30 +119,50 @@ def _looks_like_photo(img: np.ndarray) -> bool:
 
 def normalize_page(img: np.ndarray, is_photo: bool | None = None) -> np.ndarray:
     """
-    Recadre sur la zone active et redimensionne vers (FORM_W, FORM_H).
+    Normalise un formulaire vers le repère (FORM_W, FORM_H).
 
-    Pour les photos (perspective, inclinaison), applique au préalable un
-    deskew via la transformée de Hough (utils.form_aligner.deskew).
-    Le paramètre is_photo peut être forcé ; sinon une heuristique sur les
-    bords de l'image décide.
+    Étape 1 (nouvelle) : si on détecte les 4 L-brackets de coin, applique
+    une correction perspective qui ramène l'image dans un rectangle
+    légèrement plus grand que le formulaire utile (pour conserver
+    compatibilité avec les ROIs calibrées). Sinon on continue avec
+    l'image originale.
+
+    Étape 2 : deskew (si photo) + crop bbox des pixels actifs + resize
+    final vers (FORM_W, FORM_H). C'est cette étape qui produit le
+    repère cohérent avec les coordonnées de ROI calibrées.
     """
     if is_photo is None:
         is_photo = _looks_like_photo(img)
 
-    if is_photo:
-        # Import différé pour éviter une dépendance circulaire
-        from utils.form_aligner import deskew
-        img = deskew(img)
+    from utils.form_aligner import find_corner_brackets, deskew
 
+    # Étape 1 : pour les photos uniquement, tenter une correction perspective
+    # via les 4 L-brackets de coin (les PDFs sont déjà alignés et tout warp
+    # perturberait la calibration des ROIs).
+    if is_photo:
+        brackets = find_corner_brackets(img, min_score=0.55)
+        if brackets is not None:
+            # Reproduit la géométrie d'un PDF : brackets aux mêmes ratios
+            # de marge (~7.3% horizontal, ~4.3% vertical).
+            inter_w, inter_h = 1655, 2340
+            src = np.array([brackets["TL"], brackets["TR"],
+                            brackets["BR"], brackets["BL"]], dtype=np.float32)
+            bx, by = int(inter_w * 0.073), int(inter_h * 0.043)
+            dst = np.array([[bx, by], [inter_w - bx, by],
+                            [inter_w - bx, inter_h - by], [bx, inter_h - by]],
+                           dtype=np.float32)
+            M = cv2.getPerspectiveTransform(src, dst)
+            img = cv2.warpPerspective(img, M, (inter_w, inter_h))
+        else:
+            img = deskew(img)
+
+    # Étape 2 : crop bbox + resize vers le repère final
     x0, y0, x1, y1 = get_active_area(img)
-    # Petite marge négative pour éviter de garder une bordure de page
     H, W = img.shape[:2]
     mx = max(1, int(W * 0.005)); my = max(1, int(H * 0.005))
     x0 = min(W - 2, x0 + mx); y0 = min(H - 2, y0 + my)
     x1 = max(x0 + 1, x1 - mx); y1 = max(y0 + 1, y1 - my)
-
-    cropped = img[y0:y1, x0:x1]
-    return cv2.resize(cropped, (FORM_W, FORM_H))
+    return cv2.resize(img[y0:y1, x0:x1], (FORM_W, FORM_H))
 
 
 # ---------------------------------------------------------------------------
@@ -420,4 +440,6 @@ def read_note_pour_valider(form_img: np.ndarray):
 # ---------------------------------------------------------------------------
 
 def extract_cryptogram(form_img: np.ndarray) -> np.ndarray:
+    return get_roi(form_img, ROI_CRYPTO)
+darray) -> np.ndarray:
     return get_roi(form_img, ROI_CRYPTO)

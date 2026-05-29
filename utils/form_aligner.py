@@ -1,134 +1,155 @@
 """
-Détection des marques de coin et alignement du formulaire.
+Détection des marques de coin (L-brackets) et correction de perspective.
 
 Approche bas niveau :
-  1. Binarisation (seuillage Otsu après flou gaussien)
-  2. Détection des lignes horizontales/verticales (Transformée de Hough)
-  3. Identification des 4 marques de coin (brackets L)
-  4. Correction de perspective (indispensable pour les photos)
+  1. Binarisation adaptative
+  2. Template-matching de 4 L synthétiques (un par coin)
+  3. Correction de perspective via cv2.getPerspectiveTransform
+
+Fallback : si la détection des brackets échoue (photo bruitée, brackets
+faibles), retourne l'image inchangée — l'appelant utilisera l'ancien
+chemin (deskew + bounding box).
 """
 
 import cv2
 import numpy as np
 
 
-# ---------------------------------------------------------------------------
-# Prétraitement de base
-# ---------------------------------------------------------------------------
-
-def to_gray(img: np.ndarray) -> np.ndarray:
-    if len(img.shape) == 2:
-        return img
-    return cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+def to_gray(img):
+    return img if len(img.shape) == 2 else cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 
-def binarize(gray: np.ndarray, blur_ksize: int = 5) -> np.ndarray:
-    """Binarisation Otsu après flou gaussien. Retourne 0=fond, 255=encre."""
-    blurred = cv2.GaussianBlur(gray, (blur_ksize, blur_ksize), 0)
-    _, binary = cv2.threshold(blurred, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+def binarize(gray, blur=5):
+    b = cv2.GaussianBlur(gray, (blur, blur), 0)
+    _, binary = cv2.threshold(b, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
     return binary
 
 
 # ---------------------------------------------------------------------------
-# Détection des marques de coin
+# Détection des L-brackets (template matching)
 # ---------------------------------------------------------------------------
 
-def _find_corner_candidates(binary: np.ndarray, min_area: int = 200,
-                             max_area: int = 8000) -> list[tuple[int, int, int, int]]:
-    """
-    Retourne les bounding boxes (x, y, w, h) de composantes connexes
-    dont la forme ressemble à un L (rapport d'aspect proche de 1,
-    aire remplie modérément).
-    """
-    num, labels, stats, _ = cv2.connectedComponentsWithStats(binary, connectivity=8)
-    candidates = []
-    for i in range(1, num):
-        x, y, w, h, area = stats[i]
-        if area < min_area or area > max_area:
-            continue
-        # Le L a un ratio W/H proche de 1 et un taux de remplissage faible
-        ratio = w / (h + 1e-6)
-        fill = area / (w * h + 1e-6)
-        if 0.5 < ratio < 2.0 and fill < 0.65:
-            candidates.append((x, y, w, h))
-    return candidates
+def _make_L(size, thickness, orient):
+    pad = size // 2
+    tpl = np.zeros((size + 2 * pad, size + 2 * pad), dtype=np.float32)
+    t = thickness
+    if orient == "TL":
+        tpl[pad:pad + t, pad:pad + size] = 1
+        tpl[pad:pad + size, pad:pad + t] = 1
+    elif orient == "TR":
+        tpl[pad:pad + t, pad:pad + size] = 1
+        tpl[pad:pad + size, pad + size - t:pad + size] = 1
+    elif orient == "BL":
+        tpl[pad + size - t:pad + size, pad:pad + size] = 1
+        tpl[pad:pad + size, pad:pad + t] = 1
+    else:  # BR
+        tpl[pad + size - t:pad + size, pad:pad + size] = 1
+        tpl[pad:pad + size, pad + size - t:pad + size] = 1
+    return tpl, pad
 
 
-def find_active_area(img: np.ndarray) -> tuple[int, int, int, int]:
-    """
-    Détecte la zone active du formulaire (intérieur des marques de coin).
-    Retourne (x, y, w, h) de la zone active en pixels.
+def _find_bracket(quad_binf, orient, sizes=(60, 80, 100, 130), ts=(4, 5, 6, 8)):
+    """Cherche le meilleur L dans une région binarisée (float 0..1)."""
+    best = None
+    H, W = quad_binf.shape
+    for s in sizes:
+        for t in ts:
+            tpl, pad = _make_L(s, t, orient)
+            if tpl.shape[0] >= H or tpl.shape[1] >= W:
+                continue
+            r = cv2.matchTemplate(quad_binf, tpl, cv2.TM_CCOEFF_NORMED)
+            _, sc, _, loc = cv2.minMaxLoc(r)
+            if best is None or sc > best[2]:
+                best = (loc[0], loc[1], sc, s, pad)
+    return best
 
-    Pour les PDFs propres, utilise les lignes de bord décelables.
+
+def find_corner_brackets(img, search_frac=0.20, min_score=0.55):
+    """
+    Détecte 4 L-brackets (un par coin). Retourne {'TL':(x,y),...} ou None.
     """
     gray = to_gray(img)
     H, W = gray.shape
-
-    # Essai 1 : détection des brackets via composantes connexes
     binary = binarize(gray)
-    candidates = _find_corner_candidates(binary)
+    binf = binary.astype(np.float32) / 255.0
 
-    if len(candidates) >= 4:
-        xs = [c[0] for c in candidates]
-        ys = [c[1] for c in candidates]
-        x0, y0 = int(np.percentile(xs, 10)), int(np.percentile(ys, 10))
-        x1 = int(np.percentile([c[0] + c[2] for c in candidates], 90))
-        y1 = int(np.percentile([c[1] + c[3] for c in candidates], 90))
-        # Ajouter un léger retrait vers l'intérieur
-        margin = int(min(W, H) * 0.01)
-        x0 = max(0, x0 + margin)
-        y0 = max(0, y0 + margin)
-        x1 = min(W, x1 - margin)
-        y1 = min(H, y1 - margin)
-        return x0, y0, x1 - x0, y1 - y0
-
-    # Fallback : marges fixes basées sur les proportions de la page
-    mx, my = int(W * 0.04), int(H * 0.04)
-    return mx, my, W - 2 * mx, H - 2 * my
-
-
-def warp_to_form(img: np.ndarray,
-                 src_corners: np.ndarray,
-                 out_w: int = 900,
-                 out_h: int = 1270) -> np.ndarray:
-    """
-    Applique une correction de perspective en mappant src_corners
-    (4 points [TL, TR, BR, BL]) vers un rectangle standard.
-    """
-    dst = np.array([[0, 0], [out_w - 1, 0],
-                    [out_w - 1, out_h - 1], [0, out_h - 1]], dtype=np.float32)
-    M = cv2.getPerspectiveTransform(src_corners.astype(np.float32), dst)
-    return cv2.warpPerspective(img, M, (out_w, out_h))
+    sx = int(W * search_frac); sy = int(H * search_frac)
+    quads = {
+        "TL": (binf[:sy, :sx], 0, 0),
+        "TR": (binf[:sy, W - sx:], W - sx, 0),
+        "BL": (binf[H - sy:, :sx], 0, H - sy),
+        "BR": (binf[H - sy:, W - sx:], W - sx, H - sy),
+    }
+    out = {}
+    for k, (q, dx, dy) in quads.items():
+        b = _find_bracket(q, k)
+        if b is None or b[2] < min_score:
+            return None
+        x, y, sc, sz, pad = b
+        if k == "TL":   cx, cy = x + pad, y + pad
+        elif k == "TR": cx, cy = x + pad + sz - 1, y + pad
+        elif k == "BL": cx, cy = x + pad, y + pad + sz - 1
+        else:           cx, cy = x + pad + sz - 1, y + pad + sz - 1
+        out[k] = (cx + dx, cy + dy)
+    return out
 
 
 # ---------------------------------------------------------------------------
-# Correction d'inclinaison (pour les photos)
+# Correction de perspective via les 4 brackets
 # ---------------------------------------------------------------------------
 
-def _hough_dominant_angle(binary: np.ndarray) -> float:
+# Position attendue des 4 brackets dans le formulaire normalisé (900x1270),
+# calibrée sur le rendu PDF (DPI 200) : brackets à env. 7.5%/4.3% des bords.
+BRACKET_DST_NORM = {
+    "TL": (66, 55),
+    "TR": (834, 55),
+    "BL": (66, 1215),
+    "BR": (834, 1215),
+}
+
+
+def warp_from_brackets(img, brackets, fw=900, fh=1270):
+    src = np.array([
+        brackets["TL"], brackets["TR"],
+        brackets["BR"], brackets["BL"],
+    ], dtype=np.float32)
+    dst = np.array([
+        BRACKET_DST_NORM["TL"], BRACKET_DST_NORM["TR"],
+        BRACKET_DST_NORM["BR"], BRACKET_DST_NORM["BL"],
+    ], dtype=np.float32)
+    M = cv2.getPerspectiveTransform(src, dst)
+    return cv2.warpPerspective(img, M, (fw, fh))
+
+
+def align_form(img, fw=900, fh=1270):
     """
-    Retourne l'angle d'inclinaison dominant (en degrés) via Hough.
-    Valeur proche de 0 = déjà droit.
+    Renvoie l'image alignée vers le repère (fw, fh) si les 4 brackets sont
+    détectés ; sinon None (l'appelant doit utiliser un fallback).
     """
+    b = find_corner_brackets(img)
+    if b is None:
+        return None
+    return warp_from_brackets(img, b, fw, fh)
+
+
+# ---------------------------------------------------------------------------
+# Deskew (rotation simple - utilisé en fallback ou en pré-traitement)
+# ---------------------------------------------------------------------------
+
+def _hough_dominant_angle(binary):
     edges = cv2.Canny(binary, 50, 150)
     lines = cv2.HoughLines(edges, 1, np.pi / 180, threshold=80)
     if lines is None:
         return 0.0
     angles = []
     for rho, theta in lines[:, 0]:
-        angle = np.degrees(theta) - 90  # ramener vers 0
-        if abs(angle) < 45:
-            angles.append(angle)
-    if not angles:
-        return 0.0
-    return float(np.median(angles))
+        a = np.degrees(theta) - 90
+        if abs(a) < 45:
+            angles.append(a)
+    return float(np.median(angles)) if angles else 0.0
 
 
-def deskew(img: np.ndarray, max_angle: float = 15.0) -> np.ndarray:
-    """
-    Corrige une légère inclinaison (rotation) de l'image.
-    Ne fait rien si l'angle détecté dépasse max_angle (cas extrême).
-    """
+def deskew(img, max_angle=15.0):
     gray = to_gray(img)
     binary = binarize(gray)
     angle = _hough_dominant_angle(binary)
@@ -137,32 +158,38 @@ def deskew(img: np.ndarray, max_angle: float = 15.0) -> np.ndarray:
     H, W = img.shape[:2]
     M = cv2.getRotationMatrix2D((W / 2, H / 2), angle, 1.0)
     return cv2.warpAffine(img, M, (W, H),
-                          flags=cv2.INTER_LINEAR,
-                          borderMode=cv2.BORDER_REPLICATE)
+                          flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE)
 
 
 # ---------------------------------------------------------------------------
-# Pipeline complet : normalise une image vers le repère du formulaire
+# Fonctions de compat (utilisées par grid_decoder)
 # ---------------------------------------------------------------------------
 
-FORM_W = 900   # largeur de référence (pixels)
-FORM_H = 1270  # hauteur de référence (pixels)
+def find_active_area(img):
+    """Bounding box rapide via Otsu."""
+    gray = to_gray(img)
+    _, binary = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY_INV)
+    H, W = gray.shape
+    row_has = np.any(binary > 0, axis=1)
+    col_has = np.any(binary > 0, axis=0)
+    r0 = int(np.argmax(row_has))
+    r1 = H - int(np.argmax(row_has[::-1])) - 1
+    c0 = int(np.argmax(col_has))
+    c1 = W - int(np.argmax(col_has[::-1])) - 1
+    return c0, r0, c1 - c0, r1 - r0
 
 
-def normalize_form_image(img: np.ndarray,
-                         is_photo: bool = False) -> np.ndarray:
-    """
-    Prépare une image de formulaire pour l'extraction des champs.
+FORM_W = 900
+FORM_H = 1270
 
-    - Pour un PDF: recadre sur la zone active et redimensionne.
-    - Pour une photo: deskew + correction perspective + recadrage.
 
-    Retourne une image BGR de taille (FORM_H, FORM_W).
-    """
+def normalize_form_image(img, is_photo=False):
+    """Pipeline complet : essaie l'alignement bracket-based, sinon
+    deskew + bbox + resize."""
+    aligned = align_form(img, FORM_W, FORM_H)
+    if aligned is not None:
+        return aligned
     if is_photo:
         img = deskew(img)
-
     x, y, w, h = find_active_area(img)
-    cropped = img[y:y + h, x:x + w]
-    resized = cv2.resize(cropped, (FORM_W, FORM_H))
-    return resized
+    return cv2.resize(img[y:y + h, x:x + w], (FORM_W, FORM_H))

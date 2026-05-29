@@ -110,6 +110,8 @@ def _clean_frame_artifacts(binary):
 
 def preprocess_signature(img):
     """Gris -> Otsu -> nettoyage cadre -> bbox+marge -> resize avec ratio.
+    Le résultat est ensuite re-centré sur son centre de masse pour
+    réduire la sensibilité à un petit décalage du trait.
     Retourne canvas binaire (H, W) = (SIG_SIZE[1], SIG_SIZE[0])."""
     target_w, target_h = SIG_SIZE
     if img is None or img.size == 0:
@@ -136,6 +138,23 @@ def preprocess_signature(img):
     new_w = max(1, int(crop.shape[1] * scale))
     new_h = max(1, int(crop.shape[0] * scale))
     resized = cv2.resize(crop, (new_w, new_h), interpolation=cv2.INTER_AREA)
+    # Re-binarise (cubic peut introduire des niveaux intermediaires)
+    _, resized = cv2.threshold(resized, 127, 255, cv2.THRESH_BINARY)
+
+    # Recentrage par centre de masse (vs centrage geometrique simple)
+    M = cv2.moments(resized)
+    if M["m00"] > 0:
+        cx = int(M["m10"] / M["m00"])
+        cy = int(M["m01"] / M["m00"])
+        target_cx = new_w // 2
+        target_cy = new_h // 2
+        # Decalage souhaite (pour amener le COM au centre)
+        dx = target_cx - cx
+        dy = target_cy - cy
+        Mtr = np.float32([[1, 0, dx], [0, 1, dy]])
+        resized = cv2.warpAffine(resized, Mtr, (new_w, new_h),
+                                 borderValue=0)
+
     canvas = np.zeros((target_h, target_w), dtype=np.uint8)
     ox = (target_w - new_w) // 2
     oy = (target_h - new_h) // 2
