@@ -165,28 +165,44 @@ def read_grid_checked(roi: np.ndarray, rows: int, cols: int,
 
 
 def read_grid_one_per_col(roi: np.ndarray, rows: int, cols: int,
-                           ink_threshold: float = 0.08) -> list[int | None]:
+                           ink_threshold: float = 0.05) -> list[int | None]:
     """
     Pour chaque colonne, retourne le numéro de ligne cochée (ou None).
     Utilisé pour les grilles de type 'Student ID' (une coche par colonne).
 
     Méthode : sélection du maximum de ratio d'encre intérieur.
     Le seuil ink_threshold filtre les colonnes sans coche visible.
+
+    Stratégie de fallback : si la colonne n'a aucune cellule au-dessus du
+    seuil mais que le MAX intra-colonne est significativement plus élevé
+    que la moyenne intra-colonne (ratio > 1.5x la moyenne), on prend ce
+    max au lieu de renvoyer None. Ça récupère les cellules faiblement
+    cochées sans flagger un faux positif sur les colonnes vides.
     """
     cells = split_grid(roi, rows, cols)
     result = []
     for c in range(cols):
-        best_row = None
-        best_ratio = ink_threshold
+        ratios = []
         for r in range(rows):
             binary = preprocess_for_checkbox(cells[r][c])
             margin = max(2, int(min(binary.shape) * 0.10))
             inner = binary[margin:-margin, margin:-margin] if (
                 binary.shape[0] > 2 * margin and binary.shape[1] > 2 * margin
             ) else binary
-            ratio = ink_ratio(inner)
-            if ratio > best_ratio:
-                best_ratio = ratio
-                best_row = r
-        result.append(best_row)
+            ratios.append(ink_ratio(inner))
+
+        best_row = int(np.argmax(ratios))
+        best_ratio = ratios[best_row]
+        mean_ratio = float(np.mean(ratios)) if ratios else 0.0
+
+        # Cas 1 : seuil absolu franchi -> on prend ce row
+        if best_ratio > ink_threshold:
+            result.append(best_row)
+            continue
+        # Cas 2 : "pic" relatif (best > 1.5x la moyenne) -> on prend ce row
+        if mean_ratio > 0 and best_ratio > 1.5 * mean_ratio and best_ratio > 0.02:
+            result.append(best_row)
+            continue
+        # Sinon : pas de coche détectable
+        result.append(None)
     return result

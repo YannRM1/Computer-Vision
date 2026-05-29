@@ -64,13 +64,27 @@ def _find_bracket(quad_binf, orient, sizes=(60, 80, 100, 130), ts=(4, 5, 6, 8)):
     return best
 
 
-def find_corner_brackets(img, search_frac=0.20, min_score=0.55):
+def find_corner_brackets(img, search_frac=0.20, min_score=0.55,
+                         min_edge_frac=0.02):
     """
     Détecte 4 L-brackets (un par coin). Retourne {'TL':(x,y),...} ou None.
+
+    min_edge_frac : distance minimale du bord de l'image (fraction de la dim)
+    pour rejeter les fausses détections qui pointent sur le cadre photo.
     """
     gray = to_gray(img)
     H, W = gray.shape
-    binary = binarize(gray)
+
+    # On efface une fine bande au bord (cadres photo, ombres JPEG) avant
+    # binarisation : évite les fausses détections de "L" au bord de l'image.
+    edge_px = max(3, int(min(H, W) * min_edge_frac))
+    g_clean = gray.copy()
+    g_clean[:edge_px, :] = 255
+    g_clean[-edge_px:, :] = 255
+    g_clean[:, :edge_px] = 255
+    g_clean[:, -edge_px:] = 255
+
+    binary = binarize(g_clean)
     binf = binary.astype(np.float32) / 255.0
 
     sx = int(W * search_frac); sy = int(H * search_frac)
@@ -81,6 +95,8 @@ def find_corner_brackets(img, search_frac=0.20, min_score=0.55):
         "BR": (binf[H - sy:, W - sx:], W - sx, H - sy),
     }
     out = {}
+    # Distance minimale entre le coin détecté et le bord de l'image (px)
+    min_dist = edge_px * 2
     for k, (q, dx, dy) in quads.items():
         b = _find_bracket(q, k)
         if b is None or b[2] < min_score:
@@ -90,7 +106,11 @@ def find_corner_brackets(img, search_frac=0.20, min_score=0.55):
         elif k == "TR": cx, cy = x + pad + sz - 1, y + pad
         elif k == "BL": cx, cy = x + pad, y + pad + sz - 1
         else:           cx, cy = x + pad + sz - 1, y + pad + sz - 1
-        out[k] = (cx + dx, cy + dy)
+        ax, ay = cx + dx, cy + dy
+        # Rejet : trop près du bord de l'image (probable cadre photo)
+        if ax < min_dist or ay < min_dist or ax > W - min_dist or ay > H - min_dist:
+            return None
+        out[k] = (ax, ay)
     return out
 
 
@@ -163,7 +183,7 @@ def deskew(img, max_angle=15.0):
 
 # ---------------------------------------------------------------------------
 # Fonctions de compat (utilisées par grid_decoder)
-# ---------------------------------------------------------------------------
+
 
 def find_active_area(img):
     """Bounding box rapide via Otsu."""

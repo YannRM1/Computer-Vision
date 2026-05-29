@@ -33,12 +33,18 @@ ROI_CODES_EXAM    = (0, 65, 900, 65)
 # 5 colonnes (une par chiffre), 10 lignes (digits 0-9)
 # Colonnes à x ≈ 733, 761, 790, 818, 847 ; lignes à y ≈ 251, 286, …, 554
 ROI_STUDENT_ID    = (725, 247, 155, 330)
+# Variante photo : la zone active détectée par get_active_area sur une photo
+# fournit un mapping légèrement décalé par rapport au rendu PDF de référence.
+# Ces coordonnées ont été calibrées en mesurant la position réelle de la
+# grille sur des images normalisées issues de photos (FORM1/2/3).
+ROI_STUDENT_ID_PHOTO = (720, 250, 125, 320)
 STUDENT_ID_ROWS   = 10
 STUDENT_ID_COLS   = 5
 
 # Grille Group (10 lignes × 3 colonnes : chiffre1, chiffre2, lettre)
 # Colonnes à x ≈ 524, 553, 609 ; mêmes lignes que Student ID
 ROI_GROUP_GRID    = (516, 247, 105, 330)
+ROI_GROUP_GRID_PHOTO = (455, 260, 135, 360)
 GROUP_ROWS        = 10
 # Proportions relatives des 3 colonnes dans la ROI (somme = 1)
 GROUP_COL_WIDTHS  = [0.27, 0.27, 0.46]
@@ -178,14 +184,16 @@ def get_roi(img: np.ndarray, roi: tuple[int, int, int, int]) -> np.ndarray:
 # Lecture du Student ID
 # ---------------------------------------------------------------------------
 
-def read_student_id(form_img: np.ndarray) -> int | None:
+def read_student_id(form_img: np.ndarray, is_photo: bool = False) -> int | None:
     """
     Lit l'identifiant étudiant depuis la grille graphique.
     Retourne un entier (ex: 62445) ou None si lecture impossible.
 
     Méthode : pour chaque colonne, la ligne cochée donne le chiffre.
+    Le ROI utilisé dépend de la source (PDF vs photo).
     """
-    roi = get_roi(form_img, ROI_STUDENT_ID)
+    roi_coords = ROI_STUDENT_ID_PHOTO if is_photo else ROI_STUDENT_ID
+    roi = get_roi(form_img, roi_coords)
     digits = read_grid_one_per_col(roi, rows=STUDENT_ID_ROWS, cols=STUDENT_ID_COLS)
     if None in digits:
         return None
@@ -270,8 +278,10 @@ def _read_condition(form_img: np.ndarray, cond: tuple) -> int:
     roi_yes = form_img[y0:y1, x_yes:x_yes + w]
     roi_no  = form_img[y0:y1, x_no:x_no + w]
 
-    yes_filled = is_filled_square(roi_yes, threshold=0.25)
-    no_filled  = is_filled_square(roi_no,  threshold=0.25)
+    # Seuil abaissé : 0.15 (était 0.25) — les cases YES/NO sont parfois
+    # cochées légèrement (peu d'encre) et passaient en faux négatif.
+    yes_filled = is_filled_square(roi_yes, threshold=0.15)
+    no_filled  = is_filled_square(roi_no,  threshold=0.15)
 
     # Si les deux sont remplis (artefact), choisir le plus sombre
     if yes_filled and no_filled:

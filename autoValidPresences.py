@@ -76,21 +76,19 @@ def autoValidID(img_path: str,
         print(f"  [WARN] Impossible de lire : {img_path}")
         return None, None
 
-    # 1. Deskew (correction d'inclinaison pour les photos)
-    img = deskew(img)
+    # 1. Normaliser vers le repère du formulaire (deskew géré en interne)
+    norm = normalize_page(img, is_photo=True)
 
-    # 2. Normaliser vers le repère du formulaire
-    norm = normalize_page(img)
-
-    # 3. Lire le StudentID depuis la grille
-    student_id_grid = read_student_id(norm)
+    # 2. Lire le StudentID depuis la grille (ROI spécifique photo)
+    student_id_grid = read_student_id(norm, is_photo=True)
 
     # 4. Extraire la sous-image de signature
     sig_img = extract_signature_roi(norm)
 
     # 5. Comparer la signature à la base de données
     if sig_img is not None and sig_img.size > 100 and desc_db:
-        id_sig, score = identify_signature(sig_img, desc_db, threshold=0.72)
+        # threshold ajusté pour le nouveau score combiné NCC+HOG+Hu (range typique 0.15-0.40)
+        id_sig, score = identify_signature(sig_img, desc_db, threshold=0.18)
     else:
         id_sig = None
 

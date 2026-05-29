@@ -91,16 +91,33 @@ _RE_CODE    = re.compile(r"Code\s*[|:\s]\s*([\w-]+)", re.IGNORECASE)
 
 def ocr_codes_exam(img: np.ndarray) -> dict:
     """
-    Lit la bande colorée CODES EXAM.
-    Retourne {'module', 'professor', 'date', 'code'}.
-    """
-    processed = _upscale_binarize(img, scale=3)
-    text = _ocr_raw(processed)
+    Lit la bande colorée CODES EXAM (Module, Professor, Date, Code).
 
+    Améliorations :
+      - Fond coloré -> on retire la composante chromatique en passant par
+        l'égalisation locale (CLAHE) avant binarisation.
+      - On lance l'OCR sur l'image binarisée ET sur l'image en niveaux de
+        gris upscalée, puis on fusionne en gardant le meilleur match par
+        regex (autorise les caractères ambigus comme O/0).
+    """
+    gray = _to_gray(img)
+    # CLAHE pour neutraliser le fond coloré uniforme
+    clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8, 8))
+    eq = clahe.apply(gray)
+    H, W = eq.shape
+    big = cv2.resize(eq, (W * 4, H * 4), interpolation=cv2.INTER_CUBIC)
+
+    # Variante 1 : Otsu pur sur l'image upscalée
+    _, b1 = cv2.threshold(big, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    text1 = _ocr_raw(b1)
+    # Variante 2 : OCR direct sur niveau de gris CLAHE (EasyOCR sait gérer)
+    text2 = _ocr_raw(big)
+
+    combined = text1 + "  " + text2
     result = {"module": "", "professor": "", "date": "", "code": ""}
     for pat, key in [(_RE_MODULE, "module"), (_RE_PROF, "professor"),
                      (_RE_DATE, "date"), (_RE_CODE, "code")]:
-        m = pat.search(text)
+        m = pat.search(combined)
         if m:
             result[key] = m.group(1).strip()
     return result

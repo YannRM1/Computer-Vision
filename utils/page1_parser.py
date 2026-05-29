@@ -161,7 +161,7 @@ def read_codes_exam(form_img: np.ndarray) -> dict:
 
 def compare_cryptograms(crypto_refs: list[np.ndarray],
                         crypto_query: np.ndarray,
-                        threshold: float = 0.85) -> bool:
+                        threshold: float = 0.75) -> bool:
     """
     Vérifie que tous les cryptogrammes d'une liste sont identiques au
     cryptogramme de référence (page 1).
