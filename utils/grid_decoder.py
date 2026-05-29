@@ -103,12 +103,44 @@ def get_active_area(img: np.ndarray) -> tuple[int, int, int, int]:
     return c0, r0, c1, r1
 
 
-def normalize_page(img: np.ndarray) -> np.ndarray:
+def _looks_like_photo(img: np.ndarray) -> bool:
+    """Heuristique : photo si bords irréguliers / faible blanc périphérique.
+    Permet d'enclencher le deskew automatiquement."""
+    gray = img if len(img.shape) == 2 else cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    H, W = gray.shape
+    # bord moyen (échantillon des 4 bandes périphériques)
+    band = max(5, min(H, W) // 50)
+    edges = np.concatenate([
+        gray[:band, :].ravel(), gray[-band:, :].ravel(),
+        gray[:, :band].ravel(), gray[:, -band:].ravel()
+    ])
+    return float(edges.mean()) < 230.0  # un scan PDF a des bords ~ blancs
+
+
+def normalize_page(img: np.ndarray, is_photo: bool | None = None) -> np.ndarray:
     """
     Recadre sur la zone active et redimensionne vers (FORM_W, FORM_H).
-    Fonctionne pour PDF et photos (après deskew).
+
+    Pour les photos (perspective, inclinaison), applique au préalable un
+    deskew via la transformée de Hough (utils.form_aligner.deskew).
+    Le paramètre is_photo peut être forcé ; sinon une heuristique sur les
+    bords de l'image décide.
     """
+    if is_photo is None:
+        is_photo = _looks_like_photo(img)
+
+    if is_photo:
+        # Import différé pour éviter une dépendance circulaire
+        from utils.form_aligner import deskew
+        img = deskew(img)
+
     x0, y0, x1, y1 = get_active_area(img)
+    # Petite marge négative pour éviter de garder une bordure de page
+    H, W = img.shape[:2]
+    mx = max(1, int(W * 0.005)); my = max(1, int(H * 0.005))
+    x0 = min(W - 2, x0 + mx); y0 = min(H - 2, y0 + my)
+    x1 = max(x0 + 1, x1 - mx); y1 = max(y0 + 1, y1 - my)
+
     cropped = img[y0:y1, x0:x1]
     return cv2.resize(cropped, (FORM_W, FORM_H))
 
@@ -278,22 +310,63 @@ def read_conditions(form_img: np.ndarray) -> dict:
 
 def extract_signature_roi(form_img: np.ndarray) -> np.ndarray:
     """
-    Extrait la sous-image de la boîte de signature.
-    Retourne une image BGR.
+    Extrait la sous-image **intérieure** de la boîte de signature.
+
+    Le ROI nominal (ROI_SIGNATURE) inclut le cadre rectangulaire et le label
+    "SIGNATURE". Cette fonction :
+      1. Découpe le ROI nominal.
+      2. Détecte le cadre rectangulaire par morphologie (filtres horizontaux
+         et verticaux pour isoler les longues lignes du cadre).
+      3. Retourne l'intérieur du cadre avec une petite marge négative pour
+         garantir qu'aucun pixel du trait du cadre ne soit conservé.
+
+    Si la détection échoue, repli sur un crop fixe correspondant à la position
+    typique du rectangle dans le ROI nominal.
     """
-    return get_roi(form_img, ROI_SIGNATURE)
+    roi = get_roi(form_img, ROI_SIGNATURE)
+    if roi is None or roi.size == 0:
+        return roi
+
+    gray = roi if len(roi.shape) == 2 else cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
+    H, W = gray.shape
+
+    # Binarisation Otsu inverse : 255 = encre (cadre + signature)
+    _, binary = cv2.threshold(gray, 0, 255,
+                              cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+
+    # Isoler les longues lignes du cadre par morphologie
+    # (kernels horizontal et vertical proportionnels à la taille du ROI)
+    kh = max(15, W // 8)
+    kv = max(15, H // 8)
+    kernel_h = cv2.getStructuringElement(cv2.MORPH_RECT, (kh, 1))
+    kernel_v = cv2.getStructuringElement(cv2.MORPH_RECT, (1, kv))
+    horiz = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel_h)
+    vert  = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel_v)
+    frame = cv2.bitwise_or(horiz, vert)
+
+    # Bounding box du cadre détecté
+    coords = cv2.findNonZero(frame)
+    if coords is not None and len(coords) > 50:
+        x, y, w, h = cv2.boundingRect(coords)
+        # Marge intérieure (proportionnelle) pour éliminer le trait du cadre
+        m = max(4, int(min(w, h) * 0.08))
+        x0 = max(0, x + m)
+        y0 = max(0, y + m)
+        x1 = min(W, x + w - m)
+        y1 = min(H, y + h - m)
+        if (x1 - x0) > 20 and (y1 - y0) > 20:
+            return roi[y0:y1, x0:x1]
+
+    # Repli : crop fixe interne approximatif
+    return roi[60:260, 50:340]
 
 
 # ---------------------------------------------------------------------------
 # Lecture de la zone Note (OCR de chiffres imprimés)
 # ---------------------------------------------------------------------------
 
-def read_note_box(form_img: np.ndarray, roi: tuple[int, int, int, int],
-                  top_crop_frac: float = 0.15) -> int | None:
-    """
-    Lit un entier imprimé dans une case (Note maximale / Note pour valider).
-    top_crop_frac : fraction du haut à ignorer (ligne de séparation entre cases).
-    """
+def read_note_box(form_img: np.ndarray, roi: tuple,
+                  top_crop_frac: float = 0.15):
     x, y, w, h = roi
     crop_y = y + int(h * top_crop_frac)
     region = form_img[crop_y:y + h, x:x + w]
@@ -304,24 +377,19 @@ def read_note_box(form_img: np.ndarray, roi: tuple[int, int, int, int],
         return None
 
 
-def _read_both_notes(form_img: np.ndarray) -> tuple[int | None, int | None]:
-    """
-    Lit Note maximale et Note pour valider en une seule passe OCR.
-    Retourne (note_max, note_valid).
-    """
+def _read_both_notes(form_img: np.ndarray):
     import re as _re
     x, y, w, h = ROI_NOTES_COMBINED
     roi = form_img[y:y + h, x:x + w]
     try:
-        import cv2 as _cv2
         from utils.ocr_utils import _to_gray, _ocr_raw
         gray = _to_gray(roi)
-        clahe = _cv2.createCLAHE(clipLimit=3.0, tileGridSize=(4, 4))
+        clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(4, 4))
         eq = clahe.apply(gray)
-        big = _cv2.resize(eq, (eq.shape[1] * 6, eq.shape[0] * 6),
-                          interpolation=_cv2.INTER_CUBIC)
-        _, thresh = _cv2.threshold(big, 0, 255,
-                                   _cv2.THRESH_BINARY + _cv2.THRESH_OTSU)
+        big = cv2.resize(eq, (eq.shape[1] * 6, eq.shape[0] * 6),
+                         interpolation=cv2.INTER_CUBIC)
+        _, thresh = cv2.threshold(big, 0, 255,
+                                  cv2.THRESH_BINARY + cv2.THRESH_OTSU)
         text = _ocr_raw(thresh, allowlist="0123456789")
         nums = [int(n) for n in _re.findall(r"\d+", text)]
         if len(nums) >= 2:
@@ -333,14 +401,14 @@ def _read_both_notes(form_img: np.ndarray) -> tuple[int | None, int | None]:
     return None, None
 
 
-def read_note_maximale(form_img: np.ndarray) -> int | None:
+def read_note_maximale(form_img: np.ndarray):
     nm, _ = _read_both_notes(form_img)
     if nm is None:
         nm = read_note_box(form_img, ROI_NOTE_MAX)
     return nm
 
 
-def read_note_pour_valider(form_img: np.ndarray) -> int | None:
+def read_note_pour_valider(form_img: np.ndarray):
     _, nv = _read_both_notes(form_img)
     if nv is None:
         nv = read_note_box(form_img, ROI_NOTE_VALID)
@@ -348,11 +416,8 @@ def read_note_pour_valider(form_img: np.ndarray) -> int | None:
 
 
 # ---------------------------------------------------------------------------
-# Cryptogramme (empreinte du formulaire)
+# Cryptogramme
 # ---------------------------------------------------------------------------
 
 def extract_cryptogram(form_img: np.ndarray) -> np.ndarray:
-    """
-    Extrait l'image du cryptogramme en bas de page.
-    """
     return get_roi(form_img, ROI_CRYPTO)
