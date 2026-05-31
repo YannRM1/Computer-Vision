@@ -144,9 +144,21 @@ def main():
     csv_rows = [["form", "id", "sheet", "field_or_cell", "axis",
                  "truth", "prod", "ok"]]
 
+    skipped = 0
     for form, sid, tp, pp in pairs:
-        twb = openpyxl.load_workbook(tp, data_only=True)
-        pwb = openpyxl.load_workbook(pp, data_only=True)
+        try:
+            twb = openpyxl.load_workbook(tp, data_only=True)
+        except Exception as e:
+            print(f"  [WARN] Vérité terrain illisible, ignoré : {os.path.basename(tp)} ({e})")
+            skipped += 1
+            continue
+        try:
+            pwb = openpyxl.load_workbook(pp, data_only=True)
+        except Exception as e:
+            print(f"  [WARN] Production illisible, ignoré : {os.path.basename(pp)} ({e})")
+            skipped += 1
+            continue
+
         # PAGE-01
         if "PAGE-01" in twb.sheetnames and "PAGE-01" in pwb.sheetnames:
             for r, label, axis, t, p, ok in compare_page1(pwb["PAGE-01"],
@@ -164,6 +176,9 @@ def main():
                 if ok: axis_stats[axis][0] += 1
                 csv_rows.append([form, sid, "EXAM", cell, axis,
                                  str(t), str(p), int(ok)])
+
+    if skipped:
+        print(f"\n  [INFO] {skipped} fichier(s) ignoré(s) (xlsx corrompu ou manquant)")
 
     out_csv = "compare_results.csv"
     with open(out_csv, "w", newline="") as f:

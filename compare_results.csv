@@ -1,0 +1,1650 @@
+form,id,sheet,field_or_cell,axis,truth,prod,ok
+FORM1,19283,PAGE-01,Module,imprime,IG.2405,IG.1103,0
+FORM1,19283,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,19283,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,19283,PAGE-01,Code,imprime,S1-01-G1,S1-01-01,0
+FORM1,19283,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,19283,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,19283,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,19283,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,19283,PAGE-01,Feuilles brouillon,graphique,1,414,0
+FORM1,19283,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,19283,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,19283,PAGE-01,Prenom,manuscrit,Julien,Peea,0
+FORM1,19283,PAGE-01,Nom,manuscrit,Moreau,CYEA,0
+FORM1,19283,PAGE-01,Validation signature,signature,1,0,0
+FORM1,19283,PAGE-01,Group,graphique,G04E,G04E,1
+FORM1,19283,PAGE-01,STUDENT ID,graphique,19283,12835,0
+FORM1,19283,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,19283,EXAM,R2C1,imprime,1,1,1
+FORM1,19283,EXAM,R2C3,graphique,1,1,1
+FORM1,19283,EXAM,R2C4,graphique,None,1,0
+FORM1,19283,EXAM,R3C1,imprime,2,2,1
+FORM1,19283,EXAM,R3C4,graphique,1,1,1
+FORM1,19283,EXAM,R4C1,imprime,3,3,1
+FORM1,19283,EXAM,R4C10,manuscrit,3.75,335,0
+FORM1,19283,EXAM,R4C11,manuscrit,2,2,1
+FORM1,19283,EXAM,R5C1,imprime,4,4,1
+FORM1,19283,EXAM,R5C3,graphique,1,1,1
+FORM1,19283,EXAM,R6C1,imprime,5,5,1
+FORM1,19283,EXAM,R6C5,graphique,1,1,1
+FORM1,19283,EXAM,R7C1,imprime,6,6,1
+FORM1,19283,EXAM,R7C10,manuscrit,14.8,None,0
+FORM1,19283,EXAM,R7C11,manuscrit,0,None,0
+FORM1,19283,EXAM,R7C12,manuscrit,KHz,None,0
+FORM1,19283,EXAM,R8C1,imprime,7,7,1
+FORM1,19283,EXAM,R8C2,graphique,None,1,0
+FORM1,19283,EXAM,R8C5,graphique,1,None,0
+FORM1,19283,EXAM,R8C6,graphique,None,1,0
+FORM1,19283,EXAM,R9C1,imprime,8,8,1
+FORM1,19283,EXAM,R9C2,graphique,1,1,1
+FORM1,19283,EXAM,R10C1,imprime,9,9,1
+FORM1,19283,EXAM,R10C5,graphique,1,1,1
+FORM1,36912,PAGE-01,Module,imprime,IG.2405,IG.1103,0
+FORM1,36912,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,36912,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,36912,PAGE-01,Code,imprime,S1-01-G1,S1-01-G1,1
+FORM1,36912,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,36912,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,36912,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,36912,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,36912,PAGE-01,Feuilles brouillon,graphique,1,10,0
+FORM1,36912,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,36912,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,36912,PAGE-01,Prenom,manuscrit,Miguel,C,0
+FORM1,36912,PAGE-01,Nom,manuscrit,Prado,C,0
+FORM1,36912,PAGE-01,Validation signature,signature,1,0,0
+FORM1,36912,PAGE-01,Group,graphique,G07E,G07D,0
+FORM1,36912,PAGE-01,STUDENT ID,graphique,36912,36912,1
+FORM1,36912,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,36912,EXAM,R2C1,imprime,1,1,1
+FORM1,36912,EXAM,R2C4,graphique,1,1,1
+FORM1,36912,EXAM,R3C1,imprime,2,2,1
+FORM1,36912,EXAM,R3C4,graphique,1,1,1
+FORM1,36912,EXAM,R4C1,imprime,3,3,1
+FORM1,36912,EXAM,R4C10,manuscrit,4.7,43,0
+FORM1,36912,EXAM,R4C11,manuscrit,2,1,0
+FORM1,36912,EXAM,R4C12,manuscrit,dBm,dBm,1
+FORM1,36912,EXAM,R5C1,imprime,4,4,1
+FORM1,36912,EXAM,R5C2,graphique,1,1,1
+FORM1,36912,EXAM,R6C1,imprime,5,5,1
+FORM1,36912,EXAM,R6C6,graphique,1,1,1
+FORM1,36912,EXAM,R7C1,imprime,6,6,1
+FORM1,36912,EXAM,R7C2,graphique,None,1,0
+FORM1,36912,EXAM,R7C10,manuscrit,1.3,None,0
+FORM1,36912,EXAM,R7C11,manuscrit,30,None,0
+FORM1,36912,EXAM,R7C12,manuscrit,KHz,None,0
+FORM1,36912,EXAM,R8C1,imprime,7,7,1
+FORM1,36912,EXAM,R8C2,graphique,1,1,1
+FORM1,36912,EXAM,R9C1,imprime,8,8,1
+FORM1,36912,EXAM,R9C4,graphique,1,1,1
+FORM1,36912,EXAM,R10C1,imprime,9,9,1
+FORM1,36912,EXAM,R10C3,graphique,1,1,1
+FORM1,50305,PAGE-01,Module,imprime,IG.2405,IG.1103,0
+FORM1,50305,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,50305,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,50305,PAGE-01,Code,imprime,S1-01-G1,S1-01-01,0
+FORM1,50305,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,50305,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,50305,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,50305,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,50305,PAGE-01,Feuilles brouillon,graphique,1,10,0
+FORM1,50305,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,50305,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,50305,PAGE-01,Prenom,manuscrit,Victor,Cc,0
+FORM1,50305,PAGE-01,Nom,manuscrit,Pied,ED,0
+FORM1,50305,PAGE-01,Validation signature,signature,1,0,0
+FORM1,50305,PAGE-01,Group,graphique,G02A,G02G,0
+FORM1,50305,PAGE-01,STUDENT ID,graphique,50305,50305,1
+FORM1,50305,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,50305,EXAM,R2C1,imprime,1,1,1
+FORM1,50305,EXAM,R2C5,graphique,1,1,1
+FORM1,50305,EXAM,R3C1,imprime,2,2,1
+FORM1,50305,EXAM,R3C3,graphique,1,1,1
+FORM1,50305,EXAM,R4C1,imprime,3,3,1
+FORM1,50305,EXAM,R4C10,manuscrit,374.5,3345,0
+FORM1,50305,EXAM,R4C11,manuscrit,None,100001,0
+FORM1,50305,EXAM,R5C1,imprime,4,4,1
+FORM1,50305,EXAM,R5C5,graphique,1,1,1
+FORM1,50305,EXAM,R6C1,imprime,5,5,1
+FORM1,50305,EXAM,R6C3,graphique,1,1,1
+FORM1,50305,EXAM,R7C1,imprime,6,6,1
+FORM1,50305,EXAM,R7C10,manuscrit,21.2,94.2,0
+FORM1,50305,EXAM,R7C11,manuscrit,None,10,0
+FORM1,50305,EXAM,R7C12,manuscrit,KHz,KHz,1
+FORM1,50305,EXAM,R8C1,imprime,7,7,1
+FORM1,50305,EXAM,R8C5,graphique,1,1,1
+FORM1,50305,EXAM,R9C1,imprime,8,8,1
+FORM1,50305,EXAM,R9C3,graphique,1,1,1
+FORM1,50305,EXAM,R10C1,imprime,9,9,1
+FORM1,50305,EXAM,R10C5,graphique,1,1,1
+FORM1,54331,PAGE-01,Module,imprime,IG.2405,KG.1103,0
+FORM1,54331,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,54331,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,54331,PAGE-01,Code,imprime,S1-01-G1,S1-01-01,0
+FORM1,54331,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,54331,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,54331,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,54331,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,54331,PAGE-01,Feuilles brouillon,graphique,1,10,0
+FORM1,54331,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,54331,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,54331,PAGE-01,Prenom,manuscrit,ARTHUR,Aycr,0
+FORM1,54331,PAGE-01,Nom,manuscrit,DUPOND,DJND,0
+FORM1,54331,PAGE-01,Validation signature,signature,1,0,0
+FORM1,54331,PAGE-01,Group,graphique,G04J,G04H,0
+FORM1,54331,PAGE-01,STUDENT ID,graphique,54331,54331,1
+FORM1,54331,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,54331,EXAM,R2C1,imprime,1,1,1
+FORM1,54331,EXAM,R2C4,graphique,1,1,1
+FORM1,54331,EXAM,R3C1,imprime,2,2,1
+FORM1,54331,EXAM,R3C3,graphique,1,1,1
+FORM1,54331,EXAM,R4C1,imprime,3,3,1
+FORM1,54331,EXAM,R4C10,manuscrit,3,3,1
+FORM1,54331,EXAM,R4C11,manuscrit,2,2,1
+FORM1,54331,EXAM,R5C1,imprime,4,4,1
+FORM1,54331,EXAM,R5C5,graphique,1,1,1
+FORM1,54331,EXAM,R6C1,imprime,5,5,1
+FORM1,54331,EXAM,R6C4,graphique,1,1,1
+FORM1,54331,EXAM,R7C1,imprime,6,6,1
+FORM1,54331,EXAM,R7C10,manuscrit,3.1,3.1,1
+FORM1,54331,EXAM,R7C11,manuscrit,None,11,0
+FORM1,54331,EXAM,R7C12,manuscrit,KHz,KHz,1
+FORM1,54331,EXAM,R8C1,imprime,7,7,1
+FORM1,54331,EXAM,R8C2,graphique,None,1,0
+FORM1,54331,EXAM,R8C5,graphique,1,None,0
+FORM1,54331,EXAM,R8C6,graphique,None,1,0
+FORM1,54331,EXAM,R9C1,imprime,8,8,1
+FORM1,54331,EXAM,R9C3,graphique,1,1,1
+FORM1,54331,EXAM,R10C1,imprime,9,9,1
+FORM1,54331,EXAM,R10C4,graphique,1,1,1
+FORM1,58220,PAGE-01,Module,imprime,IG.2405,1G.1103,0
+FORM1,58220,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,58220,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,58220,PAGE-01,Code,imprime,S1-01-G1,S1-01-G1,1
+FORM1,58220,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,58220,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,58220,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,58220,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,58220,PAGE-01,Feuilles brouillon,graphique,1,0,0
+FORM1,58220,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,58220,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,58220,PAGE-01,Prenom,manuscrit,SANDRA,Y,0
+FORM1,58220,PAGE-01,Nom,manuscrit,DOE,E,0
+FORM1,58220,PAGE-01,Validation signature,signature,1,0,0
+FORM1,58220,PAGE-01,Group,graphique,G67A,G67J,0
+FORM1,58220,PAGE-01,STUDENT ID,graphique,58220,58220,1
+FORM1,58220,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,58220,EXAM,R2C1,imprime,1,1,1
+FORM1,58220,EXAM,R2C3,graphique,1,1,1
+FORM1,58220,EXAM,R3C1,imprime,2,2,1
+FORM1,58220,EXAM,R3C3,graphique,1,1,1
+FORM1,58220,EXAM,R4C1,imprime,3,3,1
+FORM1,58220,EXAM,R4C10,manuscrit,0.14,4401,0
+FORM1,58220,EXAM,R4C11,manuscrit,1,1,1
+FORM1,58220,EXAM,R5C1,imprime,4,4,1
+FORM1,58220,EXAM,R5C4,graphique,1,1,1
+FORM1,58220,EXAM,R6C1,imprime,5,5,1
+FORM1,58220,EXAM,R6C6,graphique,1,1,1
+FORM1,58220,EXAM,R7C1,imprime,6,6,1
+FORM1,58220,EXAM,R7C10,manuscrit,4.2,26,0
+FORM1,58220,EXAM,R7C11,manuscrit,3,1,0
+FORM1,58220,EXAM,R7C12,manuscrit,None,KHz,0
+FORM1,58220,EXAM,R8C1,imprime,7,7,1
+FORM1,58220,EXAM,R8C2,graphique,1,1,1
+FORM1,58220,EXAM,R9C1,imprime,8,8,1
+FORM1,58220,EXAM,R9C3,graphique,1,1,1
+FORM1,58220,EXAM,R10C1,imprime,9,9,1
+FORM1,58220,EXAM,R10C5,graphique,1,1,1
+FORM1,58927,PAGE-01,Module,imprime,IG.2405,1G.1103,0
+FORM1,58927,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,58927,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,58927,PAGE-01,Code,imprime,S1-01-G1,S1-01-G1,1
+FORM1,58927,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,58927,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,58927,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,58927,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,58927,PAGE-01,Feuilles brouillon,graphique,1,10,0
+FORM1,58927,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,58927,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,58927,PAGE-01,Prenom,manuscrit,ROCKY,Cky,0
+FORM1,58927,PAGE-01,Nom,manuscrit,GRACE,GKACE,0
+FORM1,58927,PAGE-01,Validation signature,signature,1,0,0
+FORM1,58927,PAGE-01,Group,graphique,G19A,G19H,0
+FORM1,58927,PAGE-01,STUDENT ID,graphique,58927,58927,1
+FORM1,58927,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,58927,EXAM,R2C1,imprime,1,1,1
+FORM1,58927,EXAM,R2C2,graphique,1,1,1
+FORM1,58927,EXAM,R3C1,imprime,2,2,1
+FORM1,58927,EXAM,R3C4,graphique,1,1,1
+FORM1,58927,EXAM,R4C1,imprime,3,3,1
+FORM1,58927,EXAM,R4C10,manuscrit,3.745,3345,0
+FORM1,58927,EXAM,R4C11,manuscrit,2,151,0
+FORM1,58927,EXAM,R5C1,imprime,4,4,1
+FORM1,58927,EXAM,R5C4,graphique,1,1,1
+FORM1,58927,EXAM,R6C1,imprime,5,5,1
+FORM1,58927,EXAM,R6C5,graphique,1,1,1
+FORM1,58927,EXAM,R7C1,imprime,6,6,1
+FORM1,58927,EXAM,R7C2,graphique,None,1,0
+FORM1,58927,EXAM,R7C10,manuscrit,2.11641,None,0
+FORM1,58927,EXAM,R7C11,manuscrit,4,None,0
+FORM1,58927,EXAM,R7C12,manuscrit,KHz,None,0
+FORM1,58927,EXAM,R8C1,imprime,7,7,1
+FORM1,58927,EXAM,R8C5,graphique,1,1,1
+FORM1,58927,EXAM,R9C1,imprime,8,8,1
+FORM1,58927,EXAM,R9C2,graphique,1,None,0
+FORM1,58927,EXAM,R9C10,manuscrit,None,8,0
+FORM1,58927,EXAM,R10C1,imprime,9,9,1
+FORM1,58927,EXAM,R10C2,graphique,None,1,0
+FORM1,58927,EXAM,R10C5,graphique,1,None,0
+FORM1,61856,PAGE-01,Module,imprime,IG.2405,1G.1103,0
+FORM1,61856,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,61856,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,61856,PAGE-01,Code,imprime,S1-01-G1,S1-01-61,0
+FORM1,61856,PAGE-01,Notes de cours,graphique,1,0,0
+FORM1,61856,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,61856,PAGE-01,Ordinateur portable,graphique,1,0,0
+FORM1,61856,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,61856,PAGE-01,Feuilles brouillon,graphique,1,0,0
+FORM1,61856,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,61856,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,61856,PAGE-01,Prenom,manuscrit,Jade,Ei,0
+FORM1,61856,PAGE-01,Nom,manuscrit,Sakly,None,0
+FORM1,61856,PAGE-01,Validation signature,signature,1,0,0
+FORM1,61856,PAGE-01,Group,graphique,40A,G00A,0
+FORM1,61856,PAGE-01,STUDENT ID,graphique,61856,50688,0
+FORM1,61856,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,61856,EXAM,R2C1,imprime,1,1,1
+FORM1,61856,EXAM,R2C3,graphique,x,None,0
+FORM1,61856,EXAM,R3C1,imprime,2,2,1
+FORM1,61856,EXAM,R3C2,graphique,None,1,0
+FORM1,61856,EXAM,R3C4,graphique,x,None,0
+FORM1,61856,EXAM,R3C5,graphique,None,1,0
+FORM1,61856,EXAM,R4C1,imprime,3,3,1
+FORM1,61856,EXAM,R4C10,manuscrit,2.3,2.3,0
+FORM1,61856,EXAM,R4C11,manuscrit,None,1,0
+FORM1,61856,EXAM,R5C1,imprime,4,4,1
+FORM1,61856,EXAM,R5C2,graphique,None,1,0
+FORM1,61856,EXAM,R5C5,graphique,x,None,0
+FORM1,61856,EXAM,R5C6,graphique,None,1,0
+FORM1,61856,EXAM,R6C1,imprime,5,5,1
+FORM1,61856,EXAM,R6C2,graphique,x,None,0
+FORM1,61856,EXAM,R7C1,imprime,6,6,1
+FORM1,61856,EXAM,R7C10,manuscrit,17.0,7,0
+FORM1,61856,EXAM,R7C11,manuscrit,None,111,0
+FORM1,61856,EXAM,R7C12,manuscrit,None,KHz,0
+FORM1,61856,EXAM,R8C1,imprime,7,7,1
+FORM1,61856,EXAM,R8C2,graphique,None,1,0
+FORM1,61856,EXAM,R8C4,graphique,x,None,0
+FORM1,61856,EXAM,R9C1,imprime,8,8,1
+FORM1,61856,EXAM,R9C3,graphique,x,None,0
+FORM1,61856,EXAM,R10C1,imprime,9,9,1
+FORM1,61856,EXAM,R10C4,graphique,x,None,0
+FORM1,61992,PAGE-01,Module,imprime,IG.2405,1G.1103,0
+FORM1,61992,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,61992,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,61992,PAGE-01,Code,imprime,S1-01-G1,S1-01-G1,1
+FORM1,61992,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,61992,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,61992,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,61992,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,61992,PAGE-01,Feuilles brouillon,graphique,1,10,0
+FORM1,61992,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,61992,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,61992,PAGE-01,Prenom,manuscrit,Victor,Cccd,0
+FORM1,61992,PAGE-01,Nom,manuscrit,Poussier,POUDSC,0
+FORM1,61992,PAGE-01,Validation signature,signature,1,0,0
+FORM1,61992,PAGE-01,Group,graphique,04J,G04H,0
+FORM1,61992,PAGE-01,STUDENT ID,graphique,61992,61292,0
+FORM1,61992,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,61992,EXAM,R2C1,imprime,1,1,1
+FORM1,61992,EXAM,R2C4,graphique,1,1,1
+FORM1,61992,EXAM,R3C1,imprime,2,2,1
+FORM1,61992,EXAM,R3C4,graphique,1,1,1
+FORM1,61992,EXAM,R4C1,imprime,3,3,1
+FORM1,61992,EXAM,R4C10,manuscrit,375,375,1
+FORM1,61992,EXAM,R4C11,manuscrit,0,1001,0
+FORM1,61992,EXAM,R5C1,imprime,4,4,1
+FORM1,61992,EXAM,R5C3,graphique,1,1,1
+FORM1,61992,EXAM,R6C1,imprime,5,5,1
+FORM1,61992,EXAM,R6C5,graphique,1,1,1
+FORM1,61992,EXAM,R7C1,imprime,6,6,1
+FORM1,61992,EXAM,R7C10,manuscrit,14.8,14.8,1
+FORM1,61992,EXAM,R7C11,manuscrit,0,121,0
+FORM1,61992,EXAM,R7C12,manuscrit,KHz,KHz,1
+FORM1,61992,EXAM,R8C1,imprime,7,7,1
+FORM1,61992,EXAM,R8C2,graphique,None,1,0
+FORM1,61992,EXAM,R8C5,graphique,1,None,0
+FORM1,61992,EXAM,R9C1,imprime,8,8,1
+FORM1,61992,EXAM,R9C4,graphique,1,1,1
+FORM1,61992,EXAM,R10C1,imprime,9,9,1
+FORM1,61992,EXAM,R10C5,graphique,1,1,1
+FORM1,62034,PAGE-01,Module,imprime,IG.2405,1G.1103,0
+FORM1,62034,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,62034,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,62034,PAGE-01,Code,imprime,S1-01-G1,S1-01-G1,1
+FORM1,62034,PAGE-01,Notes de cours,graphique,1.0,1,1
+FORM1,62034,PAGE-01,Notes manuscrites,graphique,0.0,0,1
+FORM1,62034,PAGE-01,Ordinateur portable,graphique,1.0,1,1
+FORM1,62034,PAGE-01,Calculatrice,graphique,0.0,0,1
+FORM1,62034,PAGE-01,Feuilles brouillon,graphique,1.0,105,0
+FORM1,62034,PAGE-01,Note maximale,imprime,10.0,10,1
+FORM1,62034,PAGE-01,Note pour valider,imprime,4.0,4,1
+FORM1,62034,PAGE-01,Prenom,manuscrit,Esteban,Yp,0
+FORM1,62034,PAGE-01,Nom,manuscrit,Jeanningros,DCNL,0
+FORM1,62034,PAGE-01,Validation signature,signature,1.0,0,0
+FORM1,62034,PAGE-01,Group,graphique,None,G68D,0
+FORM1,62034,PAGE-01,STUDENT ID,graphique,62034.0,62034,1
+FORM1,62034,PAGE-01,Validation cryptogramme,graphique,1.0,0,0
+FORM1,62034,EXAM,R2C1,imprime,1.0,1,1
+FORM1,62034,EXAM,R2C4,graphique,X,None,0
+FORM1,62034,EXAM,R3C1,imprime,2.0,2,1
+FORM1,62034,EXAM,R3C4,graphique,X,1,0
+FORM1,62034,EXAM,R4C1,imprime,3.0,3,1
+FORM1,62034,EXAM,R4C10,manuscrit,3.745,3.745,1
+FORM1,62034,EXAM,R4C11,manuscrit,2.0,121,0
+FORM1,62034,EXAM,R5C1,imprime,4.0,4,1
+FORM1,62034,EXAM,R5C4,graphique,X,1,0
+FORM1,62034,EXAM,R6C1,imprime,5.0,5,1
+FORM1,62034,EXAM,R6C5,graphique,X,1,0
+FORM1,62034,EXAM,R7C1,imprime,6.0,6,1
+FORM1,62034,EXAM,R7C2,graphique,None,1,0
+FORM1,62034,EXAM,R7C3,graphique,None,1,0
+FORM1,62034,EXAM,R7C10,manuscrit,1.48,None,0
+FORM1,62034,EXAM,R7C11,manuscrit,1.0,None,0
+FORM1,62034,EXAM,R7C12,manuscrit,KHz,None,0
+FORM1,62034,EXAM,R8C1,imprime,7.0,7,1
+FORM1,62034,EXAM,R8C2,graphique,None,1,0
+FORM1,62034,EXAM,R8C5,graphique,X,None,0
+FORM1,62034,EXAM,R8C6,graphique,None,1,0
+FORM1,62034,EXAM,R9C1,imprime,8.0,8,1
+FORM1,62034,EXAM,R9C2,graphique,X,1,0
+FORM1,62034,EXAM,R10C1,imprime,9.0,9,1
+FORM1,62034,EXAM,R10C5,graphique,X,None,0
+FORM1,62288,PAGE-01,Module,imprime,IG.2405,1,0
+FORM1,62288,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,62288,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,62288,PAGE-01,Code,imprime,S1-01-G1,51-01-61,0
+FORM1,62288,PAGE-01,Notes de cours,graphique,1,0,0
+FORM1,62288,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,62288,PAGE-01,Ordinateur portable,graphique,1,0,0
+FORM1,62288,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,62288,PAGE-01,Feuilles brouillon,graphique,1,1,1
+FORM1,62288,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,62288,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,62288,PAGE-01,Prenom,manuscrit,LOU-ANN,E,0
+FORM1,62288,PAGE-01,Nom,manuscrit,BAPTISTE,None,0
+FORM1,62288,PAGE-01,Validation signature,signature,1,0,0
+FORM1,62288,PAGE-01,Group,graphique,03A,G12A,0
+FORM1,62288,PAGE-01,STUDENT ID,graphique,62288,51177,0
+FORM1,62288,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,62288,EXAM,R2C1,imprime,1,1,1
+FORM1,62288,EXAM,R2C5,graphique,1,1,1
+FORM1,62288,EXAM,R3C1,imprime,2,2,1
+FORM1,62288,EXAM,R3C5,graphique,1,1,1
+FORM1,62288,EXAM,R4C1,imprime,3,3,1
+FORM1,62288,EXAM,R4C10,manuscrit,3,3,1
+FORM1,62288,EXAM,R4C11,manuscrit,-1,113,0
+FORM1,62288,EXAM,R5C1,imprime,4,4,1
+FORM1,62288,EXAM,R5C2,graphique,1,1,1
+FORM1,62288,EXAM,R6C1,imprime,5,5,1
+FORM1,62288,EXAM,R6C2,graphique,None,1,0
+FORM1,62288,EXAM,R6C3,graphique,1,None,0
+FORM1,62288,EXAM,R6C4,graphique,None,1,0
+FORM1,62288,EXAM,R7C1,imprime,6,6,1
+FORM1,62288,EXAM,R7C10,manuscrit,3,3,1
+FORM1,62288,EXAM,R7C11,manuscrit,2,121,0
+FORM1,62288,EXAM,R7C12,manuscrit,KHz,KHz,1
+FORM1,62288,EXAM,R8C1,imprime,7,7,1
+FORM1,62288,EXAM,R8C4,graphique,1,1,1
+FORM1,62288,EXAM,R9C1,imprime,8,8,1
+FORM1,62288,EXAM,R9C2,graphique,None,1,0
+FORM1,62288,EXAM,R9C4,graphique,1,None,0
+FORM1,62288,EXAM,R10C1,imprime,9,9,1
+FORM1,62288,EXAM,R10C2,graphique,1,1,1
+FORM1,62298,PAGE-01,Module,imprime,IG.2405,IG.1103,0
+FORM1,62298,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,62298,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,62298,PAGE-01,Code,imprime,S1-01-G1,S1-01-G1,1
+FORM1,62298,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,62298,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,62298,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,62298,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,62298,PAGE-01,Feuilles brouillon,graphique,1,10,0
+FORM1,62298,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,62298,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,62298,PAGE-01,Prenom,manuscrit,Jade,Dade,0
+FORM1,62298,PAGE-01,Nom,manuscrit,Kam,AL,0
+FORM1,62298,PAGE-01,Validation signature,signature,1,0,0
+FORM1,62298,PAGE-01,Group,graphique,05C,G05D,0
+FORM1,62298,PAGE-01,STUDENT ID,graphique,62298,62298,1
+FORM1,62298,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,62298,EXAM,R2C1,imprime,1,1,1
+FORM1,62298,EXAM,R2C4,graphique,X,1,0
+FORM1,62298,EXAM,R3C1,imprime,2,2,1
+FORM1,62298,EXAM,R3C4,graphique,X,1,0
+FORM1,62298,EXAM,R4C1,imprime,3,3,1
+FORM1,62298,EXAM,R4C10,manuscrit,3.75,3.15,0
+FORM1,62298,EXAM,R4C11,manuscrit,2,1,0
+FORM1,62298,EXAM,R5C1,imprime,4,4,1
+FORM1,62298,EXAM,R5C3,graphique,X,1,0
+FORM1,62298,EXAM,R6C1,imprime,5,5,1
+FORM1,62298,EXAM,R6C5,graphique,X,1,0
+FORM1,62298,EXAM,R7C1,imprime,6,6,1
+FORM1,62298,EXAM,R7C2,graphique,None,1,0
+FORM1,62298,EXAM,R7C10,manuscrit,2.12,None,0
+FORM1,62298,EXAM,R7C11,manuscrit,1,None,0
+FORM1,62298,EXAM,R8C1,imprime,7,7,1
+FORM1,62298,EXAM,R8C2,graphique,X,1,0
+FORM1,62298,EXAM,R9C1,imprime,8,8,1
+FORM1,62298,EXAM,R9C2,graphique,X,None,0
+FORM1,62298,EXAM,R10C1,imprime,9,9,1
+FORM1,62298,EXAM,R10C5,graphique,X,1,0
+FORM1,62306,PAGE-01,Module,imprime,IG.2405,IG.1103,0
+FORM1,62306,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,62306,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,62306,PAGE-01,Code,imprime,S1-01-G1,S1-01-01,0
+FORM1,62306,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,62306,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,62306,PAGE-01,Ordinateur portable,graphique,1,0,0
+FORM1,62306,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,62306,PAGE-01,Feuilles brouillon,graphique,1,0,0
+FORM1,62306,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,62306,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,62306,PAGE-01,Prenom,manuscrit,EILEEN,Lc,0
+FORM1,62306,PAGE-01,Nom,manuscrit,MORGUE,DlkLiult,0
+FORM1,62306,PAGE-01,Validation signature,signature,1,0,0
+FORM1,62306,PAGE-01,Group,graphique,G03E,G33E,0
+FORM1,62306,PAGE-01,STUDENT ID,graphique,62306,23063,0
+FORM1,62306,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,62306,EXAM,R2C1,imprime,1,1,1
+FORM1,62306,EXAM,R2C4,graphique,1,1,1
+FORM1,62306,EXAM,R3C1,imprime,2,2,1
+FORM1,62306,EXAM,R3C4,graphique,1,None,0
+FORM1,62306,EXAM,R4C1,imprime,3,3,1
+FORM1,62306,EXAM,R4C10,manuscrit,3.75,3.35,0
+FORM1,62306,EXAM,R4C11,manuscrit,2,2,1
+FORM1,62306,EXAM,R5C1,imprime,4,4,1
+FORM1,62306,EXAM,R5C3,graphique,1,1,1
+FORM1,62306,EXAM,R6C1,imprime,5,5,1
+FORM1,62306,EXAM,R6C2,graphique,None,1,0
+FORM1,62306,EXAM,R6C5,graphique,1,None,0
+FORM1,62306,EXAM,R6C6,graphique,None,1,0
+FORM1,62306,EXAM,R7C1,imprime,6,6,1
+FORM1,62306,EXAM,R7C2,graphique,None,1,0
+FORM1,62306,EXAM,R7C10,manuscrit,1.48,None,0
+FORM1,62306,EXAM,R7C11,manuscrit,1,None,0
+FORM1,62306,EXAM,R7C12,manuscrit,KHz,None,0
+FORM1,62306,EXAM,R8C1,imprime,7,7,1
+FORM1,62306,EXAM,R8C5,graphique,1,1,1
+FORM1,62306,EXAM,R9C1,imprime,8,8,1
+FORM1,62306,EXAM,R9C4,graphique,1,1,1
+FORM1,62306,EXAM,R10C1,imprime,9,9,1
+FORM1,62306,EXAM,R10C5,graphique,1,1,1
+FORM1,62358,PAGE-01,Module,imprime,IG.2405,1G.1103,0
+FORM1,62358,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,62358,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,62358,PAGE-01,Code,imprime,S1-01-G1,S1-01-G1,1
+FORM1,62358,PAGE-01,Notes de cours,graphique,1,0,0
+FORM1,62358,PAGE-01,Notes manuscrites,graphique,0,1,0
+FORM1,62358,PAGE-01,Ordinateur portable,graphique,1,0,0
+FORM1,62358,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,62358,PAGE-01,Feuilles brouillon,graphique,1,1,1
+FORM1,62358,PAGE-01,Note maximale,imprime,10,4,0
+FORM1,62358,PAGE-01,Note pour valider,imprime,4,43,0
+FORM1,62358,PAGE-01,Prenom,manuscrit,TRISTAN,LUUUL,0
+FORM1,62358,PAGE-01,Nom,manuscrit,PAU,K,0
+FORM1,62358,PAGE-01,Validation signature,signature,1,0,0
+FORM1,62358,PAGE-01,Group,graphique,00A,G00D,0
+FORM1,62358,PAGE-01,STUDENT ID,graphique,62358,52347,0
+FORM1,62358,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,62358,EXAM,R2C1,imprime,1,1,1
+FORM1,62358,EXAM,R2C4,graphique,1,1,1
+FORM1,62358,EXAM,R3C1,imprime,2,2,1
+FORM1,62358,EXAM,R3C4,graphique,1,1,1
+FORM1,62358,EXAM,R4C1,imprime,3,3,1
+FORM1,62358,EXAM,R4C10,manuscrit,3.75,3.75,0
+FORM1,62358,EXAM,R4C11,manuscrit,2,2,1
+FORM1,62358,EXAM,R5C1,imprime,4,4,1
+FORM1,62358,EXAM,R5C3,graphique,1,1,1
+FORM1,62358,EXAM,R6C1,imprime,5,5,1
+FORM1,62358,EXAM,R6C5,graphique,1,1,1
+FORM1,62358,EXAM,R6C7,graphique,None,1,0
+FORM1,62358,EXAM,R6C8,graphique,None,1,0
+FORM1,62358,EXAM,R6C9,graphique,None,1,0
+FORM1,62358,EXAM,R7C1,imprime,6,6,1
+FORM1,62358,EXAM,R7C2,graphique,None,1,0
+FORM1,62358,EXAM,R7C6,graphique,None,1,0
+FORM1,62358,EXAM,R7C10,manuscrit,1.48,None,0
+FORM1,62358,EXAM,R7C11,manuscrit,1,None,0
+FORM1,62358,EXAM,R7C12,manuscrit,kHz,None,0
+FORM1,62358,EXAM,R8C1,imprime,7,7,1
+FORM1,62358,EXAM,R8C4,graphique,None,1,0
+FORM1,62358,EXAM,R8C5,graphique,1,None,0
+FORM1,62358,EXAM,R9C1,imprime,8,8,1
+FORM1,62358,EXAM,R9C4,graphique,1,None,0
+FORM1,62358,EXAM,R9C5,graphique,None,1,0
+FORM1,62358,EXAM,R10C1,imprime,9,None,0
+FORM1,62358,EXAM,R10C5,graphique,1,None,0
+FORM1,62369,PAGE-01,Module,imprime,IG.2405,IG.1103,0
+FORM1,62369,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,62369,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,62369,PAGE-01,Code,imprime,S1-01-G1,S1-01-G1,1
+FORM1,62369,PAGE-01,Notes de cours,graphique,1,0,0
+FORM1,62369,PAGE-01,Notes manuscrites,graphique,0,1,0
+FORM1,62369,PAGE-01,Ordinateur portable,graphique,1,0,0
+FORM1,62369,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,62369,PAGE-01,Feuilles brouillon,graphique,1,1,1
+FORM1,62369,PAGE-01,Note maximale,imprime,10,4,0
+FORM1,62369,PAGE-01,Note pour valider,imprime,4,81,0
+FORM1,62369,PAGE-01,Prenom,manuscrit,Amine,CNUL,0
+FORM1,62369,PAGE-01,Nom,manuscrit,MOUADNI,CS,0
+FORM1,62369,PAGE-01,Validation signature,signature,1,0,0
+FORM1,62369,PAGE-01,Group,graphique,78H,G67G,0
+FORM1,62369,PAGE-01,STUDENT ID,graphique,62369,52588,0
+FORM1,62369,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,62369,EXAM,R2C1,imprime,1,1,1
+FORM1,62369,EXAM,R2C2,graphique,1,1,1
+FORM1,62369,EXAM,R3C1,imprime,2,2,1
+FORM1,62369,EXAM,R3C2,graphique,1,None,0
+FORM1,62369,EXAM,R4C1,imprime,3,3,1
+FORM1,62369,EXAM,R4C2,graphique,1,None,0
+FORM1,62369,EXAM,R4C10,manuscrit,None,2,0
+FORM1,62369,EXAM,R4C11,manuscrit,None,1011,0
+FORM1,62369,EXAM,R5C1,imprime,4,4,1
+FORM1,62369,EXAM,R5C2,graphique,1,1,1
+FORM1,62369,EXAM,R6C1,imprime,5,5,1
+FORM1,62369,EXAM,R6C2,graphique,1,1,1
+FORM1,62369,EXAM,R7C1,imprime,6,6,1
+FORM1,62369,EXAM,R7C10,manuscrit,1,12,0
+FORM1,62369,EXAM,R7C11,manuscrit,1,1,1
+FORM1,62369,EXAM,R7C12,manuscrit,1,KHz,0
+FORM1,62369,EXAM,R8C1,imprime,7,7,1
+FORM1,62369,EXAM,R8C2,graphique,1,1,1
+FORM1,62369,EXAM,R9C1,imprime,8,8,1
+FORM1,62369,EXAM,R9C2,graphique,1,1,1
+FORM1,62369,EXAM,R10C1,imprime,9,9,1
+FORM1,62369,EXAM,R10C2,graphique,1,1,1
+FORM1,62370,PAGE-01,Module,imprime,IG.2405,IG.1103,0
+FORM1,62370,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,62370,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,62370,PAGE-01,Code,imprime,S1-01-G1,1831-91-01,0
+FORM1,62370,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,62370,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,62370,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,62370,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,62370,PAGE-01,Feuilles brouillon,graphique,1,10,0
+FORM1,62370,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,62370,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,62370,PAGE-01,Prenom,manuscrit,Manon,Yaj,0
+FORM1,62370,PAGE-01,Nom,manuscrit,George,GCQC,0
+FORM1,62370,PAGE-01,Validation signature,signature,1,0,0
+FORM1,62370,PAGE-01,Group,graphique,None,G59G,0
+FORM1,62370,PAGE-01,STUDENT ID,graphique,62370,69876,0
+FORM1,62370,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,62370,EXAM,R2C1,imprime,1,1,1
+FORM1,62370,EXAM,R2C4,graphique,x,1,0
+FORM1,62370,EXAM,R3C1,imprime,2,2,1
+FORM1,62370,EXAM,R3C2,graphique,x,1,0
+FORM1,62370,EXAM,R4C1,imprime,3,3,1
+FORM1,62370,EXAM,R4C10,manuscrit,0.26,0.26,0
+FORM1,62370,EXAM,R4C11,manuscrit,1,10011,0
+FORM1,62370,EXAM,R5C1,imprime,4,4,1
+FORM1,62370,EXAM,R5C3,graphique,x,1,0
+FORM1,62370,EXAM,R6C1,imprime,5,5,1
+FORM1,62370,EXAM,R6C2,graphique,x,None,0
+FORM1,62370,EXAM,R7C1,imprime,6,6,1
+FORM1,62370,EXAM,R7C10,manuscrit,3.08,None,0
+FORM1,62370,EXAM,R7C11,manuscrit,-2,None,0
+FORM1,62370,EXAM,R8C1,imprime,7,7,1
+FORM1,62370,EXAM,R8C2,graphique,None,1,0
+FORM1,62370,EXAM,R8C4,graphique,x,None,0
+FORM1,62370,EXAM,R9C1,imprime,8,8,1
+FORM1,62370,EXAM,R9C4,graphique,x,None,0
+FORM1,62370,EXAM,R10C1,imprime,9,9,1
+FORM1,62370,EXAM,R10C2,graphique,x,None,0
+FORM1,62380,PAGE-01,Module,imprime,IS.2703,None,0
+FORM1,62380,PAGE-01,Professor,imprime,GASTON,None,0
+FORM1,62380,PAGE-01,Date,imprime,2026-04-04 00:00:00,None,0
+FORM1,62380,PAGE-01,Code,imprime,S2-02-G2,None,0
+FORM1,62380,PAGE-01,Notes de cours,graphique,0,1,0
+FORM1,62380,PAGE-01,Notes manuscrites,graphique,1,0,0
+FORM1,62380,PAGE-01,Ordinateur portable,graphique,0,0,1
+FORM1,62380,PAGE-01,Calculatrice,graphique,1,0,0
+FORM1,62380,PAGE-01,Feuilles brouillon,graphique,2,39,0
+FORM1,62380,PAGE-01,Note maximale,imprime,20,10,0
+FORM1,62380,PAGE-01,Note pour valider,imprime,10,None,0
+FORM1,62380,PAGE-01,Prenom,manuscrit,Ethan,None,0
+FORM1,62380,PAGE-01,Nom,manuscrit,Assayag,S,0
+FORM1,62380,PAGE-01,Validation signature,signature,1,1,1
+FORM1,62380,PAGE-01,Group,graphique,G02A,G00A,0
+FORM1,62380,PAGE-01,STUDENT ID,graphique,62380,62380,1
+FORM1,62380,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,62380,EXAM,R2C1,imprime,1,1,1
+FORM1,62380,EXAM,R2C3,graphique,1,None,0
+FORM1,62380,EXAM,R2C5,graphique,None,1,0
+FORM1,62380,EXAM,R3C1,imprime,2,2,1
+FORM1,62380,EXAM,R3C4,graphique,1,None,0
+FORM1,62380,EXAM,R3C10,manuscrit,None,242,0
+FORM1,62380,EXAM,R3C11,manuscrit,None,1,0
+FORM1,62380,EXAM,R3C12,manuscrit,None,KHz,0
+FORM1,62380,EXAM,R4C1,imprime,3,3,1
+FORM1,62380,EXAM,R4C4,graphique,None,1,0
+FORM1,62380,EXAM,R4C10,manuscrit,3.75,None,0
+FORM1,62380,EXAM,R4C11,manuscrit,2,None,0
+FORM1,62380,EXAM,R5C1,imprime,4,4,1
+FORM1,62380,EXAM,R5C3,graphique,None,1,0
+FORM1,62380,EXAM,R5C5,graphique,1,None,0
+FORM1,62380,EXAM,R6C1,imprime,5,5,1
+FORM1,62380,EXAM,R6C4,graphique,None,1,0
+FORM1,62380,EXAM,R6C5,graphique,1,None,0
+FORM1,62380,EXAM,R7C1,imprime,6,6,1
+FORM1,62380,EXAM,R7C10,manuscrit,2.12,None,0
+FORM1,62380,EXAM,R7C11,manuscrit,1,None,0
+FORM1,62380,EXAM,R8C1,imprime,7,7,1
+FORM1,62380,EXAM,R8C4,graphique,1,None,0
+FORM1,62380,EXAM,R8C5,graphique,None,1,0
+FORM1,62380,EXAM,R9C1,imprime,8,8,1
+FORM1,62380,EXAM,R9C2,graphique,1,1,1
+FORM1,62380,EXAM,R10C1,imprime,9,9,1
+FORM1,62380,EXAM,R10C5,graphique,1,1,1
+FORM1,62401,PAGE-01,Module,imprime,IG.1103,IG.1103,1
+FORM1,62401,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,62401,PAGE-01,Date,imprime,2026-05-07 00:00:00,07/08/2026,0
+FORM1,62401,PAGE-01,Code,imprime,S1-01-G1,S1-01-61,0
+FORM1,62401,PAGE-01,Notes de cours,graphique,0,1,0
+FORM1,62401,PAGE-01,Notes manuscrites,graphique,1,0,0
+FORM1,62401,PAGE-01,Ordinateur portable,graphique,0,1,0
+FORM1,62401,PAGE-01,Calculatrice,graphique,1,0,0
+FORM1,62401,PAGE-01,Feuilles brouillon,graphique,2,10,0
+FORM1,62401,PAGE-01,Note maximale,imprime,20,10,0
+FORM1,62401,PAGE-01,Note pour valider,imprime,10,4,0
+FORM1,62401,PAGE-01,Prenom,manuscrit,OSCAR,Dslk,0
+FORM1,62401,PAGE-01,Nom,manuscrit,MILLET,LL,0
+FORM1,62401,PAGE-01,Validation signature,signature,1,0,0
+FORM1,62401,PAGE-01,Group,graphique,04J,G04D,0
+FORM1,62401,PAGE-01,STUDENT ID,graphique,62401,62401,1
+FORM1,62401,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,62401,EXAM,R2C1,imprime,1,1,1
+FORM1,62401,EXAM,R2C4,graphique,1,1,1
+FORM1,62401,EXAM,R3C1,imprime,2,2,1
+FORM1,62401,EXAM,R3C4,graphique,1,1,1
+FORM1,62401,EXAM,R4C1,imprime,3,3,1
+FORM1,62401,EXAM,R4C10,manuscrit,3.75,3715,0
+FORM1,62401,EXAM,R4C11,manuscrit,2,1,0
+FORM1,62401,EXAM,R5C1,imprime,4,4,1
+FORM1,62401,EXAM,R5C3,graphique,1,1,1
+FORM1,62401,EXAM,R6C1,imprime,5,5,1
+FORM1,62401,EXAM,R6C5,graphique,1,1,1
+FORM1,62401,EXAM,R7C1,imprime,6,6,1
+FORM1,62401,EXAM,R7C2,graphique,None,1,0
+FORM1,62401,EXAM,R7C10,manuscrit,1.48,None,0
+FORM1,62401,EXAM,R7C11,manuscrit,1,None,0
+FORM1,62401,EXAM,R7C12,manuscrit,KHz,None,0
+FORM1,62401,EXAM,R8C1,imprime,7,7,1
+FORM1,62401,EXAM,R8C5,graphique,1,1,1
+FORM1,62401,EXAM,R9C1,imprime,8,8,1
+FORM1,62401,EXAM,R9C2,graphique,1,1,1
+FORM1,62401,EXAM,R10C1,imprime,9,9,1
+FORM1,62401,EXAM,R10C5,graphique,1,1,1
+FORM1,62411,PAGE-01,Module,imprime,IG.2405,1G.1103,0
+FORM1,62411,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,62411,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,62411,PAGE-01,Code,imprime,S1-01-G1,S1,0
+FORM1,62411,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,62411,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,62411,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,62411,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,62411,PAGE-01,Feuilles brouillon,graphique,1,510,0
+FORM1,62411,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,62411,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,62411,PAGE-01,Prenom,manuscrit,ESTEBAN,Ts,0
+FORM1,62411,PAGE-01,Nom,manuscrit,GLAIRON-MONDET,FLAEDO,0
+FORM1,62411,PAGE-01,Validation signature,signature,1,0,0
+FORM1,62411,PAGE-01,Group,graphique,32D,G32H,0
+FORM1,62411,PAGE-01,STUDENT ID,graphique,62411,62411,1
+FORM1,62411,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,62411,EXAM,R2C1,imprime,1,1,1
+FORM1,62411,EXAM,R2C4,graphique,1,1,1
+FORM1,62411,EXAM,R3C1,imprime,2,2,1
+FORM1,62411,EXAM,R3C4,graphique,1,1,1
+FORM1,62411,EXAM,R4C1,imprime,3,3,1
+FORM1,62411,EXAM,R4C10,manuscrit,3.74,3.94,0
+FORM1,62411,EXAM,R4C11,manuscrit,2,1,0
+FORM1,62411,EXAM,R5C1,imprime,4,4,1
+FORM1,62411,EXAM,R5C4,graphique,1,1,1
+FORM1,62411,EXAM,R6C1,imprime,5,5,1
+FORM1,62411,EXAM,R6C5,graphique,1,1,1
+FORM1,62411,EXAM,R6C6,graphique,None,1,0
+FORM1,62411,EXAM,R7C1,imprime,6,6,1
+FORM1,62411,EXAM,R7C2,graphique,None,1,0
+FORM1,62411,EXAM,R7C10,manuscrit,2.12,None,0
+FORM1,62411,EXAM,R7C11,manuscrit,1,None,0
+FORM1,62411,EXAM,R8C1,imprime,7,7,1
+FORM1,62411,EXAM,R8C5,graphique,1,1,1
+FORM1,62411,EXAM,R9C1,imprime,8,8,1
+FORM1,62411,EXAM,R9C3,graphique,1,1,1
+FORM1,62411,EXAM,R10C1,imprime,9,9,1
+FORM1,62411,EXAM,R10C5,graphique,1,1,1
+FORM1,62427,PAGE-01,Module,imprime,IG.2405,IG.1103,0
+FORM1,62427,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,62427,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,62427,PAGE-01,Code,imprime,S1-01-G1,S1-01-G1,1
+FORM1,62427,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,62427,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,62427,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,62427,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,62427,PAGE-01,Feuilles brouillon,graphique,1,1,1
+FORM1,62427,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,62427,PAGE-01,Note pour valider,imprime,4,None,0
+FORM1,62427,PAGE-01,Prenom,manuscrit,Camille,Cailel,0
+FORM1,62427,PAGE-01,Nom,manuscrit,Chaptini,CYPTEV,0
+FORM1,62427,PAGE-01,Validation signature,signature,1,0,0
+FORM1,62427,PAGE-01,Group,graphique,10C,G18D,0
+FORM1,62427,PAGE-01,STUDENT ID,graphique,62427,62427,1
+FORM1,62427,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,62427,EXAM,R2C1,imprime,1,1,1
+FORM1,62427,EXAM,R2C4,graphique,1,1,1
+FORM1,62427,EXAM,R3C1,imprime,2,2,1
+FORM1,62427,EXAM,R3C4,graphique,1,1,1
+FORM1,62427,EXAM,R4C1,imprime,3,3,1
+FORM1,62427,EXAM,R4C10,manuscrit,3.75,3.45,0
+FORM1,62427,EXAM,R4C11,manuscrit,2,9,0
+FORM1,62427,EXAM,R5C1,imprime,4,4,1
+FORM1,62427,EXAM,R5C3,graphique,1,1,1
+FORM1,62427,EXAM,R6C1,imprime,5,5,1
+FORM1,62427,EXAM,R6C5,graphique,1,1,1
+FORM1,62427,EXAM,R6C7,graphique,None,1,0
+FORM1,62427,EXAM,R6C8,graphique,None,1,0
+FORM1,62427,EXAM,R6C9,graphique,None,1,0
+FORM1,62427,EXAM,R7C1,imprime,6,6,1
+FORM1,62427,EXAM,R7C3,graphique,1,1,1
+FORM1,62427,EXAM,R7C10,manuscrit,2,None,0
+FORM1,62427,EXAM,R7C11,manuscrit,3,None,0
+FORM1,62427,EXAM,R7C12,manuscrit,kHz,None,0
+FORM1,62427,EXAM,R8C1,imprime,7,7,1
+FORM1,62427,EXAM,R8C3,graphique,1,None,0
+FORM1,62427,EXAM,R8C4,graphique,None,1,0
+FORM1,62427,EXAM,R9C1,imprime,8,8,1
+FORM1,62427,EXAM,R9C4,graphique,1,1,1
+FORM1,62427,EXAM,R10C1,imprime,9,None,0
+FORM1,62427,EXAM,R10C4,graphique,1,None,0
+FORM1,62436,PAGE-01,Module,imprime,IG.2405,1G.1103,0
+FORM1,62436,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,62436,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,62436,PAGE-01,Code,imprime,S1-01-G1,5101-0,0
+FORM1,62436,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,62436,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,62436,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,62436,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,62436,PAGE-01,Feuilles brouillon,graphique,1,10,0
+FORM1,62436,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,62436,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,62436,PAGE-01,Prenom,manuscrit,Yann,Y,0
+FORM1,62436,PAGE-01,Nom,manuscrit,Roquigny--Martin,L,0
+FORM1,62436,PAGE-01,Validation signature,signature,1,0,0
+FORM1,62436,PAGE-01,Group,graphique,04J,G04D,0
+FORM1,62436,PAGE-01,STUDENT ID,graphique,62436,62436,1
+FORM1,62436,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,62436,EXAM,R2C1,imprime,1,1,1
+FORM1,62436,EXAM,R2C4,graphique,1,1,1
+FORM1,62436,EXAM,R3C1,imprime,2,2,1
+FORM1,62436,EXAM,R3C4,graphique,1,1,1
+FORM1,62436,EXAM,R4C1,imprime,3,3,1
+FORM1,62436,EXAM,R4C10,manuscrit,3.75,0.344,0
+FORM1,62436,EXAM,R4C11,manuscrit,2,21,0
+FORM1,62436,EXAM,R5C1,imprime,4,4,1
+FORM1,62436,EXAM,R5C3,graphique,1,None,0
+FORM1,62436,EXAM,R6C1,imprime,5,5,1
+FORM1,62436,EXAM,R6C5,graphique,1,None,0
+FORM1,62436,EXAM,R7C1,imprime,6,6,1
+FORM1,62436,EXAM,R7C2,graphique,None,1,0
+FORM1,62436,EXAM,R7C10,manuscrit,2.12,None,0
+FORM1,62436,EXAM,R7C11,manuscrit,1,None,0
+FORM1,62436,EXAM,R7C12,manuscrit,KHz,None,0
+FORM1,62436,EXAM,R8C1,imprime,7,7,1
+FORM1,62436,EXAM,R8C5,graphique,1,None,0
+FORM1,62436,EXAM,R9C1,imprime,8,8,1
+FORM1,62436,EXAM,R9C2,graphique,1,1,1
+FORM1,62436,EXAM,R10C1,imprime,9,9,1
+FORM1,62436,EXAM,R10C5,graphique,1,None,0
+FORM1,62440,PAGE-01,Module,imprime,IG.2405,IG.1103,0
+FORM1,62440,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,62440,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,62440,PAGE-01,Code,imprime,S1-01-G1,S1-01-G1,1
+FORM1,62440,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,62440,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,62440,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,62440,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,62440,PAGE-01,Feuilles brouillon,graphique,1,4,0
+FORM1,62440,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,62440,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,62440,PAGE-01,Prenom,manuscrit,ANWAR,Evll,0
+FORM1,62440,PAGE-01,Nom,manuscrit,AL BITAR,LRCTL,0
+FORM1,62440,PAGE-01,Validation signature,signature,1,0,0
+FORM1,62440,PAGE-01,Group,graphique,G03A,G03A,1
+FORM1,62440,PAGE-01,STUDENT ID,graphique,62440,62440,1
+FORM1,62440,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,62440,EXAM,R2C1,imprime,1,1,1
+FORM1,62440,EXAM,R2C4,graphique,1,1,1
+FORM1,62440,EXAM,R3C1,imprime,2,2,1
+FORM1,62440,EXAM,R3C3,graphique,1,1,1
+FORM1,62440,EXAM,R4C1,imprime,3,3,1
+FORM1,62440,EXAM,R4C10,manuscrit,6.5,6.5,1
+FORM1,62440,EXAM,R4C11,manuscrit,1,1011,0
+FORM1,62440,EXAM,R5C1,imprime,4,4,1
+FORM1,62440,EXAM,R5C3,graphique,1,1,1
+FORM1,62440,EXAM,R6C1,imprime,5,5,1
+FORM1,62440,EXAM,R6C3,graphique,1,1,1
+FORM1,62440,EXAM,R7C1,imprime,6,6,1
+FORM1,62440,EXAM,R7C10,manuscrit,1.6,None,0
+FORM1,62440,EXAM,R7C11,manuscrit,2,None,0
+FORM1,62440,EXAM,R8C1,imprime,7,7,1
+FORM1,62440,EXAM,R8C3,graphique,1,1,1
+FORM1,62440,EXAM,R9C1,imprime,8,8,1
+FORM1,62440,EXAM,R9C3,graphique,1,1,1
+FORM1,62440,EXAM,R10C1,imprime,9,9,1
+FORM1,62440,EXAM,R10C4,graphique,1,1,1
+FORM1,62445,PAGE-01,Module,imprime,IS.2703,1G.1103,0
+FORM1,62445,PAGE-01,Professor,imprime,GASTON,DING,0
+FORM1,62445,PAGE-01,Date,imprime,2026-04-04 00:00:00,07/05/2028,0
+FORM1,62445,PAGE-01,Code,imprime,S2-02-G2,S1-01-01,0
+FORM1,62445,PAGE-01,Notes de cours,graphique,0,1,0
+FORM1,62445,PAGE-01,Notes manuscrites,graphique,1,0,0
+FORM1,62445,PAGE-01,Ordinateur portable,graphique,0,1,0
+FORM1,62445,PAGE-01,Calculatrice,graphique,1,0,0
+FORM1,62445,PAGE-01,Feuilles brouillon,graphique,2,104,0
+FORM1,62445,PAGE-01,Note maximale,imprime,20,10,0
+FORM1,62445,PAGE-01,Note pour valider,imprime,10,4,0
+FORM1,62445,PAGE-01,Prenom,manuscrit,Maxime,Axle,0
+FORM1,62445,PAGE-01,Nom,manuscrit,ETIENNE,EGGELC,0
+FORM1,62445,PAGE-01,Validation signature,signature,1,0,0
+FORM1,62445,PAGE-01,Group,graphique,G02B,G02D,0
+FORM1,62445,PAGE-01,STUDENT ID,graphique,62445,62445,1
+FORM1,62445,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,62445,EXAM,R2C1,imprime,1,1,1
+FORM1,62445,EXAM,R2C4,graphique,1,1,1
+FORM1,62445,EXAM,R3C1,imprime,2,2,1
+FORM1,62445,EXAM,R3C4,graphique,1,1,1
+FORM1,62445,EXAM,R4C1,imprime,3,3,1
+FORM1,62445,EXAM,R4C10,manuscrit,3.75,345,0
+FORM1,62445,EXAM,R4C11,manuscrit,2,1,0
+FORM1,62445,EXAM,R5C1,imprime,4,4,1
+FORM1,62445,EXAM,R5C3,graphique,None,1,0
+FORM1,62445,EXAM,R5C4,graphique,1,None,0
+FORM1,62445,EXAM,R6C1,imprime,5,5,1
+FORM1,62445,EXAM,R6C5,graphique,1,1,1
+FORM1,62445,EXAM,R7C1,imprime,6,6,1
+FORM1,62445,EXAM,R7C10,manuscrit,1.48,4.48,0
+FORM1,62445,EXAM,R7C11,manuscrit,1,1,1
+FORM1,62445,EXAM,R7C12,manuscrit,KHz,KHz,1
+FORM1,62445,EXAM,R8C1,imprime,7,7,1
+FORM1,62445,EXAM,R8C2,graphique,None,1,0
+FORM1,62445,EXAM,R8C5,graphique,1,None,0
+FORM1,62445,EXAM,R8C6,graphique,None,1,0
+FORM1,62445,EXAM,R9C1,imprime,8,8,1
+FORM1,62445,EXAM,R9C2,graphique,1,None,0
+FORM1,62445,EXAM,R10C1,imprime,9,9,1
+FORM1,62445,EXAM,R10C2,graphique,None,1,0
+FORM1,62445,EXAM,R10C5,graphique,11,None,0
+FORM1,62445,EXAM,R11C1,imprime,10,10,1
+FORM1,62445,EXAM,R11C5,graphique,None,1,0
+FORM1,62445,EXAM,R12C1,imprime,11,None,0
+FORM1,62492,PAGE-01,Module,imprime,IG.2405,None,0
+FORM1,62492,PAGE-01,Professor,imprime,DING,None,0
+FORM1,62492,PAGE-01,Date,imprime,2025-11-17 00:00:00,None,0
+FORM1,62492,PAGE-01,Code,imprime,S1-01-G1,None,0
+FORM1,62492,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,62492,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,62492,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,62492,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,62492,PAGE-01,Feuilles brouillon,graphique,1,1,1
+FORM1,62492,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,62492,PAGE-01,Note pour valider,imprime,4,None,0
+FORM1,62492,PAGE-01,Prenom,manuscrit,None,None,1
+FORM1,62492,PAGE-01,Nom,manuscrit,None,C,0
+FORM1,62492,PAGE-01,Validation signature,signature,1,0,0
+FORM1,62492,PAGE-01,Group,graphique,None,G00A,0
+FORM1,62492,PAGE-01,STUDENT ID,graphique,None,0,0
+FORM1,62492,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,62492,EXAM,R2C1,imprime,1,1,1
+FORM1,62492,EXAM,R2C5,graphique,x,1,0
+FORM1,62492,EXAM,R3C1,imprime,2,2,1
+FORM1,62492,EXAM,R3C2,graphique,x,1,0
+FORM1,62492,EXAM,R4C1,imprime,3,3,1
+FORM1,62492,EXAM,R4C10,manuscrit,None,55,0
+FORM1,62492,EXAM,R5C1,imprime,4,4,1
+FORM1,62492,EXAM,R5C3,graphique,x,1,0
+FORM1,62492,EXAM,R6C1,imprime,5,5,1
+FORM1,62492,EXAM,R6C4,graphique,x,1,0
+FORM1,62492,EXAM,R7C1,imprime,6,6,1
+FORM1,62492,EXAM,R7C10,manuscrit,None,10,0
+FORM1,62492,EXAM,R7C12,manuscrit,None,KHz,0
+FORM1,62492,EXAM,R8C1,imprime,7,7,1
+FORM1,62492,EXAM,R8C2,graphique,x,1,0
+FORM1,62492,EXAM,R9C1,imprime,8,8,1
+FORM1,62492,EXAM,R9C5,graphique,x,1,0
+FORM1,62492,EXAM,R10C1,imprime,9,9,1
+FORM1,62492,EXAM,R10C2,graphique,x,1,0
+FORM1,62500,PAGE-01,Module,imprime,IG.2405,KG.1103,0
+FORM1,62500,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,62500,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,62500,PAGE-01,Code,imprime,S1-01-G1,S1-01-01,0
+FORM1,62500,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,62500,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,62500,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,62500,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,62500,PAGE-01,Feuilles brouillon,graphique,1,10,0
+FORM1,62500,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,62500,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,62500,PAGE-01,Prenom,manuscrit,Kevan,Oykloy,0
+FORM1,62500,PAGE-01,Nom,manuscrit,GEOFFROY,KYA,0
+FORM1,62500,PAGE-01,Validation signature,signature,1,0,0
+FORM1,62500,PAGE-01,Group,graphique,78H,G78D,0
+FORM1,62500,PAGE-01,STUDENT ID,graphique,62500,62500,1
+FORM1,62500,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,62500,EXAM,R2C1,imprime,1,1,1
+FORM1,62500,EXAM,R2C2,graphique,1,1,1
+FORM1,62500,EXAM,R3C1,imprime,2,2,1
+FORM1,62500,EXAM,R3C2,graphique,1,1,1
+FORM1,62500,EXAM,R4C1,imprime,3,3,1
+FORM1,62500,EXAM,R4C2,graphique,1,None,0
+FORM1,62500,EXAM,R4C10,manuscrit,None,7,0
+FORM1,62500,EXAM,R5C1,imprime,4,4,1
+FORM1,62500,EXAM,R5C2,graphique,1,1,1
+FORM1,62500,EXAM,R6C1,imprime,5,5,1
+FORM1,62500,EXAM,R6C2,graphique,1,1,1
+FORM1,62500,EXAM,R7C1,imprime,6,6,1
+FORM1,62500,EXAM,R7C10,manuscrit,1,1,1
+FORM1,62500,EXAM,R7C11,manuscrit,1,21,0
+FORM1,62500,EXAM,R7C12,manuscrit,1,KHz,0
+FORM1,62500,EXAM,R8C1,imprime,7,7,1
+FORM1,62500,EXAM,R8C2,graphique,1,1,1
+FORM1,62500,EXAM,R8C3,graphique,None,1,0
+FORM1,62500,EXAM,R9C1,imprime,8,8,1
+FORM1,62500,EXAM,R9C2,graphique,1,1,1
+FORM1,62500,EXAM,R10C1,imprime,9,9,1
+FORM1,62500,EXAM,R10C2,graphique,1,1,1
+FORM1,62578,PAGE-01,Module,imprime,IG.2405,1G.1103,0
+FORM1,62578,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,62578,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,62578,PAGE-01,Code,imprime,S1-01-G1,S1-01-G1,1
+FORM1,62578,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,62578,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,62578,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,62578,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,62578,PAGE-01,Feuilles brouillon,graphique,1,10,0
+FORM1,62578,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,62578,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,62578,PAGE-01,Prenom,manuscrit,None,Jeyyv,0
+FORM1,62578,PAGE-01,Nom,manuscrit,None,VRDT,0
+FORM1,62578,PAGE-01,Validation signature,signature,1,0,0
+FORM1,62578,PAGE-01,Group,graphique,None,G03H,0
+FORM1,62578,PAGE-01,STUDENT ID,graphique,None,62578,0
+FORM1,62578,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,62578,EXAM,R2C1,imprime,1,1,1
+FORM1,62578,EXAM,R2C4,graphique,1,1,1
+FORM1,62578,EXAM,R3C1,imprime,2,2,1
+FORM1,62578,EXAM,R3C3,graphique,1,1,1
+FORM1,62578,EXAM,R4C1,imprime,3,3,1
+FORM1,62578,EXAM,R4C10,manuscrit,3,3,1
+FORM1,62578,EXAM,R4C11,manuscrit,0,0,1
+FORM1,62578,EXAM,R4C12,manuscrit,Khz,XHz,0
+FORM1,62578,EXAM,R5C1,imprime,4,4,1
+FORM1,62578,EXAM,R5C3,graphique,1,1,1
+FORM1,62578,EXAM,R6C1,imprime,5,5,1
+FORM1,62578,EXAM,R6C4,graphique,1,1,1
+FORM1,62578,EXAM,R7C1,imprime,6,6,1
+FORM1,62578,EXAM,R7C10,manuscrit,1,7,0
+FORM1,62578,EXAM,R7C11,manuscrit,0,171,0
+FORM1,62578,EXAM,R7C12,manuscrit,None,KHz,0
+FORM1,62578,EXAM,R8C1,imprime,7,7,1
+FORM1,62578,EXAM,R8C3,graphique,1,1,1
+FORM1,62578,EXAM,R9C1,imprime,8,8,1
+FORM1,62578,EXAM,R9C3,graphique,1,1,1
+FORM1,62578,EXAM,R10C1,imprime,9,9,1
+FORM1,62578,EXAM,R10C2,graphique,1,None,0
+FORM1,62596,PAGE-01,Module,imprime,IG.2405,KG.1103,0
+FORM1,62596,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,62596,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,62596,PAGE-01,Code,imprime,S1-01-G1,S1-01-G1,1
+FORM1,62596,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,62596,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,62596,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,62596,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,62596,PAGE-01,Feuilles brouillon,graphique,1,10,0
+FORM1,62596,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,62596,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,62596,PAGE-01,Prenom,manuscrit,Karl,Jp,0
+FORM1,62596,PAGE-01,Nom,manuscrit,Bou Chaaya,C,0
+FORM1,62596,PAGE-01,Validation signature,signature,1,0,0
+FORM1,62596,PAGE-01,Group,graphique,None,G74H,0
+FORM1,62596,PAGE-01,STUDENT ID,graphique,62596,62596,1
+FORM1,62596,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,62596,EXAM,R2C1,imprime,1,1,1
+FORM1,62596,EXAM,R2C3,graphique,X,None,0
+FORM1,62596,EXAM,R3C1,imprime,2,2,1
+FORM1,62596,EXAM,R3C2,graphique,X,1,0
+FORM1,62596,EXAM,R4C1,imprime,3,3,1
+FORM1,62596,EXAM,R4C10,manuscrit,1.03,6241,0
+FORM1,62596,EXAM,R4C11,manuscrit,-2,1011,0
+FORM1,62596,EXAM,R5C1,imprime,4,4,1
+FORM1,62596,EXAM,R5C2,graphique,X,None,0
+FORM1,62596,EXAM,R6C1,imprime,5,5,1
+FORM1,62596,EXAM,R6C5,graphique,X,1,0
+FORM1,62596,EXAM,R7C1,imprime,6,6,1
+FORM1,62596,EXAM,R7C10,manuscrit,2.1,24,0
+FORM1,62596,EXAM,R7C11,manuscrit,-1,None,0
+FORM1,62596,EXAM,R7C12,manuscrit,None,KHz,0
+FORM1,62596,EXAM,R8C1,imprime,7,7,1
+FORM1,62596,EXAM,R8C3,graphique,X,None,0
+FORM1,62596,EXAM,R9C1,imprime,8,8,1
+FORM1,62596,EXAM,R9C5,graphique,X,1,0
+FORM1,62596,EXAM,R10C1,imprime,9,9,1
+FORM1,62596,EXAM,R10C3,graphique,X,1,0
+FORM1,62598,PAGE-01,Module,imprime,IG.2405,IG.1103,0
+FORM1,62598,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,62598,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,62598,PAGE-01,Code,imprime,S1-01-G1,S1-01-01,0
+FORM1,62598,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,62598,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,62598,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,62598,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,62598,PAGE-01,Feuilles brouillon,graphique,1,5401,0
+FORM1,62598,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,62598,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,62598,PAGE-01,Prenom,manuscrit,MARIA,Aria,0
+FORM1,62598,PAGE-01,Nom,manuscrit,FAZI,AZG,0
+FORM1,62598,PAGE-01,Validation signature,signature,1,0,0
+FORM1,62598,PAGE-01,Group,graphique,02F,G02B,0
+FORM1,62598,PAGE-01,STUDENT ID,graphique,62598,62598,1
+FORM1,62598,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,62598,EXAM,R2C1,imprime,1,1,1
+FORM1,62598,EXAM,R2C4,graphique,1,1,1
+FORM1,62598,EXAM,R3C1,imprime,2,2,1
+FORM1,62598,EXAM,R3C3,graphique,1,1,1
+FORM1,62598,EXAM,R4C1,imprime,3,3,1
+FORM1,62598,EXAM,R4C10,manuscrit,3,3,1
+FORM1,62598,EXAM,R4C11,manuscrit,2,121,0
+FORM1,62598,EXAM,R5C1,imprime,4,4,1
+FORM1,62598,EXAM,R5C2,graphique,None,1,0
+FORM1,62598,EXAM,R5C5,graphique,1,1,1
+FORM1,62598,EXAM,R6C1,imprime,5,5,1
+FORM1,62598,EXAM,R6C3,graphique,1,1,1
+FORM1,62598,EXAM,R6C7,graphique,None,1,0
+FORM1,62598,EXAM,R6C8,graphique,None,1,0
+FORM1,62598,EXAM,R6C9,graphique,None,1,0
+FORM1,62598,EXAM,R7C1,imprime,6,6,1
+FORM1,62598,EXAM,R7C2,graphique,None,1,0
+FORM1,62598,EXAM,R7C10,manuscrit,52,None,0
+FORM1,62598,EXAM,R7C12,manuscrit,KHz,None,0
+FORM1,62598,EXAM,R8C1,imprime,7,7,1
+FORM1,62598,EXAM,R8C2,graphique,1,None,0
+FORM1,62598,EXAM,R8C4,graphique,None,1,0
+FORM1,62598,EXAM,R9C1,imprime,8,8,1
+FORM1,62598,EXAM,R9C3,graphique,None,1,0
+FORM1,62598,EXAM,R9C4,graphique,1,None,0
+FORM1,62598,EXAM,R10C1,imprime,9,None,0
+FORM1,62598,EXAM,R10C3,graphique,1,None,0
+FORM1,62616,PAGE-01,Module,imprime,IG.1103,IG.1103,1
+FORM1,62616,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,62616,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,62616,PAGE-01,Code,imprime,S1-01-G1,S1-01-61,0
+FORM1,62616,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,62616,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,62616,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,62616,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,62616,PAGE-01,Feuilles brouillon,graphique,1,50,0
+FORM1,62616,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,62616,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,62616,PAGE-01,Prenom,manuscrit,Paule,Kacc,0
+FORM1,62616,PAGE-01,Nom,manuscrit,Rochette,RS,0
+FORM1,62616,PAGE-01,Validation signature,signature,1,0,0
+FORM1,62616,PAGE-01,Group,graphique,07 C,G07D,0
+FORM1,62616,PAGE-01,STUDENT ID,graphique,62616,62616,1
+FORM1,62616,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,62616,EXAM,R2C1,imprime,1,1,1
+FORM1,62616,EXAM,R2C3,graphique,1,1,1
+FORM1,62616,EXAM,R2C4,graphique,None,1,0
+FORM1,62616,EXAM,R3C1,imprime,2,2,1
+FORM1,62616,EXAM,R3C2,graphique,1,1,1
+FORM1,62616,EXAM,R3C3,graphique,None,1,0
+FORM1,62616,EXAM,R4C1,imprime,3,3,1
+FORM1,62616,EXAM,R4C10,manuscrit,1,1,1
+FORM1,62616,EXAM,R4C11,manuscrit,None,10,0
+FORM1,62616,EXAM,R4C12,manuscrit,W,U,0
+FORM1,62616,EXAM,R5C1,imprime,4,4,1
+FORM1,62616,EXAM,R5C4,graphique,1,1,1
+FORM1,62616,EXAM,R6C1,imprime,5,5,1
+FORM1,62616,EXAM,R6C2,graphique,1,1,1
+FORM1,62616,EXAM,R6C4,graphique,None,1,0
+FORM1,62616,EXAM,R7C1,imprime,6,6,1
+FORM1,62616,EXAM,R7C10,manuscrit,2.12,9.14,0
+FORM1,62616,EXAM,R7C11,manuscrit,-1,1111,0
+FORM1,62616,EXAM,R7C12,manuscrit,None,KHz,0
+FORM1,62616,EXAM,R8C1,imprime,7,7,1
+FORM1,62616,EXAM,R8C3,graphique,1,1,1
+FORM1,62616,EXAM,R9C1,imprime,8,8,1
+FORM1,62616,EXAM,R9C4,graphique,1,1,1
+FORM1,62616,EXAM,R10C1,imprime,9,9,1
+FORM1,62616,EXAM,R10C5,graphique,1,1,1
+FORM1,62645,PAGE-01,Module,imprime,IG.2405,1G31103,0
+FORM1,62645,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,62645,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,62645,PAGE-01,Code,imprime,S1-01-G1,81-01-61,0
+FORM1,62645,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,62645,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,62645,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,62645,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,62645,PAGE-01,Feuilles brouillon,graphique,1,101,0
+FORM1,62645,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,62645,PAGE-01,Note pour valider,imprime,4,None,0
+FORM1,62645,PAGE-01,Prenom,manuscrit,Raphael,Ppc,0
+FORM1,62645,PAGE-01,Nom,manuscrit,SLAMA,A,0
+FORM1,62645,PAGE-01,Validation signature,signature,1,0,0
+FORM1,62645,PAGE-01,Group,graphique,09C,G09D,0
+FORM1,62645,PAGE-01,STUDENT ID,graphique,62645,62645,1
+FORM1,62645,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,62645,EXAM,R2C1,imprime,1,1,1
+FORM1,62645,EXAM,R2C2,graphique,x,1,0
+FORM1,62645,EXAM,R3C1,imprime,2,2,1
+FORM1,62645,EXAM,R3C3,graphique,x,1,0
+FORM1,62645,EXAM,R4C1,imprime,3,3,1
+FORM1,62645,EXAM,R4C10,manuscrit,3,3,1
+FORM1,62645,EXAM,R4C11,manuscrit,-2,1001,0
+FORM1,62645,EXAM,R5C1,imprime,4,4,1
+FORM1,62645,EXAM,R5C5,graphique,x,None,0
+FORM1,62645,EXAM,R6C1,imprime,5,5,1
+FORM1,62645,EXAM,R6C6,graphique,x,None,0
+FORM1,62645,EXAM,R7C1,imprime,6,6,1
+FORM1,62645,EXAM,R7C10,manuscrit,3.6,36,0
+FORM1,62645,EXAM,R7C11,manuscrit,-2,11,0
+FORM1,62645,EXAM,R7C12,manuscrit,KHz,KHz,1
+FORM1,62645,EXAM,R8C1,imprime,7,7,1
+FORM1,62645,EXAM,R8C2,graphique,x,1,0
+FORM1,62645,EXAM,R9C1,imprime,8,8,1
+FORM1,62645,EXAM,R9C5,graphique,x,1,0
+FORM1,62645,EXAM,R10C1,imprime,9,9,1
+FORM1,62645,EXAM,R10C4,graphique,x,1,0
+FORM1,62747,PAGE-01,Module,imprime,IG.2405,1G.1103,0
+FORM1,62747,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,62747,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,62747,PAGE-01,Code,imprime,S1-01-G1,51-01-G1,0
+FORM1,62747,PAGE-01,Notes de cours,graphique,1,0,0
+FORM1,62747,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,62747,PAGE-01,Ordinateur portable,graphique,1,0,0
+FORM1,62747,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,62747,PAGE-01,Feuilles brouillon,graphique,1,0,0
+FORM1,62747,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,62747,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,62747,PAGE-01,Prenom,manuscrit,Dacheng,Ae,0
+FORM1,62747,PAGE-01,Nom,manuscrit,Ji,None,0
+FORM1,62747,PAGE-01,Validation signature,signature,1,0,0
+FORM1,62747,PAGE-01,Group,graphique,2B,G11A,0
+FORM1,62747,PAGE-01,STUDENT ID,graphique,62747,81687,0
+FORM1,62747,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,62747,EXAM,R2C1,imprime,1,1,1
+FORM1,62747,EXAM,R2C4,graphique,1,1,1
+FORM1,62747,EXAM,R3C1,imprime,2,2,1
+FORM1,62747,EXAM,R3C4,graphique,1,1,1
+FORM1,62747,EXAM,R4C1,imprime,3,3,1
+FORM1,62747,EXAM,R4C10,manuscrit,3.75,3.74,0
+FORM1,62747,EXAM,R4C11,manuscrit,2,111,0
+FORM1,62747,EXAM,R5C1,imprime,4,4,1
+FORM1,62747,EXAM,R5C4,graphique,1,1,1
+FORM1,62747,EXAM,R6C1,imprime,5,5,1
+FORM1,62747,EXAM,R6C4,graphique,1,1,1
+FORM1,62747,EXAM,R7C1,imprime,6,6,1
+FORM1,62747,EXAM,R7C10,manuscrit,2.12,2.17,0
+FORM1,62747,EXAM,R7C11,manuscrit,None,10,0
+FORM1,62747,EXAM,R7C12,manuscrit,khz,KHz,1
+FORM1,62747,EXAM,R8C1,imprime,7,7,1
+FORM1,62747,EXAM,R8C5,graphique,1,1,1
+FORM1,62747,EXAM,R9C1,imprime,8,8,1
+FORM1,62747,EXAM,R9C3,graphique,1,1,1
+FORM1,62747,EXAM,R10C1,imprime,9,9,1
+FORM1,62747,EXAM,R10C5,graphique,1,1,1
+FORM1,62766,PAGE-01,Module,imprime,IG.2405,1G.1103,0
+FORM1,62766,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,62766,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,62766,PAGE-01,Code,imprime,S1-01-G1,S1,0
+FORM1,62766,PAGE-01,Notes de cours,graphique,1,0,0
+FORM1,62766,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,62766,PAGE-01,Ordinateur portable,graphique,1,0,0
+FORM1,62766,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,62766,PAGE-01,Feuilles brouillon,graphique,1,0,0
+FORM1,62766,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,62766,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,62766,PAGE-01,Prenom,manuscrit,None,Ee,0
+FORM1,62766,PAGE-01,Nom,manuscrit,None,None,1
+FORM1,62766,PAGE-01,Validation signature,signature,1,0,0
+FORM1,62766,PAGE-01,Group,graphique,None,G11A,0
+FORM1,62766,PAGE-01,STUDENT ID,graphique,None,51888,0
+FORM1,62766,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,62766,EXAM,R2C1,imprime,1,1,1
+FORM1,62766,EXAM,R2C4,graphique,x,1,0
+FORM1,62766,EXAM,R3C1,imprime,2,2,1
+FORM1,62766,EXAM,R3C4,graphique,x,1,0
+FORM1,62766,EXAM,R4C1,imprime,3,3,1
+FORM1,62766,EXAM,R4C10,manuscrit,3.75,3.75,1
+FORM1,62766,EXAM,R4C11,manuscrit,2,None,0
+FORM1,62766,EXAM,R5C1,imprime,4,4,1
+FORM1,62766,EXAM,R5C4,graphique,x,1,0
+FORM1,62766,EXAM,R6C1,imprime,5,5,1
+FORM1,62766,EXAM,R6C5,graphique,x,1,0
+FORM1,62766,EXAM,R7C1,imprime,6,6,1
+FORM1,62766,EXAM,R7C10,manuscrit,2.12,2.12,1
+FORM1,62766,EXAM,R7C11,manuscrit,1,None,0
+FORM1,62766,EXAM,R7C12,manuscrit,KHz,KHz,1
+FORM1,62766,EXAM,R8C1,imprime,7,7,1
+FORM1,62766,EXAM,R8C5,graphique,x,1,0
+FORM1,62766,EXAM,R9C1,imprime,8,8,1
+FORM1,62766,EXAM,R9C2,graphique,x,1,0
+FORM1,62766,EXAM,R10C1,imprime,9,9,1
+FORM1,62766,EXAM,R10C5,graphique,x,1,0
+FORM1,63272,PAGE-01,Module,imprime,IG.2405,IG.1103,0
+FORM1,63272,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,63272,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,63272,PAGE-01,Code,imprime,S1-01-G1,S1-01-01,0
+FORM1,63272,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,63272,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,63272,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,63272,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,63272,PAGE-01,Feuilles brouillon,graphique,1,10,0
+FORM1,63272,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,63272,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,63272,PAGE-01,Prenom,manuscrit,GUOKUANG,F,0
+FORM1,63272,PAGE-01,Nom,manuscrit,DENG,None,0
+FORM1,63272,PAGE-01,Validation signature,signature,1,0,0
+FORM1,63272,PAGE-01,Group,graphique,G02B,G21A,0
+FORM1,63272,PAGE-01,STUDENT ID,graphique,63272,62575,0
+FORM1,63272,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,63272,EXAM,R2C1,imprime,1,1,1
+FORM1,63272,EXAM,R2C4,graphique,1,1,1
+FORM1,63272,EXAM,R3C1,imprime,2,2,1
+FORM1,63272,EXAM,R3C4,graphique,1,None,0
+FORM1,63272,EXAM,R4C1,imprime,3,3,1
+FORM1,63272,EXAM,R4C10,manuscrit,3.75,3.71,0
+FORM1,63272,EXAM,R4C11,manuscrit,2,2,1
+FORM1,63272,EXAM,R5C1,imprime,4,4,1
+FORM1,63272,EXAM,R5C3,graphique,None,1,0
+FORM1,63272,EXAM,R5C4,graphique,1,None,0
+FORM1,63272,EXAM,R6C1,imprime,5,5,1
+FORM1,63272,EXAM,R6C5,graphique,1,1,1
+FORM1,63272,EXAM,R7C1,imprime,6,6,1
+FORM1,63272,EXAM,R7C10,manuscrit,2.1,2.1,1
+FORM1,63272,EXAM,R7C11,manuscrit,1,None,0
+FORM1,63272,EXAM,R7C12,manuscrit,None,KHz,0
+FORM1,63272,EXAM,R8C1,imprime,7,7,1
+FORM1,63272,EXAM,R8C5,graphique,1,1,1
+FORM1,63272,EXAM,R9C1,imprime,8,8,1
+FORM1,63272,EXAM,R9C2,graphique,1,1,1
+FORM1,63272,EXAM,R10C1,imprime,9,9,1
+FORM1,63272,EXAM,R10C5,graphique,1,None,0
+FORM1,63273,PAGE-01,Module,imprime,IG.2405,None,0
+FORM1,63273,PAGE-01,Professor,imprime,DING,None,0
+FORM1,63273,PAGE-01,Date,imprime,2025-11-17 00:00:00,None,0
+FORM1,63273,PAGE-01,Code,imprime,S1-01-G1,None,0
+FORM1,63273,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,63273,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,63273,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,63273,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,63273,PAGE-01,Feuilles brouillon,graphique,1,4,0
+FORM1,63273,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,63273,PAGE-01,Note pour valider,imprime,4,0,0
+FORM1,63273,PAGE-01,Prenom,manuscrit,Lianghong,None,0
+FORM1,63273,PAGE-01,Nom,manuscrit,LI,None,0
+FORM1,63273,PAGE-01,Validation signature,signature,1,0,0
+FORM1,63273,PAGE-01,Group,graphique,G02B,G00A,0
+FORM1,63273,PAGE-01,STUDENT ID,graphique,63273,0,0
+FORM1,63273,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,63273,EXAM,R2C1,imprime,1,1,1
+FORM1,63273,EXAM,R2C3,graphique,None,1,0
+FORM1,63273,EXAM,R2C4,graphique,1,None,0
+FORM1,63273,EXAM,R2C5,graphique,None,1,0
+FORM1,63273,EXAM,R2C8,graphique,None,1,0
+FORM1,63273,EXAM,R3C1,imprime,2,2,1
+FORM1,63273,EXAM,R3C2,graphique,None,1,0
+FORM1,63273,EXAM,R3C4,graphique,1,None,0
+FORM1,63273,EXAM,R3C5,graphique,None,1,0
+FORM1,63273,EXAM,R4C1,imprime,3,3,1
+FORM1,63273,EXAM,R4C5,graphique,None,1,0
+FORM1,63273,EXAM,R4C7,graphique,None,1,0
+FORM1,63273,EXAM,R4C8,graphique,None,1,0
+FORM1,63273,EXAM,R4C9,graphique,None,1,0
+FORM1,63273,EXAM,R4C10,manuscrit,3.75,None,0
+FORM1,63273,EXAM,R4C11,manuscrit,2,None,0
+FORM1,63273,EXAM,R5C1,imprime,4,4,1
+FORM1,63273,EXAM,R5C2,graphique,None,1,0
+FORM1,63273,EXAM,R5C4,graphique,1,None,0
+FORM1,63273,EXAM,R6C1,imprime,5,5,1
+FORM1,63273,EXAM,R6C5,graphique,1,1,1
+FORM1,63273,EXAM,R7C1,imprime,6,None,0
+FORM1,63273,EXAM,R7C10,manuscrit,2.1,None,0
+FORM1,63273,EXAM,R7C11,manuscrit,1,None,0
+FORM1,63273,EXAM,R8C1,imprime,7,None,0
+FORM1,63273,EXAM,R8C5,graphique,1,None,0
+FORM1,63273,EXAM,R9C1,imprime,8,None,0
+FORM1,63273,EXAM,R9C2,graphique,1,None,0
+FORM1,63273,EXAM,R10C1,imprime,9,None,0
+FORM1,63273,EXAM,R10C5,graphique,1,None,0
+FORM1,63694,PAGE-01,Module,imprime,IG.2405,IG.1103,0
+FORM1,63694,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,63694,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,63694,PAGE-01,Code,imprime,S1-01-G1,S1-01-G1,1
+FORM1,63694,PAGE-01,Notes de cours,graphique,1.0,1,1
+FORM1,63694,PAGE-01,Notes manuscrites,graphique,0.0,0,1
+FORM1,63694,PAGE-01,Ordinateur portable,graphique,1.0,1,1
+FORM1,63694,PAGE-01,Calculatrice,graphique,0.0,0,1
+FORM1,63694,PAGE-01,Feuilles brouillon,graphique,1.0,10,0
+FORM1,63694,PAGE-01,Note maximale,imprime,10.0,10,1
+FORM1,63694,PAGE-01,Note pour valider,imprime,4.0,4,1
+FORM1,63694,PAGE-01,Prenom,manuscrit,JACK,Tac,0
+FORM1,63694,PAGE-01,Nom,manuscrit,BAUER,BAJER,0
+FORM1,63694,PAGE-01,Validation signature,signature,1.0,0,0
+FORM1,63694,PAGE-01,Group,graphique,G33C,G33G,0
+FORM1,63694,PAGE-01,STUDENT ID,graphique,63694.0,63694,1
+FORM1,63694,PAGE-01,Validation cryptogramme,graphique,1.0,0,0
+FORM1,63694,EXAM,R2C1,imprime,1.0,1,1
+FORM1,63694,EXAM,R2C2,graphique,1.0,1,1
+FORM1,63694,EXAM,R3C1,imprime,2.0,2,1
+FORM1,63694,EXAM,R3C2,graphique,1.0,1,1
+FORM1,63694,EXAM,R4C1,imprime,3.0,3,1
+FORM1,63694,EXAM,R4C10,manuscrit,3.0,3,1
+FORM1,63694,EXAM,R4C11,manuscrit,0.0,131,0
+FORM1,63694,EXAM,R5C1,imprime,4.0,4,1
+FORM1,63694,EXAM,R5C2,graphique,1.0,1,1
+FORM1,63694,EXAM,R6C1,imprime,5.0,5,1
+FORM1,63694,EXAM,R6C2,graphique,1.0,1,1
+FORM1,63694,EXAM,R7C1,imprime,6.0,6,1
+FORM1,63694,EXAM,R7C2,graphique,None,1,0
+FORM1,63694,EXAM,R7C3,graphique,None,1,0
+FORM1,63694,EXAM,R7C10,manuscrit,3.1,None,0
+FORM1,63694,EXAM,R7C11,manuscrit,0.0,None,0
+FORM1,63694,EXAM,R8C1,imprime,7.0,7,1
+FORM1,63694,EXAM,R8C2,graphique,1.0,1,1
+FORM1,63694,EXAM,R8C3,graphique,None,1,0
+FORM1,63694,EXAM,R9C1,imprime,8.0,8,1
+FORM1,63694,EXAM,R9C2,graphique,1.0,1,1
+FORM1,63694,EXAM,R10C1,imprime,9.0,9,1
+FORM1,63694,EXAM,R10C2,graphique,1.0,1,1
+FORM1,63807,PAGE-01,Module,imprime,IG.2405,None,0
+FORM1,63807,PAGE-01,Professor,imprime,DING,None,0
+FORM1,63807,PAGE-01,Date,imprime,2025-11-17 00:00:00,None,0
+FORM1,63807,PAGE-01,Code,imprime,S1-01-G1,None,0
+FORM1,63807,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,63807,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,63807,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,63807,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,63807,PAGE-01,Feuilles brouillon,graphique,1,661,0
+FORM1,63807,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,63807,PAGE-01,Note pour valider,imprime,4,111,0
+FORM1,63807,PAGE-01,Prenom,manuscrit,Wasil,None,0
+FORM1,63807,PAGE-01,Nom,manuscrit,Rhematally,None,0
+FORM1,63807,PAGE-01,Validation signature,signature,1,0,0
+FORM1,63807,PAGE-01,Group,graphique,78H,G78A,0
+FORM1,63807,PAGE-01,STUDENT ID,graphique,63807,63807,1
+FORM1,63807,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,63807,EXAM,R2C1,imprime,1,1,1
+FORM1,63807,EXAM,R2C2,graphique,1,1,1
+FORM1,63807,EXAM,R3C1,imprime,2,2,1
+FORM1,63807,EXAM,R3C4,graphique,1,1,1
+FORM1,63807,EXAM,R4C1,imprime,3,3,1
+FORM1,63807,EXAM,R4C10,manuscrit,3,3,1
+FORM1,63807,EXAM,R4C11,manuscrit,-3,1111,0
+FORM1,63807,EXAM,R5C1,imprime,4,4,1
+FORM1,63807,EXAM,R5C3,graphique,1,1,1
+FORM1,63807,EXAM,R6C1,imprime,5,5,1
+FORM1,63807,EXAM,R6C4,graphique,1,1,1
+FORM1,63807,EXAM,R7C1,imprime,6,6,1
+FORM1,63807,EXAM,R7C10,manuscrit,3,3,1
+FORM1,63807,EXAM,R7C11,manuscrit,1,111,0
+FORM1,63807,EXAM,R7C12,manuscrit,None,KHz,0
+FORM1,63807,EXAM,R8C1,imprime,7,7,1
+FORM1,63807,EXAM,R8C4,graphique,1,1,1
+FORM1,63807,EXAM,R9C1,imprime,8,8,1
+FORM1,63807,EXAM,R9C3,graphique,1,1,1
+FORM1,63807,EXAM,R10C1,imprime,9,9,1
+FORM1,63807,EXAM,R10C3,graphique,1,1,1
+FORM1,63836,PAGE-01,Module,imprime,IS.2703,1G.1103,0
+FORM1,63836,PAGE-01,Professor,imprime,GASTON,DING,0
+FORM1,63836,PAGE-01,Date,imprime,2026-04-04 00:00:00,07/05/2026,0
+FORM1,63836,PAGE-01,Code,imprime,S2-02-G2,51-01-G1,0
+FORM1,63836,PAGE-01,Notes de cours,graphique,0,1,0
+FORM1,63836,PAGE-01,Notes manuscrites,graphique,1,0,0
+FORM1,63836,PAGE-01,Ordinateur portable,graphique,0,1,0
+FORM1,63836,PAGE-01,Calculatrice,graphique,1,0,0
+FORM1,63836,PAGE-01,Feuilles brouillon,graphique,2,10,0
+FORM1,63836,PAGE-01,Note maximale,imprime,20,10,0
+FORM1,63836,PAGE-01,Note pour valider,imprime,10,4,0
+FORM1,63836,PAGE-01,Prenom,manuscrit,wissal,Ae,0
+FORM1,63836,PAGE-01,Nom,manuscrit,ramdani,None,0
+FORM1,63836,PAGE-01,Validation signature,signature,1,0,0
+FORM1,63836,PAGE-01,Group,graphique,h19,G09A,0
+FORM1,63836,PAGE-01,STUDENT ID,graphique,63836,62826,0
+FORM1,63836,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,63836,EXAM,R2C1,imprime,1,1,1
+FORM1,63836,EXAM,R2C2,graphique,x,None,0
+FORM1,63836,EXAM,R2C4,graphique,None,1,0
+FORM1,63836,EXAM,R3C1,imprime,2,2,1
+FORM1,63836,EXAM,R3C2,graphique,x,1,0
+FORM1,63836,EXAM,R3C4,graphique,None,1,0
+FORM1,63836,EXAM,R4C1,imprime,3,3,1
+FORM1,63836,EXAM,R4C10,manuscrit,374,344,0
+FORM1,63836,EXAM,R4C11,manuscrit,None,1,0
+FORM1,63836,EXAM,R5C1,imprime,4,4,1
+FORM1,63836,EXAM,R5C4,graphique,x,1,0
+FORM1,63836,EXAM,R6C1,imprime,5,5,1
+FORM1,63836,EXAM,R6C2,graphique,x,1,0
+FORM1,63836,EXAM,R6C5,graphique,None,1,0
+FORM1,63836,EXAM,R7C1,imprime,6,6,1
+FORM1,63836,EXAM,R7C2,graphique,None,1,0
+FORM1,63836,EXAM,R7C10,manuscrit,21.2,None,0
+FORM1,63836,EXAM,R8C1,imprime,7,7,1
+FORM1,63836,EXAM,R8C5,graphique,x,1,0
+FORM1,63836,EXAM,R9C1,imprime,8,8,1
+FORM1,63836,EXAM,R9C3,graphique,x,1,0
+FORM1,63836,EXAM,R10C1,imprime,9,9,1
+FORM1,63836,EXAM,R10C3,graphique,x,1,0
+FORM1,63836,EXAM,R11C1,imprime,10,None,0
+FORM1,63836,EXAM,R12C1,imprime,11,None,0
+FORM1,63838,PAGE-01,Module,imprime,IG.2405,1G.1103,0
+FORM1,63838,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,63838,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,63838,PAGE-01,Code,imprime,S1-01-G1,S1-01-G1,1
+FORM1,63838,PAGE-01,Notes de cours,graphique,1,0,0
+FORM1,63838,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,63838,PAGE-01,Ordinateur portable,graphique,1,0,0
+FORM1,63838,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,63838,PAGE-01,Feuilles brouillon,graphique,1,0,0
+FORM1,63838,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,63838,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,63838,PAGE-01,Prenom,manuscrit,khawla,E,0
+FORM1,63838,PAGE-01,Nom,manuscrit,El ouannass,None,0
+FORM1,63838,PAGE-01,Validation signature,signature,1,0,0
+FORM1,63838,PAGE-01,Group,graphique,2,G00A,0
+FORM1,63838,PAGE-01,STUDENT ID,graphique,63838,52727,0
+FORM1,63838,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,63838,EXAM,R2C1,imprime,1,1,1
+FORM1,63838,EXAM,R2C3,graphique,B,1,0
+FORM1,63838,EXAM,R3C1,imprime,2,2,1
+FORM1,63838,EXAM,R3C3,graphique,B,1,0
+FORM1,63838,EXAM,R4C1,imprime,3,3,1
+FORM1,63838,EXAM,R4C2,graphique,None,1,0
+FORM1,63838,EXAM,R4C10,manuscrit,1,None,0
+FORM1,63838,EXAM,R4C11,manuscrit,1,None,0
+FORM1,63838,EXAM,R4C12,manuscrit,dBm,None,0
+FORM1,63838,EXAM,R5C1,imprime,4,4,1
+FORM1,63838,EXAM,R5C3,graphique,B,1,0
+FORM1,63838,EXAM,R6C1,imprime,5,5,1
+FORM1,63838,EXAM,R6C3,graphique,B,1,0
+FORM1,63838,EXAM,R7C1,imprime,6,6,1
+FORM1,63838,EXAM,R7C10,manuscrit,1,0,0
+FORM1,63838,EXAM,R7C11,manuscrit,1,2,0
+FORM1,63838,EXAM,R7C12,manuscrit,KHz,KHz,1
+FORM1,63838,EXAM,R8C1,imprime,7,7,1
+FORM1,63838,EXAM,R8C2,graphique,None,1,0
+FORM1,63838,EXAM,R8C3,graphique,B,None,0
+FORM1,63838,EXAM,R8C4,graphique,None,1,0
+FORM1,63838,EXAM,R9C1,imprime,8,8,1
+FORM1,63838,EXAM,R9C3,graphique,B,1,0
+FORM1,63838,EXAM,R10C1,imprime,9,9,1
+FORM1,63838,EXAM,R10C3,graphique,B,None,0
+FORM1,63887,PAGE-01,Module,imprime,IG.2405,IG.1103,0
+FORM1,63887,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,63887,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,63887,PAGE-01,Code,imprime,S1-01-G1,S1-01-01,0
+FORM1,63887,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,63887,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,63887,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,63887,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,63887,PAGE-01,Feuilles brouillon,graphique,1,50,0
+FORM1,63887,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,63887,PAGE-01,Note pour valider,imprime,4,1,0
+FORM1,63887,PAGE-01,Prenom,manuscrit,ANGE  NOLWEN,L,0
+FORM1,63887,PAGE-01,Nom,manuscrit,DJUISSI KENMOE,JC,0
+FORM1,63887,PAGE-01,Validation signature,signature,1,0,0
+FORM1,63887,PAGE-01,Group,graphique,66B,G66D,0
+FORM1,63887,PAGE-01,STUDENT ID,graphique,63887,63887,1
+FORM1,63887,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,63887,EXAM,R2C1,imprime,1,1,1
+FORM1,63887,EXAM,R2C4,graphique,1,1,1
+FORM1,63887,EXAM,R3C1,imprime,2,2,1
+FORM1,63887,EXAM,R3C4,graphique,1,1,1
+FORM1,63887,EXAM,R4C1,imprime,3,3,1
+FORM1,63887,EXAM,R4C10,manuscrit,3.75,3.35,0
+FORM1,63887,EXAM,R4C11,manuscrit,2,1,0
+FORM1,63887,EXAM,R5C1,imprime,4,4,1
+FORM1,63887,EXAM,R5C4,graphique,1,1,1
+FORM1,63887,EXAM,R6C1,imprime,5,5,1
+FORM1,63887,EXAM,R6C5,graphique,1,1,1
+FORM1,63887,EXAM,R7C1,imprime,6,6,1
+FORM1,63887,EXAM,R7C2,graphique,None,1,0
+FORM1,63887,EXAM,R7C10,manuscrit,14.8,None,0
+FORM1,63887,EXAM,R7C11,manuscrit,0,None,0
+FORM1,63887,EXAM,R7C12,manuscrit,KHz,None,0
+FORM1,63887,EXAM,R8C1,imprime,7,7,1
+FORM1,63887,EXAM,R8C5,graphique,1,1,1
+FORM1,63887,EXAM,R9C1,imprime,8,8,1
+FORM1,63887,EXAM,R9C2,graphique,1,1,1
+FORM1,63887,EXAM,R10C1,imprime,9,9,1
+FORM1,63887,EXAM,R10C5,graphique,1,None,0
+FORM1,64413,PAGE-01,Module,imprime,IG.1103,1G.1103,0
+FORM1,64413,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,64413,PAGE-01,Date,imprime,2026-05-07 00:00:00,07/05/2026,0
+FORM1,64413,PAGE-01,Code,imprime,S1-01-G1,S1-01-G1,1
+FORM1,64413,PAGE-01,Notes de cours,graphique,0,1,0
+FORM1,64413,PAGE-01,Notes manuscrites,graphique,1,0,0
+FORM1,64413,PAGE-01,Ordinateur portable,graphique,0,1,0
+FORM1,64413,PAGE-01,Calculatrice,graphique,1,0,0
+FORM1,64413,PAGE-01,Feuilles brouillon,graphique,2,10,0
+FORM1,64413,PAGE-01,Note maximale,imprime,20,10,0
+FORM1,64413,PAGE-01,Note pour valider,imprime,10,4,0
+FORM1,64413,PAGE-01,Prenom,manuscrit,DIANE,Dae,0
+FORM1,64413,PAGE-01,Nom,manuscrit,CHABRERIE,CQABRER,0
+FORM1,64413,PAGE-01,Validation signature,signature,1,0,0
+FORM1,64413,PAGE-01,Group,graphique,G06E,G06H,0
+FORM1,64413,PAGE-01,STUDENT ID,graphique,64413,64413,1
+FORM1,64413,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,64413,EXAM,R2C1,imprime,1,1,1
+FORM1,64413,EXAM,R2C4,graphique,None,1,0
+FORM1,64413,EXAM,R3C1,imprime,2,2,1
+FORM1,64413,EXAM,R3C2,graphique,None,1,0
+FORM1,64413,EXAM,R4C1,imprime,3,3,1
+FORM1,64413,EXAM,R4C10,manuscrit,None,1.15,0
+FORM1,64413,EXAM,R4C11,manuscrit,None,131,0
+FORM1,64413,EXAM,R5C1,imprime,4,4,1
+FORM1,64413,EXAM,R5C3,graphique,None,1,0
+FORM1,64413,EXAM,R6C1,imprime,5,5,1
+FORM1,64413,EXAM,R6C6,graphique,None,1,0
+FORM1,64413,EXAM,R7C1,imprime,6,6,1
+FORM1,64413,EXAM,R7C10,manuscrit,None,121,0
+FORM1,64413,EXAM,R7C11,manuscrit,None,121,0
+FORM1,64413,EXAM,R7C12,manuscrit,None,KHz,0
+FORM1,64413,EXAM,R8C1,imprime,7,7,1
+FORM1,64413,EXAM,R8C5,graphique,None,1,0
+FORM1,64413,EXAM,R9C1,imprime,8,8,1
+FORM1,64413,EXAM,R9C3,graphique,None,1,0
+FORM1,64413,EXAM,R10C1,imprime,9,9,1
+FORM1,64413,EXAM,R10C4,graphique,None,1,0
+FORM1,64413,EXAM,R11C1,imprime,10,None,0
+FORM1,64413,EXAM,R12C1,imprime,11,None,0
+FORM1,65442,PAGE-01,Module,imprime,IG.2405,1G.1103,0
+FORM1,65442,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,65442,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,65442,PAGE-01,Code,imprime,S1-01-G1,S1-01-G1,1
+FORM1,65442,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,65442,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,65442,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,65442,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,65442,PAGE-01,Feuilles brouillon,graphique,1,50,0
+FORM1,65442,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,65442,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,65442,PAGE-01,Prenom,manuscrit,Pierre,Lpfv,0
+FORM1,65442,PAGE-01,Nom,manuscrit,Roule,VCL,0
+FORM1,65442,PAGE-01,Validation signature,signature,1,0,0
+FORM1,65442,PAGE-01,Group,graphique,03A,G03G,0
+FORM1,65442,PAGE-01,STUDENT ID,graphique,65442,65442,1
+FORM1,65442,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,65442,EXAM,R2C1,imprime,1,1,1
+FORM1,65442,EXAM,R2C4,graphique,1,1,1
+FORM1,65442,EXAM,R3C1,imprime,2,2,1
+FORM1,65442,EXAM,R3C4,graphique,1,1,1
+FORM1,65442,EXAM,R4C1,imprime,3,3,1
+FORM1,65442,EXAM,R4C10,manuscrit,3.75,315,0
+FORM1,65442,EXAM,R4C11,manuscrit,2,1101,0
+FORM1,65442,EXAM,R5C1,imprime,4,4,1
+FORM1,65442,EXAM,R5C4,graphique,1,1,1
+FORM1,65442,EXAM,R6C1,imprime,5,5,1
+FORM1,65442,EXAM,R6C5,graphique,1,1,1
+FORM1,65442,EXAM,R7C1,imprime,6,6,1
+FORM1,65442,EXAM,R7C10,manuscrit,2.12,212,0
+FORM1,65442,EXAM,R7C11,manuscrit,1,None,0
+FORM1,65442,EXAM,R7C12,manuscrit,None,KHz,0
+FORM1,65442,EXAM,R8C1,imprime,7,7,1
+FORM1,65442,EXAM,R8C5,graphique,D,1,0
+FORM1,65442,EXAM,R9C1,imprime,8,8,1
+FORM1,65442,EXAM,R9C3,graphique,B,1,0
+FORM1,65442,EXAM,R10C1,imprime,9,9,1
+FORM1,65442,EXAM,R10C4,graphique,C,1,0
+FORM1,75012,PAGE-01,Module,imprime,IG.2405,IG.1103,0
+FORM1,75012,PAGE-01,Professor,imprime,DING,DING,1
+FORM1,75012,PAGE-01,Date,imprime,2025-11-17 00:00:00,07/05/2026,0
+FORM1,75012,PAGE-01,Code,imprime,S1-01-G1,S1-01-01,0
+FORM1,75012,PAGE-01,Notes de cours,graphique,1,1,1
+FORM1,75012,PAGE-01,Notes manuscrites,graphique,0,0,1
+FORM1,75012,PAGE-01,Ordinateur portable,graphique,1,1,1
+FORM1,75012,PAGE-01,Calculatrice,graphique,0,0,1
+FORM1,75012,PAGE-01,Feuilles brouillon,graphique,1,1,1
+FORM1,75012,PAGE-01,Note maximale,imprime,10,10,1
+FORM1,75012,PAGE-01,Note pour valider,imprime,4,4,1
+FORM1,75012,PAGE-01,Prenom,manuscrit,ERIC,Rc,0
+FORM1,75012,PAGE-01,Nom,manuscrit,LEMARCHANT,ZEWAC,0
+FORM1,75012,PAGE-01,Validation signature,signature,1,0,0
+FORM1,75012,PAGE-01,Group,graphique,09A,G09G,0
+FORM1,75012,PAGE-01,STUDENT ID,graphique,75012,75012,1
+FORM1,75012,PAGE-01,Validation cryptogramme,graphique,1,0,0
+FORM1,75012,EXAM,R2C1,imprime,1,1,1
+FORM1,75012,EXAM,R2C4,graphique,1.05,1,0
+FORM1,75012,EXAM,R3C1,imprime,2,2,1
+FORM1,75012,EXAM,R3C4,graphique,16.6,1,0
+FORM1,75012,EXAM,R3C12,manuscrit,s,None,0
+FORM1,75012,EXAM,R4C1,imprime,3,3,1
+FORM1,75012,EXAM,R4C10,manuscrit,3.74,394,0
+FORM1,75012,EXAM,R4C11,manuscrit,1,1,1
+FORM1,75012,EXAM,R4C12,manuscrit,dbm,#Bn,0
+FORM1,75012,EXAM,R5C1,imprime,4,4,1
+FORM1,75012,EXAM,R5C4,graphique,18,1,0
+FORM1,75012,EXAM,R5C12,manuscrit,dbm,None,0
+FORM1,75012,EXAM,R6C1,imprime,5,5,1
+FORM1,75012,EXAM,R6C4,graphique,2.12,1,0
+FORM1,75012,EXAM,R7C1,imprime,6,6,1
+FORM1,75012,EXAM,R7C10,manuscrit,1.05,1.05,1
+FORM1,75012,EXAM,R7C11,manuscrit,1,7,0
+FORM1,75012,EXAM,R7C12,manuscrit,KHz,KHz,1
+FORM1,75012,EXAM,R8C1,imprime,7,7,1
+FORM1,75012,EXAM,R8C3,graphique,2600,1,0
+FORM1,75012,EXAM,R9C1,imprime,8,8,1
+FORM1,75012,EXAM,R9C4,graphique,-2,1,0
+FORM1,75012,EXAM,R10C1,imprime,9,9,1
+FORM1,75012,EXAM,R10C3,graphique,FIG.2,1,0
