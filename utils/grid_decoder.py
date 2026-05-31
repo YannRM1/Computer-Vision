@@ -37,7 +37,7 @@ ROI_STUDENT_ID    = (725, 247, 155, 330)
 # fournit un mapping légèrement décalé par rapport au rendu PDF de référence.
 # Ces coordonnées ont été calibrées en mesurant la position réelle de la
 # grille sur des images normalisées issues de photos (FORM1/2/3).
-ROI_STUDENT_ID_PHOTO = (720, 250, 125, 320)
+ROI_STUDENT_ID_PHOTO = (693, 217, 131, 328)
 STUDENT_ID_ROWS   = 10
 STUDENT_ID_COLS   = 5
 
@@ -198,21 +198,60 @@ def get_roi(img: np.ndarray, roi: tuple[int, int, int, int]) -> np.ndarray:
 # Lecture du Student ID
 # ---------------------------------------------------------------------------
 
+def _score_grid_read(digits: list) -> float:
+    """Score de confiance d'une lecture : pénalise les None et les valeurs 0/9
+    (souvent du bruit de bord), favorise les colonnes avec une coche claire."""
+    if digits is None:
+        return -1.0
+    score = 0.0
+    for d in digits:
+        if d is None:
+            score -= 2.0
+        elif d in (0, 9):
+            score += 0.3   # valeurs fréquentes mais ambiguës
+        else:
+            score += 1.0
+    return score
+
+
 def read_student_id(form_img: np.ndarray, is_photo: bool = False) -> int | None:
     """
     Lit l'identifiant étudiant depuis la grille graphique.
     Retourne un entier (ex: 62445) ou None si lecture impossible.
 
-    Méthode : pour chaque colonne, la ligne cochée donne le chiffre.
-    Le ROI utilisé dépend de la source (PDF vs photo).
+    Pour les photos, un scan adaptatif teste plusieurs décalages horizontaux
+    du ROI pour compenser les variations d'alignement après normalisation.
     """
-    roi_coords = ROI_STUDENT_ID_PHOTO if is_photo else ROI_STUDENT_ID
-    roi = get_roi(form_img, roi_coords)
-    digits = read_grid_one_per_col(roi, rows=STUDENT_ID_ROWS, cols=STUDENT_ID_COLS)
-    if None in digits:
+    if not is_photo:
+        roi = get_roi(form_img, ROI_STUDENT_ID)
+        digits = read_grid_one_per_col(roi, rows=STUDENT_ID_ROWS, cols=STUDENT_ID_COLS)
+        if None in digits:
+            return None
+        try:
+            return int("".join(str(d) for d in digits))
+        except Exception:
+            return None
+
+    # Pour les photos : tester plusieurs décalages horizontaux (-50 → +30 px)
+    # et garder la lecture la plus confiante.
+    x0, y0, w0, h0 = ROI_STUDENT_ID_PHOTO
+    best_digits = None
+    best_score  = -999.0
+    for dx in range(-50, 31, 10):
+        x = max(0, x0 + dx)
+        if x + w0 > form_img.shape[1]:
+            continue
+        roi = form_img[y0:y0 + h0, x:x + w0]
+        digits = read_grid_one_per_col(roi, rows=STUDENT_ID_ROWS, cols=STUDENT_ID_COLS)
+        sc = _score_grid_read(digits)
+        if sc > best_score:
+            best_score  = sc
+            best_digits = digits
+
+    if best_digits is None or None in best_digits:
         return None
     try:
-        return int("".join(str(d) for d in digits))
+        return int("".join(str(d) for d in best_digits))
     except Exception:
         return None
 

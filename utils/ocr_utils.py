@@ -72,9 +72,9 @@ def _ocr_raw(img: np.ndarray, allowlist: str | None = None) -> str:
         return ""
 
 
-def ocr_text(img: np.ndarray, lang: str = "en") -> str:
-    """Texte générique (langue non critique ici, easyocr gère les deux)."""
-    processed = _upscale_binarize(img, scale=3)
+def ocr_text(img: np.ndarray, lang: str = "en", scale: int = 3) -> str:
+    """Texte générique. scale=6 recommandé pour les ROIs très petites (< 30 px)."""
+    processed = _upscale_binarize(img, scale=scale)
     return _ocr_raw(processed)
 
 
@@ -351,10 +351,12 @@ def ocr_number(img: np.ndarray) -> int | None:
 def _ocr_handwritten(img: np.ndarray, allowlist: str) -> str:
     """
     OCR pour textes manuscrits (encre rouge ou noire).
-    Utilise CLAHE pour rehausser le contraste local, compatible
-    avec l'encre rouge qui apparaît en gris moyen sur fond blanc.
+    Extrait d'abord le canal le plus contrasté (canal vert inversé pour
+    l'encre rouge), puis applique CLAHE avant l'OCR.
     """
-    gray = _to_gray(img)
+    # Extraire le canal d'encre optimal (gère encre rouge ET noire)
+    ink = _extract_ink_channel(img)
+    gray = ink if len(ink.shape) == 2 else _to_gray(ink)
     clahe = cv2.createCLAHE(clipLimit=4.0, tileGridSize=(2, 2))
     eq = clahe.apply(gray)
     big = cv2.resize(eq, (eq.shape[1] * 6, eq.shape[0] * 6),

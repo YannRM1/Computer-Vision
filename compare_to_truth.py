@@ -49,14 +49,26 @@ PAGE01_AXES = {
 }
 
 
+_DATE_FORMATS = ("%d/%m/%Y", "%d-%m-%Y", "%d.%m.%Y",
+                 "%Y-%m-%d", "%Y/%m/%d", "%m/%d/%Y")
+
+
 def normalize_value(v):
     """Normalise pour comparaison (date->str, str->lower trimmed, etc.)."""
     if v is None:
         return None
     if isinstance(v, datetime):
-        return v.strftime("%Y-%m-%d")
+        # Normaliser toutes les dates au format DD/MM/YYYY
+        return v.strftime("%d/%m/%Y")
     if isinstance(v, str):
-        return v.strip().lower()
+        s = v.strip()
+        # Tenter de parser comme date pour uniformiser le format
+        for fmt in _DATE_FORMATS:
+            try:
+                return datetime.strptime(s, fmt).strftime("%d/%m/%Y")
+            except ValueError:
+                continue
+        return s.lower()
     if isinstance(v, float) and v.is_integer():
         return int(v)
     return v

@@ -123,23 +123,33 @@ def _clean_name_text(raw: str) -> str:
 
 
 def read_firstname(form_img: np.ndarray) -> str:
-    """Lit le prénom manuscrit dans sa grille de cellules."""
+    """
+    Lit le prénom manuscrit.
+    Essai 1 : OCR direct sur la ROI entière avec upscale ×6 (plus robuste
+              pour les ROIs de petite hauteur ~24 px).
+    Essai 2 : segmentation cellule par cellule (fallback).
+    """
     roi = get_roi(form_img, ROI_FIRSTNAME)
+    raw = ocr_text(roi, scale=6)
+    cleaned = _clean_name_text(raw)
+    if cleaned:
+        return cleaned.capitalize()
     result = _ocr_cells(roi)
-    if result:
-        return result.capitalize()
-    raw = ocr_text(roi, lang="fra")
-    return _clean_name_text(raw)
+    return result.capitalize() if result else ""
 
 
 def read_name(form_img: np.ndarray) -> str:
-    """Lit le nom manuscrit dans sa grille de cellules."""
+    """
+    Lit le nom manuscrit.
+    Même stratégie que read_firstname mais retourne en majuscules.
+    """
     roi = get_roi(form_img, ROI_NAME)
+    raw = ocr_text(roi, scale=6)
+    cleaned = _clean_name_text(raw)
+    if cleaned:
+        return cleaned.upper()
     result = _ocr_cells(roi)
-    if result:
-        return result.upper()
-    raw = ocr_text(roi, lang="fra")
-    return _clean_name_text(raw)
+    return result.upper() if result else ""
 
 
 # ---------------------------------------------------------------------------
@@ -252,7 +262,7 @@ def parse_page1(
     if desc_db:
         sid_str = str(expected_student_id) if expected_student_id else str(student_id)
         _, validated = match_signature_to_id(
-            sig_img, desc_db, expected_id=sid_str
+            sig_img, desc_db, expected_id=sid_str, threshold=0.18
         )
         sig_valid = 1 if validated else 0
 
