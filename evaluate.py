@@ -35,7 +35,7 @@ except ImportError:
     fitz = None
 
 
-def render_pdf_p1(pdf_path, dpi=200):
+def render_pdf_p1(pdf_path, dpi=150):
     if fitz is None:
         raise RuntimeError("pymupdf manquant")
     doc = fitz.open(pdf_path)
@@ -50,7 +50,7 @@ def render_pdf_p1(pdf_path, dpi=200):
 def process(img, desc_db, is_photo):
     """Renvoie (grid_id, sig_id, sig_score)."""
     norm = normalize_page(img, is_photo=is_photo)
-    grid_id = read_student_id(norm)
+    grid_id = read_student_id(norm, is_photo=is_photo)
     sig_roi = extract_signature_roi(norm)
     sig_id, score = identify_signature(sig_roi, desc_db)
     return grid_id, sig_id, score

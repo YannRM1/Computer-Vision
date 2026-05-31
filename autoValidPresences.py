@@ -82,17 +82,17 @@ def autoValidID(img_path: str,
     # 2. Lire le StudentID depuis la grille (ROI spécifique photo)
     student_id_grid = read_student_id(norm, is_photo=True)
 
-    # 4. Extraire la sous-image de signature
+    # 3. Extraire la sous-image de signature
     sig_img = extract_signature_roi(norm)
 
-    # 5. Comparer la signature à la base de données
+    # 4. Comparer la signature à la base de données
     if sig_img is not None and sig_img.size > 100 and desc_db:
         # threshold ajusté pour le nouveau score combiné NCC+HOG+Hu (range typique 0.15-0.40)
         id_sig, score = identify_signature(sig_img, desc_db, threshold=0.18)
     else:
         id_sig = None
 
-    # 6. Écrire dans le xlsx
+    # 5. Écrire dans le xlsx
     image_name = os.path.basename(img_path)
     if wb is not None:
         _append_presence_row(wb, xlsx_path, image_name,

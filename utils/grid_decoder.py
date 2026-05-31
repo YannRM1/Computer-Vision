@@ -451,5 +451,4 @@ def read_note_pour_valider(form_img: np.ndarray):
 
 def extract_cryptogram(form_img: np.ndarray) -> np.ndarray:
     return get_roi(form_img, ROI_CRYPTO)
-darray) -> np.ndarray:
-    return get_roi(form_img, ROI_CRYPTO)
+
