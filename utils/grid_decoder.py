@@ -33,24 +33,28 @@ ROI_CODES_EXAM    = (0, 65, 900, 65)
 # 5 colonnes (une par chiffre), 10 lignes (digits 0-9)
 # Colonnes à x ≈ 733, 761, 790, 818, 847 ; lignes à y ≈ 251, 286, …, 554
 ROI_STUDENT_ID    = (725, 247, 155, 330)
-# Variante photo : la zone active détectée par get_active_area sur une photo
-# fournit un mapping légèrement décalé par rapport au rendu PDF de référence.
-# Ces coordonnées ont été calibrées en mesurant la position réelle de la
-# grille sur des images normalisées issues de photos (FORM1/2/3).
-ROI_STUDENT_ID_PHOTO = (692, 217, 131, 328)
+# Depuis le recalage par template (cf. normalize_page), les photos sont
+# redressées dans le MÊME repère canonique que les PDFs. On utilise donc les
+# mêmes coordonnées de ROI pour les photos et pour les PDFs.
+ROI_STUDENT_ID_PHOTO = ROI_STUDENT_ID
 STUDENT_ID_ROWS   = 10
 STUDENT_ID_COLS   = 5
 
 # Grille Group (10 lignes × 3 colonnes : chiffre1, chiffre2, lettre)
 # Colonnes à x ≈ 524, 553, 609 ; mêmes lignes que Student ID
 ROI_GROUP_GRID    = (516, 247, 105, 330)
-ROI_GROUP_GRID_PHOTO = (455, 260, 135, 360)
+ROI_GROUP_GRID_PHOTO = ROI_GROUP_GRID
 GROUP_ROWS        = 10
 # Proportions relatives des 3 colonnes dans la ROI (somme = 1)
 GROUP_COL_WIDTHS  = [0.27, 0.27, 0.46]
 
 # Case signature
 ROI_SIGNATURE     = (30, 272, 372, 288)
+# Intérieur strict de la boîte de signature dans le repère canonique
+# (exclut le label "SIGNATURE" au-dessus et le trait du cadre). Mesuré sur le
+# template de référence. Le recalage rendant le repère stable, ce crop fixe est
+# fiable pour les photos comme pour les PDFs.
+ROI_SIGNATURE_INNER = (120, 358, 264, 150)
 
 # Cellules prénom manuscrit (grille de lettres individuelles)
 # y=211 = ligne supérieure des cellules, h=24 = hauteur intérieure
@@ -90,6 +94,20 @@ ROI_CRYPTO     = (180, 1228, 94, 42)
 
 FORM_W = 900
 FORM_H = 1270
+
+# Template de recalage pour les photos (objet FormTemplate), positionné par le
+# pipeline via set_photo_template(). Tant qu'il est None, on retombe sur
+# l'ancien chemin (deskew + bounding box).
+_PHOTO_TEMPLATE = None
+
+
+def set_photo_template(template) -> None:
+    """
+    Enregistre le template de recalage des photos (objet
+    utils.template_register.FormTemplate, ou None pour désactiver).
+    """
+    global _PHOTO_TEMPLATE
+    _PHOTO_TEMPLATE = template
 
 
 def get_active_area(img: np.ndarray,
@@ -133,7 +151,8 @@ def _looks_like_photo(img: np.ndarray) -> bool:
     return float(edges.mean()) < 230.0  # un scan PDF a des bords ~ blancs
 
 
-def normalize_page(img: np.ndarray, is_photo: bool | None = None) -> np.ndarray:
+def normalize_page(img: np.ndarray, is_photo: bool | None = None,
+                   use_template: bool = False) -> np.ndarray:
     """
     Normalise un formulaire vers le repère (FORM_W, FORM_H).
 
@@ -150,29 +169,26 @@ def normalize_page(img: np.ndarray, is_photo: bool | None = None) -> np.ndarray:
     if is_photo is None:
         is_photo = _looks_like_photo(img)
 
-    from utils.form_aligner import find_corner_brackets, deskew
+    from utils.form_aligner import deskew
 
-    # Étape 1 : pour les photos uniquement, tenter une correction perspective
-    # via les 4 L-brackets de coin (les PDFs sont déjà alignés et tout warp
-    # perturberait la calibration des ROIs).
-    if is_photo:
-        # Seuil abaissé à 0.45 pour détecter les brackets même sur des photos
-        # légèrement floues ou moins contrastées (était 0.55).
-        brackets = find_corner_brackets(img, min_score=0.45)
-        if brackets is not None:
-            # Reproduit la géométrie d'un PDF : brackets aux mêmes ratios
-            # de marge (~7.3% horizontal, ~4.3% vertical).
-            inter_w, inter_h = 1655, 2340
-            src = np.array([brackets["TL"], brackets["TR"],
-                            brackets["BR"], brackets["BL"]], dtype=np.float32)
-            bx, by = int(inter_w * 0.073), int(inter_h * 0.043)
-            dst = np.array([[bx, by], [inter_w - bx, by],
-                            [inter_w - bx, inter_h - by], [bx, inter_h - by]],
-                           dtype=np.float32)
-            M = cv2.getPerspectiveTransform(src, dst)
-            img = cv2.warpPerspective(img, M, (inter_w, inter_h))
-        else:
+    # Étape 1 : recaler sur le template de référence par homographie (ORB).
+    # On le fait pour les photos (toujours) et pour les PDFs de page 1 quand
+    # use_template=True. En cas de succès, l'image est déjà dans le repère
+    # canonique (FORM_W × FORM_H) -> on renvoie directement et toutes les ROIs
+    # s'appliquent. Les pages d'examen (use_template=False) ne sont pas
+    # concernées : elles ne matcheraient pas le template de page 1.
+    want_template = _PHOTO_TEMPLATE is not None and (is_photo or use_template)
+    if want_template:
+        from utils.template_register import register_to_template
+        reg = register_to_template(img, _PHOTO_TEMPLATE)
+        if reg is not None:
+            return reg
+        # Repli si le recalage échoue.
+        if is_photo:
             img = deskew(img)
+    elif is_photo:
+        # Pas de template fourni : ancien comportement (deskew + bbox).
+        img = deskew(img)
 
     # Étape 2 : crop bbox + resize vers le repère final
     # Pour les photos, chercher le papier blanc (is_photo=True) ;
@@ -198,60 +214,19 @@ def get_roi(img: np.ndarray, roi: tuple[int, int, int, int]) -> np.ndarray:
 # Lecture du Student ID
 # ---------------------------------------------------------------------------
 
-def _score_grid_read(digits: list) -> float:
-    """Score de confiance d'une lecture : pénalise les None et les valeurs 0/9
-    (souvent du bruit de bord), favorise les colonnes avec une coche claire."""
-    if digits is None:
-        return -1.0
-    score = 0.0
-    for d in digits:
-        if d is None:
-            score -= 2.0
-        elif d in (0, 9):
-            score += 0.3   # valeurs fréquentes mais ambiguës
-        else:
-            score += 1.0
-    return score
-
-
 def read_student_id(form_img: np.ndarray, is_photo: bool = False) -> int | None:
     """
     Lit l'identifiant étudiant depuis la grille graphique.
     Retourne un entier (ex: 62445) ou None si lecture impossible.
-
-    Pour les photos, un scan adaptatif teste plusieurs décalages horizontaux
-    du ROI pour compenser les variations d'alignement après normalisation.
+    Le ROI utilisé dépend de la source (PDF vs photo).
     """
-    if not is_photo:
-        roi = get_roi(form_img, ROI_STUDENT_ID)
-        digits = read_grid_one_per_col(roi, rows=STUDENT_ID_ROWS, cols=STUDENT_ID_COLS)
-        if None in digits:
-            return None
-        try:
-            return int("".join(str(d) for d in digits))
-        except Exception:
-            return None
-
-    # Pour les photos : tester plusieurs décalages horizontaux (-50 → +30 px)
-    # et garder la lecture la plus confiante.
-    x0, y0, w0, h0 = ROI_STUDENT_ID_PHOTO
-    best_digits = None
-    best_score  = -999.0
-    for dx in range(-50, 31, 10):
-        x = max(0, x0 + dx)
-        if x + w0 > form_img.shape[1]:
-            continue
-        roi = form_img[y0:y0 + h0, x:x + w0]
-        digits = read_grid_one_per_col(roi, rows=STUDENT_ID_ROWS, cols=STUDENT_ID_COLS)
-        sc = _score_grid_read(digits)
-        if sc > best_score:
-            best_score  = sc
-            best_digits = digits
-
-    if best_digits is None or None in best_digits:
+    roi_coords = ROI_STUDENT_ID_PHOTO if is_photo else ROI_STUDENT_ID
+    roi = get_roi(form_img, roi_coords)
+    digits = read_grid_one_per_col(roi, rows=STUDENT_ID_ROWS, cols=STUDENT_ID_COLS)
+    if None in digits:
         return None
     try:
-        return int("".join(str(d) for d in best_digits))
+        return int("".join(str(d) for d in digits))
     except Exception:
         return None
 
@@ -393,61 +368,18 @@ def read_conditions(form_img: np.ndarray) -> dict:
 
 def extract_signature_roi(form_img: np.ndarray) -> np.ndarray:
     """
-    Extrait la sous-image **intérieure** de la boîte de signature.
+    Extrait la sous-image intérieure de la boîte de signature.
 
-    Le ROI nominal (ROI_SIGNATURE) inclut le cadre rectangulaire et le label
-    "SIGNATURE". Cette fonction :
-      1. Découpe le ROI nominal.
-      2. Détecte le cadre rectangulaire par morphologie (filtres horizontaux
-         et verticaux pour isoler les longues lignes du cadre).
-      3. Retourne l'intérieur du cadre avec une petite marge négative pour
-         garantir qu'aucun pixel du trait du cadre ne soit conservé.
-
-    Si la détection échoue, repli sur un crop fixe correspondant à la position
-    typique du rectangle dans le ROI nominal.
+    Le repère étant stabilisé par le recalage (photos) ou déjà aligné (PDFs),
+    on découpe directement l'intérieur calibré de la boîte (ROI_SIGNATURE_INNER),
+    ce qui exclut le label "SIGNATURE" et le trait du cadre — sources de bruit
+    qui faisaient échouer l'identification auparavant.
     """
-    roi = get_roi(form_img, ROI_SIGNATURE)
-    if roi is None or roi.size == 0:
-        return roi
-
-    gray = roi if len(roi.shape) == 2 else cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
-    H, W = gray.shape
-
-    # Binarisation Otsu inverse : 255 = encre (cadre + signature)
-    _, binary = cv2.threshold(gray, 0, 255,
-                              cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
-
-    # Isoler les longues lignes du cadre par morphologie
-    # (kernels horizontal et vertical proportionnels à la taille du ROI)
-    kh = max(15, W // 8)
-    kv = max(15, H // 8)
-    kernel_h = cv2.getStructuringElement(cv2.MORPH_RECT, (kh, 1))
-    kernel_v = cv2.getStructuringElement(cv2.MORPH_RECT, (1, kv))
-    horiz = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel_h)
-    vert  = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel_v)
-    frame = cv2.bitwise_or(horiz, vert)
-
-    # Bounding box du cadre détecté
-    coords = cv2.findNonZero(frame)
-    if coords is not None and len(coords) > 50:
-        x, y, w, h = cv2.boundingRect(coords)
-        # Marge intérieure (proportionnelle) pour éliminer le trait du cadre
-        m = max(4, int(min(w, h) * 0.08))
-        x0 = max(0, x + m)
-        y0 = max(0, y + m)
-        x1 = min(W, x + w - m)
-        y1 = min(H, y + h - m)
-        if (x1 - x0) > 20 and (y1 - y0) > 20:
-            return roi[y0:y1, x0:x1]
-
-    # Repli : crop fixe interne approximatif
-    return roi[60:260, 50:340]
-
-
-# ---------------------------------------------------------------------------
-# Lecture de la zone Note (OCR de chiffres imprimés)
-# ---------------------------------------------------------------------------
-
+    inner = get_roi(form_img, ROI_SIGNATURE_INNER)
+    if inner is None or inner.size == 0:
+        # Repli : intérieur approximatif de l'ancien ROI nominal.
+        return get_roi(form_img, ROI_SIGNATURE)
+    return inner
 def read_note_box(form_img: np.ndarray, roi: tuple,
                   top_crop_frac: float = 0.15):
     x, y, w, h = roi

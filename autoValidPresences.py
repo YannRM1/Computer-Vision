@@ -17,7 +17,10 @@ from openpyxl import Workbook
 from openpyxl.styles import Font
 
 from utils.form_aligner import deskew
-from utils.grid_decoder  import normalize_page, read_student_id, extract_signature_roi
+from utils.grid_decoder  import (normalize_page, read_student_id,
+                                 extract_signature_roi, set_photo_template)
+from utils.image_io import imread_robust
+from utils.template_register import get_photo_template
 from utils.signature_utils import (
     load_signatures,
     build_descriptor_db,
@@ -71,19 +74,7 @@ def autoValidID(img_path: str,
         (studentID_grid, studentID_signature)
         studentID_signature est l'ID reconnu par la signature, ou None.
     """
-    img = cv2.imread(img_path)
-    if img is None:
-        try:
-            img = cv2.imdecode(np.fromfile(img_path, dtype=np.uint8), cv2.IMREAD_COLOR)
-        except Exception:
-            img = None
-    if img is None:
-        try:
-            from PIL import Image as _PILImage
-            pil = _PILImage.open(img_path).convert("RGB")
-            img = cv2.cvtColor(np.array(pil), cv2.COLOR_RGB2BGR)
-        except Exception:
-            img = None
+    img = imread_robust(img_path)
     if img is None:
         print(f"  [WARN] Impossible de lire : {img_path}")
         return None, None
@@ -99,8 +90,11 @@ def autoValidID(img_path: str,
 
     # 4. Comparer la signature à la base de données
     if sig_img is not None and sig_img.size > 100 and desc_db:
-        # threshold ajusté pour le nouveau score combiné NCC+HOG+Hu (range typique 0.15-0.40)
-        id_sig, score = identify_signature(sig_img, desc_db, threshold=0.18)
+        # Seuil bas : pour la colonne studentID_signature on veut le meilleur
+        # candidat (identification), pas une validation stricte. Le ROI de
+        # signature étant désormais correctement recadré (intérieur de la boîte,
+        # sans le label), le meilleur score est fiable.
+        id_sig, score = identify_signature(sig_img, desc_db, threshold=0.05)
     else:
         id_sig = None
 
@@ -120,7 +114,8 @@ def autoValidID(img_path: str,
 
 def autoValidPresences(presences_dir: str,
                        signatures_dir: str,
-                       results_dir: str) -> str:
+                       results_dir: str,
+                       pdf_dir: str | None = None) -> str:
     """
     Valide les présences pour tous les eleves.
 
@@ -128,11 +123,20 @@ def autoValidPresences(presences_dir: str,
         presences_dir  : répertoire contenant les photos de première page
         signatures_dir : répertoire / ZIP avec la base de signatures
         results_dir    : répertoire de sortie
+        pdf_dir        : répertoire contenant un PDF du même formulaire, servant
+                         de template de recalage. Si None, on cherche un PDF
+                         dans presences_dir.
 
     Returns:
         Chemin vers le fichier XLSX généré.
     """
     os.makedirs(results_dir, exist_ok=True)
+
+    # Template de recalage des photos : template figé livré avec le projet en
+    # priorité, sinon rendu d'un PDF du formulaire.
+    template = get_photo_template(pdf_dir, presences_dir)
+    set_photo_template(template)
+    print(f"[P1] Recalage photo : {'template OK' if template else 'DESACTIVE (aucun template)'}")
 
     # Nom du fichier de sortie : EXAM_FORMXX_PRESENCES.xlsx
     # Dérivé depuis results_dir (ex: .../EXAM_FORM1_RESULTS → EXAM_FORM1)
@@ -167,11 +171,4 @@ def autoValidPresences(presences_dir: str,
 
 # ---------------------------------------------------------------------------
 # Point d'entrée direct (test)
-# ---------------------------------------------------------------------------
-
-if __name__ == "__main__":
-    import sys
-    if len(sys.argv) == 4:
-        autoValidPresences(sys.argv[1], sys.argv[2], sys.argv[3])
-    else:
-        print("Usage: python autoValidPresences.py <presences_dir> <sig_dir> <results_dir>")
+# -----------

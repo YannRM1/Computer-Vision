@@ -69,6 +69,7 @@ def main(exam_name: str = EXAM_NAME,
         presences_dir=presences_dir,
         signatures_dir=sig_dir,
         results_dir=results_dir,
+        pdf_dir=pdf_dir,
     )
 
     # ---- PROGRAMME 2 : Lecture automatique des formulaires ---------------

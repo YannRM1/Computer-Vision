@@ -236,7 +236,8 @@ def parse_page1(
         'validation_cryptogramme': int,  # 1 = OK, 0 = incohérent
     }
     """
-    norm = normalize_page(form_img)
+    # Page 1 : recalage sur le template de référence (repère stable).
+    norm = normalize_page(form_img, use_template=True)
 
     # ---- Textes imprimés (CODES EXAM) ------------------------------------
     codes = read_codes_exam(norm)

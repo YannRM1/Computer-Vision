@@ -1,0 +1,11 @@
+opencv-python
+numpy
+openpyxl
+pymupdf
+easyocr
+scikit-image
+scikit-learn
+pandas
+matplotlib
+pillow
+pillow-heif

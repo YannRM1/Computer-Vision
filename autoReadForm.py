@@ -18,7 +18,9 @@ from openpyxl import Workbook
 from openpyxl.styles import Font
 
 from utils.pdf_utils      import pdf_to_images
-from utils.grid_decoder   import normalize_page, extract_cryptogram
+from utils.grid_decoder   import (normalize_page, extract_cryptogram,
+                                  set_photo_template)
+from utils.template_register import get_photo_template
 from utils.page1_parser   import parse_page1
 from utils.exam_parser    import parse_exam_pages, questions_to_exam_rows, CHOICE_COLS
 from utils.signature_utils import load_signatures, build_descriptor_db
@@ -164,6 +166,9 @@ def autoReadForm(pdf_dir: str,
         Liste des chemins xlsx générés.
     """
     os.makedirs(results_dir, exist_ok=True)
+
+    # Template de recalage de la page 1 (figé, sinon rendu d'un PDF du dossier).
+    set_photo_template(get_photo_template(pdf_dir))
 
     # Charger la base de signatures
     print(f"[P2] Chargement des signatures depuis : {signatures_dir}")

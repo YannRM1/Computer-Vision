@@ -25,9 +25,11 @@ import numpy as np
 # Imports projet
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from utils.grid_decoder    import (normalize_page, read_student_id,
-                                    extract_signature_roi)
+                                    extract_signature_roi, set_photo_template)
 from utils.signature_utils import (load_signatures, build_descriptor_db,
                                     identify_signature)
+from utils.image_io import imread_robust
+from utils.template_register import get_photo_template
 
 try:
     import fitz   # pymupdf
@@ -49,7 +51,7 @@ def render_pdf_p1(pdf_path, dpi=150):
 
 def process(img, desc_db, is_photo):
     """Renvoie (grid_id, sig_id, sig_score)."""
-    norm = normalize_page(img, is_photo=is_photo)
+    norm = normalize_page(img, is_photo=is_photo, use_template=True)
     grid_id = read_student_id(norm, is_photo=is_photo)
     sig_roi = extract_signature_roi(norm)
     sig_id, score = identify_signature(sig_roi, desc_db)
@@ -59,6 +61,9 @@ def process(img, desc_db, is_photo):
 def evaluate_form(form_dir, desc_db, form_name, out_rows):
     files = sorted(os.listdir(form_dir))
     img_exts = (".jpg", ".jpeg", ".png", ".bmp")
+
+    # Template de recalage des photos (template figé, sinon rendu d'un PDF).
+    set_photo_template(get_photo_template(form_dir))
 
     n_photos = grid_ok_p = sig_ok_p = sig_none_p = 0
     n_pdfs   = grid_ok_d = sig_ok_d = sig_none_d = 0
@@ -74,12 +79,7 @@ def evaluate_form(form_dir, desc_db, form_name, out_rows):
         path = os.path.join(form_dir, f)
         try:
             if ext in ("jpg", "jpeg", "png", "bmp"):
-                img = cv2.imread(path)
-                if img is None:
-                    try:
-                        img = cv2.imdecode(np.fromfile(path, dtype=np.uint8), cv2.IMREAD_COLOR)
-                    except Exception:
-                        img = None
+                img = imread_robust(path)
                 if img is None:
                     continue
                 kind = "photo"
