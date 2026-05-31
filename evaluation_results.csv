@@ -1,224 +1,224 @@
 form,file,kind,expected_id,grid_id,sig_id,sig_score
-FORM1,EXAM_FORM1_19283.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_19283.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_36912.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_50305.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_50305.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_54331.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_54331.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_58220.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_58220.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_58927.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_58927.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_61856.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_61856.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_61992.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62034.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62034.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62288.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62298.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62298.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62306.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62336.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62358.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62358.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62369.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62370.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62380.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62380.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62401.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62401.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62411.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62427.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62436.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62436.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62440.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62440.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62445.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62445.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62492.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62500.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62578.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62578.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62596.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62598.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62598.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62616.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62616.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62645.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62645.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62747.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62766.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_62766.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_63029.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_63029.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_63272.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_63272.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_63273.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_63273.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_63694.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_63694.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_63807.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_63807.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_63836.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_63836.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_63838.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_63887.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_63887.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_64413.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_64413.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_65442.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_65442.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_75012.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM1,EXAM_FORM1_75012.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_19283.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_36912.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_50305.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_50305.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_54331.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_54331.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_58220.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_58220.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_58927.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_58927.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_61856.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_61856.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_61992.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62034.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62276.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62276.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62288.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62298.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62306.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62336.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62356.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62358.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62369.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62370.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62380.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62387.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62411.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62421.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62427.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62436.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62440.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62445.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62445.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62492.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62500.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62572.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62578.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62578.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62596.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62598.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62598.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62616.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62616.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62645.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62766.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_62766.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_63029.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_63029.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_63272.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_63272.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_63273.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_63273.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_63694.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_63807.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_63818.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_63836.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_63836.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_63838.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_63887.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_64036.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_64038.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_64413.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_64413.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_65442.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_65442.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_75012.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_75012.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM2,EXAM_FORM2_94204.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_19283.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_19283.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_36912.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_36912.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_50305.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_50305.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_58220.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_58220.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_58927.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_58927.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_61856.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_61856.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62034.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62034.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62288.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62298.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62298.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62306.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62336.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62358.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62358.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62369.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62370.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62380.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62380.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62401.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62401.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62411.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62436.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62436.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62440.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62440.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62445.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62445.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62486.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62496.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62496.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62500.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62500.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62572.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62572.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62577.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62577.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62578.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62578.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62579.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62579.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62596.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62596.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62598.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62598.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62616.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62616.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62645.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62645.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62760.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62766.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_62766.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_63272.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_63272.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_63694.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_63694.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_63807.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_63807.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_63818.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_63818.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_63836.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_63836.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_63838.PNG,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_63838.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_63887.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_63887.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_64038.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_64038.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_64413.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_64413.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_65442.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_65442.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_67696.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_75012.jpeg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_75012.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_94204.jpg,,ERR,,,module 'cv2' has no attribute 'morpho'
-FORM3,EXAM_FORM3_94204.pdf,,ERR,,,module 'cv2' has no attribute 'morpho'
+FORM1,EXAM_FORM1_19283.jpeg,photo,19283,81721,19283,0.575
+FORM1,EXAM_FORM1_19283.pdf,pdf,19283,12836,62306,0.269
+FORM1,EXAM_FORM1_36912.pdf,pdf,36912,36912,62298,0.245
+FORM1,EXAM_FORM1_50305.jpg,photo,50305,22254,63272,0.358
+FORM1,EXAM_FORM1_50305.pdf,pdf,50305,50305,63694,0.385
+FORM1,EXAM_FORM1_54331.jpg,photo,54331,40638,63694,0.405
+FORM1,EXAM_FORM1_54331.pdf,pdf,54331,54331,63694,0.288
+FORM1,EXAM_FORM1_58220.jpg,photo,58220,66637,62500,0.294
+FORM1,EXAM_FORM1_58220.pdf,pdf,58220,58220,62572,0.200
+FORM1,EXAM_FORM1_58927.jpg,photo,58927,50002,64413,0.372
+FORM1,EXAM_FORM1_58927.pdf,pdf,58927,58927,63694,0.238
+FORM1,EXAM_FORM1_61856.jpg,photo,61856,40070,62380,0.364
+FORM1,EXAM_FORM1_61856.pdf,pdf,61856,50688,62369,0.477
+FORM1,EXAM_FORM1_61992.pdf,pdf,61992,61392,62298,0.250
+FORM1,EXAM_FORM1_62034.jpeg,photo,62034,522,62421,0.254
+FORM1,EXAM_FORM1_62034.pdf,pdf,62034,62034,62579,0.280
+FORM1,EXAM_FORM1_62288.pdf,pdf,62288,51177,62288,0.580
+FORM1,EXAM_FORM1_62298.jpeg,photo,62298,29837,63694,0.496
+FORM1,EXAM_FORM1_62298.pdf,pdf,62298,62298,62336,0.256
+FORM1,EXAM_FORM1_62306.pdf,pdf,62306,,62578,0.511
+FORM1,EXAM_FORM1_62336.pdf,pdf,62336,62336,62421,0.277
+FORM1,EXAM_FORM1_62358.jpeg,photo,62358,2000,64413,0.420
+FORM1,EXAM_FORM1_62358.pdf,pdf,62358,62347,63807,0.283
+FORM1,EXAM_FORM1_62369.pdf,pdf,62369,52588,64038,0.568
+FORM1,EXAM_FORM1_62370.pdf,pdf,62370,68878,63694,0.409
+FORM1,EXAM_FORM1_62380.jpeg,photo,62380,260,62578,0.319
+FORM1,EXAM_FORM1_62380.pdf,pdf,62380,62380,62380,0.391
+FORM1,EXAM_FORM1_62401.jpg,photo,62401,24010,64038,0.527
+FORM1,EXAM_FORM1_62401.pdf,pdf,62401,62401,62578,0.542
+FORM1,EXAM_FORM1_62411.pdf,pdf,62411,62411,62336,0.302
+FORM1,EXAM_FORM1_62427.pdf,pdf,62427,62427,63694,0.253
+FORM1,EXAM_FORM1_62436.jpeg,photo,62436,52002,62411,0.249
+FORM1,EXAM_FORM1_62436.pdf,pdf,62436,62436,63807,0.259
+FORM1,EXAM_FORM1_62440.jpeg,photo,62440,99115,62440,0.453
+FORM1,EXAM_FORM1_62440.pdf,pdf,62440,62440,63694,0.327
+FORM1,EXAM_FORM1_62445.jpg,photo,62445,17596,,0.000
+FORM1,EXAM_FORM1_62445.pdf,pdf,62445,62445,62411,0.199
+FORM1,EXAM_FORM1_62492.pdf,pdf,62492,0,62578,0.541
+FORM1,EXAM_FORM1_62500.pdf,pdf,62500,62500,62306,0.276
+FORM1,EXAM_FORM1_62578.jpg,photo,62578,49915,58220,0.394
+FORM1,EXAM_FORM1_62578.pdf,pdf,62578,62578,62411,0.220
+FORM1,EXAM_FORM1_62596.pdf,pdf,62596,62596,63694,0.286
+FORM1,EXAM_FORM1_62598.jpg,photo,62598,25880,62411,0.310
+FORM1,EXAM_FORM1_62598.pdf,pdf,62598,62598,62306,0.303
+FORM1,EXAM_FORM1_62616.jpg,photo,62616,14123,,0.000
+FORM1,EXAM_FORM1_62616.pdf,pdf,62616,62616,62336,0.207
+FORM1,EXAM_FORM1_62645.jpeg,photo,62645,15016,63807,0.504
+FORM1,EXAM_FORM1_62645.pdf,pdf,62645,62645,63694,0.291
+FORM1,EXAM_FORM1_62747.pdf,pdf,62747,81687,62747,0.530
+FORM1,EXAM_FORM1_62766.jpg,photo,62766,99100,63807,0.343
+FORM1,EXAM_FORM1_62766.pdf,pdf,62766,51888,62766,0.549
+FORM1,EXAM_FORM1_63029.jpg,photo,63029,89892,,0.114
+FORM1,EXAM_FORM1_63029.pdf,pdf,63029,63029,58927,0.329
+FORM1,EXAM_FORM1_63272.jpg,photo,63272,60375,62421,0.278
+FORM1,EXAM_FORM1_63272.pdf,pdf,63272,62575,62645,0.262
+FORM1,EXAM_FORM1_63273.jpg,photo,63273,55025,62411,0.287
+FORM1,EXAM_FORM1_63273.pdf,pdf,63273,0,63694,0.357
+FORM1,EXAM_FORM1_63694.jpg,photo,63694,36940,63694,0.351
+FORM1,EXAM_FORM1_63694.pdf,pdf,63694,63694,63694,0.285
+FORM1,EXAM_FORM1_63807.jpeg,photo,63807,88979,64038,0.536
+FORM1,EXAM_FORM1_63807.pdf,pdf,63807,63807,62411,0.276
+FORM1,EXAM_FORM1_63836.jpg,photo,63836,99999,61856,0.534
+FORM1,EXAM_FORM1_63836.pdf,pdf,63836,62826,61856,0.534
+FORM1,EXAM_FORM1_63838.pdf,pdf,63838,52727,,0.000
+FORM1,EXAM_FORM1_63887.jpeg,photo,63887,78003,,0.000
+FORM1,EXAM_FORM1_63887.pdf,pdf,63887,63887,63694,0.338
+FORM1,EXAM_FORM1_64413.jpg,photo,64413,55037,94204,0.303
+FORM1,EXAM_FORM1_64413.pdf,pdf,64413,64413,63694,0.363
+FORM1,EXAM_FORM1_65442.jpg,photo,65442,93544,63694,0.339
+FORM1,EXAM_FORM1_65442.pdf,pdf,65442,65442,62298,0.306
+FORM1,EXAM_FORM1_75012.jpg,photo,75012,20000,62578,0.329
+FORM1,EXAM_FORM1_75012.pdf,pdf,75012,75012,62411,0.234
+FORM2,EXAM_FORM2_19283.pdf,pdf,19283,19283,63887,0.260
+FORM2,EXAM_FORM2_36912.pdf,pdf,36912,36912,62306,0.250
+FORM2,EXAM_FORM2_50305.jpg,photo,50305,,,0.000
+FORM2,EXAM_FORM2_50305.pdf,pdf,50305,50305,63694,0.360
+FORM2,EXAM_FORM2_54331.jpg,photo,54331,98805,62578,0.455
+FORM2,EXAM_FORM2_54331.pdf,pdf,54331,,63694,0.374
+FORM2,EXAM_FORM2_58220.jpg,photo,58220,3021,64038,0.432
+FORM2,EXAM_FORM2_58220.pdf,pdf,58220,,,0.000
+FORM2,EXAM_FORM2_58927.jpg,photo,58927,83807,58927,0.552
+FORM2,EXAM_FORM2_58927.pdf,pdf,58927,37,63694,0.299
+FORM2,EXAM_FORM2_61856.jpg,photo,61856,98888,61856,0.503
+FORM2,EXAM_FORM2_61856.pdf,pdf,61856,50755,61856,0.513
+FORM2,EXAM_FORM2_61992.pdf,pdf,61992,61992,63694,0.316
+FORM2,EXAM_FORM2_62034.pdf,pdf,62034,56349,62034,0.440
+FORM2,EXAM_FORM2_62276.jpg,photo,62276,88888,,0.000
+FORM2,EXAM_FORM2_62276.pdf,pdf,62276,51176,62276,0.497
+FORM2,EXAM_FORM2_62288.pdf,pdf,62288,51177,62288,0.588
+FORM2,EXAM_FORM2_62298.pdf,pdf,62298,62298,63694,0.348
+FORM2,EXAM_FORM2_62306.pdf,pdf,62306,62306,63694,0.428
+FORM2,EXAM_FORM2_62336.pdf,pdf,62336,62336,62579,0.292
+FORM2,EXAM_FORM2_62356.pdf,pdf,62356,,,0.000
+FORM2,EXAM_FORM2_62358.pdf,pdf,62358,62358,63694,0.327
+FORM2,EXAM_FORM2_62369.pdf,pdf,62369,62369,63807,0.466
+FORM2,EXAM_FORM2_62370.pdf,pdf,62370,62370,63694,0.343
+FORM2,EXAM_FORM2_62380.pdf,pdf,62380,51278,,0.000
+FORM2,EXAM_FORM2_62387.pdf,pdf,62387,,62298,0.244
+FORM2,EXAM_FORM2_62411.pdf,pdf,62411,62411,63694,0.342
+FORM2,EXAM_FORM2_62421.pdf,pdf,62421,62421,62298,0.276
+FORM2,EXAM_FORM2_62427.pdf,pdf,62427,62427,63694,0.271
+FORM2,EXAM_FORM2_62436.pdf,pdf,62436,62369,19283,0.256
+FORM2,EXAM_FORM2_62440.pdf,pdf,62440,440,62578,0.295
+FORM2,EXAM_FORM2_62445.jpg,photo,62445,90696,62445,0.644
+FORM2,EXAM_FORM2_62445.pdf,pdf,62445,62445,62411,0.210
+FORM2,EXAM_FORM2_62492.pdf,pdf,62492,62492,62577,0.455
+FORM2,EXAM_FORM2_62500.pdf,pdf,62500,60500,63694,0.301
+FORM2,EXAM_FORM2_62572.pdf,pdf,62572,,62336,0.272
+FORM2,EXAM_FORM2_62578.jpg,photo,62578,99991,,0.000
+FORM2,EXAM_FORM2_62578.pdf,pdf,62578,62578,62411,0.210
+FORM2,EXAM_FORM2_62596.pdf,pdf,62596,62596,62336,0.253
+FORM2,EXAM_FORM2_62598.jpg,photo,62598,25983,53029,0.329
+FORM2,EXAM_FORM2_62598.pdf,pdf,62598,62598,53029,0.301
+FORM2,EXAM_FORM2_62616.jpg,photo,62616,2766,,0.000
+FORM2,EXAM_FORM2_62616.pdf,pdf,62616,62616,63694,0.246
+FORM2,EXAM_FORM2_62645.pdf,pdf,62645,62645,62579,0.314
+FORM2,EXAM_FORM2_62766.jpg,photo,62766,444,61856,0.416
+FORM2,EXAM_FORM2_62766.pdf,pdf,62766,1655,62766,0.653
+FORM2,EXAM_FORM2_63029.jpg,photo,63029,11111,62336,0.237
+FORM2,EXAM_FORM2_63029.pdf,pdf,63029,63029,63694,0.346
+FORM2,EXAM_FORM2_63272.jpg,photo,63272,22037,62579,0.389
+FORM2,EXAM_FORM2_63272.pdf,pdf,63272,62161,36912,0.504
+FORM2,EXAM_FORM2_63273.jpg,photo,63273,90028,64413,0.343
+FORM2,EXAM_FORM2_63273.pdf,pdf,63273,63273,63694,0.312
+FORM2,EXAM_FORM2_63694.pdf,pdf,63694,63694,63694,0.282
+FORM2,EXAM_FORM2_63807.pdf,pdf,63807,63897,62336,0.248
+FORM2,EXAM_FORM2_63818.pdf,pdf,63818,63818,62579,0.227
+FORM2,EXAM_FORM2_63836.jpg,photo,63836,64865,63694,0.357
+FORM2,EXAM_FORM2_63836.pdf,pdf,63836,52825,61856,0.523
+FORM2,EXAM_FORM2_63838.pdf,pdf,63838,52628,63838,0.546
+FORM2,EXAM_FORM2_63887.pdf,pdf,63887,63887,63694,0.334
+FORM2,EXAM_FORM2_64036.pdf,pdf,64036,,54331,0.330
+FORM2,EXAM_FORM2_64038.pdf,pdf,64038,64038,,0.000
+FORM2,EXAM_FORM2_64413.jpg,photo,64413,500,64413,0.354
+FORM2,EXAM_FORM2_64413.pdf,pdf,64413,64413,64413,0.366
+FORM2,EXAM_FORM2_65442.jpg,photo,65442,23422,62578,0.341
+FORM2,EXAM_FORM2_65442.pdf,pdf,65442,65442,62298,0.323
+FORM2,EXAM_FORM2_75012.jpg,photo,75012,51,,0.000
+FORM2,EXAM_FORM2_75012.pdf,pdf,75012,75329,62411,0.255
+FORM2,EXAM_FORM2_94204.pdf,pdf,94204,94204,63807,0.268
+FORM3,EXAM_FORM3_19283.jpeg,photo,19283,92830,63807,0.253
+FORM3,EXAM_FORM3_19283.pdf,pdf,19283,19283,63887,0.254
+FORM3,EXAM_FORM3_36912.jpeg,photo,36912,20055,,0.131
+FORM3,EXAM_FORM3_36912.pdf,pdf,36912,36912,62306,0.265
+FORM3,EXAM_FORM3_50305.jpg,photo,50305,3052,63694,0.308
+FORM3,EXAM_FORM3_50305.pdf,pdf,50305,50305,63694,0.332
+FORM3,EXAM_FORM3_58220.jpg,photo,58220,11140,65444,0.237
+FORM3,EXAM_FORM3_58220.pdf,pdf,58220,7110,58220,0.469
+FORM3,EXAM_FORM3_58927.jpg,photo,58927,77,63694,0.315
+FORM3,EXAM_FORM3_58927.pdf,pdf,58927,58927,62298,0.263
+FORM3,EXAM_FORM3_61856.jpg,photo,61856,99157,62318,0.381
+FORM3,EXAM_FORM3_61856.pdf,pdf,61856,61856,63694,0.381
+FORM3,EXAM_FORM3_62034.jpeg,photo,62034,99902,62766,0.358
+FORM3,EXAM_FORM3_62034.pdf,pdf,62034,62034,64413,0.239
+FORM3,EXAM_FORM3_62288.pdf,pdf,62288,62288,63694,0.311
+FORM3,EXAM_FORM3_62298.jpeg,photo,62298,44422,63694,0.295
+FORM3,EXAM_FORM3_62298.pdf,pdf,62298,62298,63694,0.231
+FORM3,EXAM_FORM3_62306.pdf,pdf,62306,62306,63694,0.411
+FORM3,EXAM_FORM3_62336.pdf,pdf,62336,62336,62645,0.275
+FORM3,EXAM_FORM3_62358.jpeg,photo,62358,35825,,0.000
+FORM3,EXAM_FORM3_62358.pdf,pdf,62358,62358,62578,0.519
+FORM3,EXAM_FORM3_62369.pdf,pdf,62369,62369,62298,0.258
+FORM3,EXAM_FORM3_62370.pdf,pdf,62370,62370,63694,0.391
+FORM3,EXAM_FORM3_62380.jpeg,photo,62380,7210,62578,0.359
+FORM3,EXAM_FORM3_62380.pdf,pdf,62380,62380,64038,0.527
+FORM3,EXAM_FORM3_62401.jpg,photo,62401,99990,62401,0.569
+FORM3,EXAM_FORM3_62401.pdf,pdf,62401,62401,63694,0.343
+FORM3,EXAM_FORM3_62411.pdf,pdf,62411,62411,62579,0.351
+FORM3,EXAM_FORM3_62436.jpg,photo,62436,78601,62436,0.560
+FORM3,EXAM_FORM3_62436.pdf,pdf,62436,62436,63694,0.244
+FORM3,EXAM_FORM3_62440.jpeg,photo,62440,24400,63694,0.316
+FORM3,EXAM_FORM3_62440.pdf,pdf,62440,62440,63694,0.304
+FORM3,EXAM_FORM3_62445.jpg,photo,62445,26152,63273,0.373
+FORM3,EXAM_FORM3_62445.pdf,pdf,62445,,62572,0.216
+FORM3,EXAM_FORM3_62486.pdf,pdf,62486,62486,19283,0.250
+FORM3,EXAM_FORM3_62496.jpeg,photo,62496,24262,63694,0.358
+FORM3,EXAM_FORM3_62496.pdf,pdf,62496,62496,63694,0.285
+FORM3,EXAM_FORM3_62500.jpg,photo,62500,13702,64413,0.261
+FORM3,EXAM_FORM3_62500.pdf,pdf,62500,62500,62572,0.280
+FORM3,EXAM_FORM3_62572.jpeg,photo,62572,14611,62572,0.584
+FORM3,EXAM_FORM3_62572.pdf,pdf,62572,62572,62306,0.261
+FORM3,EXAM_FORM3_62577.jpeg,photo,62577,25770,62577,0.526
+FORM3,EXAM_FORM3_62577.pdf,pdf,62577,62577,63694,0.348
+FORM3,EXAM_FORM3_62578.jpg,photo,62578,99992,64038,0.628
+FORM3,EXAM_FORM3_62578.pdf,pdf,62578,51867,62369,0.524
+FORM3,EXAM_FORM3_62579.jpeg,photo,62579,57905,62306,0.270
+FORM3,EXAM_FORM3_62579.pdf,pdf,62579,35565,62411,0.274
+FORM3,EXAM_FORM3_62596.jpeg,photo,62596,96103,62336,0.336
+FORM3,EXAM_FORM3_62596.pdf,pdf,62596,62596,63694,0.243
+FORM3,EXAM_FORM3_62598.jpg,photo,62598,0,62336,0.283
+FORM3,EXAM_FORM3_62598.pdf,pdf,62598,62598,62306,0.301
+FORM3,EXAM_FORM3_62616.jpg,photo,62616,19005,64413,0.303
+FORM3,EXAM_FORM3_62616.pdf,pdf,62616,62616,63694,0.307
+FORM3,EXAM_FORM3_62645.jpeg,photo,62645,82211,63272,0.393
+FORM3,EXAM_FORM3_62645.pdf,pdf,62645,62645,62645,0.244
+FORM3,EXAM_FORM3_62760.pdf,pdf,62760,62760,63694,0.407
+FORM3,EXAM_FORM3_62766.jpg,photo,62766,55599,62445,0.348
+FORM3,EXAM_FORM3_62766.pdf,pdf,62766,51655,62766,0.495
+FORM3,EXAM_FORM3_63272.jpg,photo,63272,23892,64038,0.274
+FORM3,EXAM_FORM3_63272.pdf,pdf,63272,62574,62411,0.251
+FORM3,EXAM_FORM3_63694.jpg,photo,63694,36940,63694,0.265
+FORM3,EXAM_FORM3_63694.pdf,pdf,63694,63694,63694,0.446
+FORM3,EXAM_FORM3_63807.jpeg,photo,63807,67100,62306,0.288
+FORM3,EXAM_FORM3_63807.pdf,pdf,63807,63807,62411,0.255
+FORM3,EXAM_FORM3_63818.jpeg,photo,63818,71633,64413,0.361
+FORM3,EXAM_FORM3_63818.pdf,pdf,63818,63808,63807,0.220
+FORM3,EXAM_FORM3_63836.jpg,photo,63836,20000,61992,0.330
+FORM3,EXAM_FORM3_63836.pdf,pdf,63836,62826,62336,0.259
+FORM3,EXAM_FORM3_63838.PNG,photo,63838,97290,62578,0.465
+FORM3,EXAM_FORM3_63838.pdf,pdf,63838,63737,63694,0.274
+FORM3,EXAM_FORM3_63887.jpeg,photo,63887,15152,62318,0.345
+FORM3,EXAM_FORM3_63887.pdf,pdf,63887,63887,63694,0.301
+FORM3,EXAM_FORM3_64038.jpeg,photo,64038,94933,62578,0.563
+FORM3,EXAM_FORM3_64038.pdf,pdf,64038,64038,62578,0.529
+FORM3,EXAM_FORM3_64413.jpg,photo,64413,8259,64038,0.510
+FORM3,EXAM_FORM3_64413.pdf,pdf,64413,64139,64413,0.476
+FORM3,EXAM_FORM3_65442.jpg,photo,65442,54428,63694,0.331
+FORM3,EXAM_FORM3_65442.pdf,pdf,65442,65442,63694,0.322
+FORM3,EXAM_FORM3_67696.pdf,pdf,67696,67696,62578,0.530
+FORM3,EXAM_FORM3_75012.jpeg,photo,75012,42227,63807,0.428
+FORM3,EXAM_FORM3_75012.pdf,pdf,75012,75012,62598,0.285
+FORM3,EXAM_FORM3_94204.jpg,photo,94204,98998,63272,0.327
+FORM3,EXAM_FORM3_94204.pdf,pdf,94204,94048,62306,0.332

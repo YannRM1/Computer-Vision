@@ -3,12 +3,12 @@ Programme principal – Correction automatique d'examens
 PROJET COMPUTER VISION IG.2405 – 2026
 
 Usage :
-    python main.py [exam_name] [sig_dir]
+    python main.py [exam_name] [sig_dir] [presences_dir] [pdf_dir]
 
-  exam_name (optionnel) : nom de l'examen, ex. 'EXAM_FORM2'
-                          (défaut défini dans la section CONFIG)
-  sig_dir   (optionnel) : chemin vers la base de signatures
-                          (défaut défini dans la section CONFIG)
+  exam_name     (optionnel) : nom de l'examen, ex. 'EXAM_FORM2'
+  sig_dir       (optionnel) : chemin vers la base de signatures
+  presences_dir (optionnel) : répertoire des photos de 1re page
+  pdf_dir       (optionnel) : répertoire des formulaires PDF scannés
 """
 
 import os
@@ -19,39 +19,46 @@ from autoValidPresences import autoValidPresences
 from autoReadForm       import autoReadForm
 
 # =============================================================================
-# CONFIGURATION – adapter ces chemins pour le challenge
+# CONFIGURATION – adapter ces chemins pour le challenge (§3.6 de la consigne)
 # =============================================================================
 
-BASE_DIR  = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Nom de l'examen à traiter
 EXAM_NAME = "EXAM_FORM1"
 
-# Répertoire racine des données (changer si nécessaire)
+# Répertoire racine des données
 DATA_ROOT = os.path.join(BASE_DIR, "PROJECT 2026 -DATABASE-20260518")
 
 # Répertoire des signatures
 SIGNATURES_DIR = os.path.join(DATA_ROOT, "SIGNATURES")
 
+# Répertoires des données d'examen.
+# Dans la base actuelle, photos et PDFs sont dans le même dossier.
+# Pour le challenge avec répertoires distincts, modifier directement ces deux lignes :
+#   PRESENCES_DIR = r"C:\...\EXAM_FORMXX_PRESENCES"
+#   PDF_DIR       = r"C:\...\EXAM_FORMXX_PDF"
+_form_num     = EXAM_NAME.split("_")[-1]              # ex: "FORM1"
+PRESENCES_DIR = os.path.join(DATA_ROOT, _form_num)    # photos de 1re page
+PDF_DIR       = os.path.join(DATA_ROOT, _form_num)    # formulaires scannés
+
 # =============================================================================
-# Ne pas modifier ci-dessous (déduit automatiquement)
+# Ne pas modifier ci-dessous
 # =============================================================================
 
-def main(exam_name: str = EXAM_NAME, sig_dir: str = SIGNATURES_DIR) -> None:
+def main(exam_name: str = EXAM_NAME,
+         sig_dir: str = SIGNATURES_DIR,
+         presences_dir: str = PRESENCES_DIR,
+         pdf_dir: str = PDF_DIR) -> None:
     t0 = time.time()
 
-    # Déduire les répertoires d'entrée et de sortie
-    form_num = exam_name.split("_")[-1]   # ex: 'FORM2'
-    data_dir = os.path.join(DATA_ROOT, form_num)
-
-    presences_dir = data_dir   # les photos (.jpg/.jpeg) et PDFs sont dans le même dossier
-    pdf_dir       = data_dir   # idem
-    results_dir   = os.path.join(BASE_DIR, exam_name + "_RESULTS")
-
+    results_dir = os.path.join(BASE_DIR, exam_name + "_RESULTS")
     os.makedirs(results_dir, exist_ok=True)
 
     print("=" * 60)
     print(f" Traitement : {exam_name}")
+    print(f" Présences  : {presences_dir}")
+    print(f" PDFs       : {pdf_dir}")
     print(f" Signatures : {sig_dir}")
     print(f" Résultats  : {results_dir}")
     print("=" * 60)
@@ -81,7 +88,8 @@ def main(exam_name: str = EXAM_NAME, sig_dir: str = SIGNATURES_DIR) -> None:
 
 
 if __name__ == "__main__":
-    # Permettre de surcharger exam_name et sig_dir depuis la ligne de commande
     exam = sys.argv[1] if len(sys.argv) > 1 else EXAM_NAME
     sigs = sys.argv[2] if len(sys.argv) > 2 else SIGNATURES_DIR
-    main(exam_name=exam, sig_dir=sigs)
+    pres = sys.argv[3] if len(sys.argv) > 3 else PRESENCES_DIR
+    pdfs = sys.argv[4] if len(sys.argv) > 4 else PDF_DIR
+    main(exam_name=exam, sig_dir=sigs, presences_dir=pres, pdf_dir=pdfs)

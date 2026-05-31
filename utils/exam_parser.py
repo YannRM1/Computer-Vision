@@ -30,8 +30,10 @@ from utils.ocr_utils import (
 # ---------------------------------------------------------------------------
 
 HEADER_BAND_H  = 82     # hauteur de la bande Module/Code/Date en haut de page
-MIN_LINE_WIDTH = 480    # largeur min d'une ligne horizontale détectée
-LINE_MERGE_TOL = 40     # tolérance de fusion pour les lignes proches (px)
+MIN_LINE_WIDTH = 380    # largeur min d'une ligne horizontale détectée
+                        # (abaissé de 480 à 380 pour les scans de moindre qualité)
+LINE_MERGE_TOL = 60     # tolérance de fusion pour les lignes proches (px)
+                        # (augmenté de 40 à 60 pour fusionner les lignes dupliquées)
 
 # Colonne gauche où chercher les checkboxes MCQ
 MCQ_X_START = 12
@@ -104,7 +106,6 @@ def detect_question_blocks(exam_page: np.ndarray) -> list[tuple[int, int]]:
     ys = _merge_close_lines(ys)
 
     H = exam_page.shape[0]
-    # On inclut les bords haut/bas
     boundaries = [y for y in ys if HEADER_BAND_H <= y <= H - 30]
     if not boundaries:
         return [(HEADER_BAND_H, H)]
@@ -112,12 +113,20 @@ def detect_question_blocks(exam_page: np.ndarray) -> list[tuple[int, int]]:
     blocks = []
     prev = HEADER_BAND_H
     for y in boundaries:
-        if y - prev > 50:  # bloc de hauteur minimale
+        if y - prev > 50:
             blocks.append((prev, y))
         prev = y
-    # Dernier bloc jusqu'au bas
     if H - prev > 50:
         blocks.append((prev, H))
+
+    # Supprimer les blocs parasites : toute fausse ligne horizontale détectée
+    # à l'intérieur d'une question produit un bloc anormalement court.
+    # On filtre les blocs dont la hauteur est < 35 % de la médiane des autres.
+    if len(blocks) > 2:
+        heights = sorted([y1 - y0 for y0, y1 in blocks])
+        median_h = heights[len(heights) // 2]
+        min_h = max(50, int(median_h * 0.35))
+        blocks = [(y0, y1) for y0, y1 in blocks if (y1 - y0) >= min_h]
 
     return blocks
 
