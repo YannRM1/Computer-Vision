@@ -92,13 +92,23 @@ FORM_W = 900
 FORM_H = 1270
 
 
-def get_active_area(img: np.ndarray) -> tuple[int, int, int, int]:
+def get_active_area(img: np.ndarray,
+                    is_photo: bool = False) -> tuple[int, int, int, int]:
     """
     Retourne (x0, y0, x1, y1) de la zone active du formulaire.
-    Méthode : binarisation Otsu + projections horizontale/verticale.
+
+    - PDF  (is_photo=False) : cherche les pixels sombres (encre) sur fond blanc
+      → THRESH_BINARY_INV, seuil fixe 200.
+    - Photo (is_photo=True) : cherche le papier blanc sur fond sombre (bureau)
+      → THRESH_BINARY, seuil fixe 200.
+      Avec un fond sombre, THRESH_BINARY_INV marquerait aussi le bureau comme
+      "contenu" et renverrait la bounding-box de toute l'image.
     """
     gray = img if len(img.shape) == 2 else cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    _, binary = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY_INV)
+    if is_photo:
+        _, binary = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY)
+    else:
+        _, binary = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY_INV)
     H, W = gray.shape
     row_has = np.any(binary > 0, axis=1)
     col_has = np.any(binary > 0, axis=0)
@@ -146,7 +156,9 @@ def normalize_page(img: np.ndarray, is_photo: bool | None = None) -> np.ndarray:
     # via les 4 L-brackets de coin (les PDFs sont déjà alignés et tout warp
     # perturberait la calibration des ROIs).
     if is_photo:
-        brackets = find_corner_brackets(img, min_score=0.55)
+        # Seuil abaissé à 0.45 pour détecter les brackets même sur des photos
+        # légèrement floues ou moins contrastées (était 0.55).
+        brackets = find_corner_brackets(img, min_score=0.45)
         if brackets is not None:
             # Reproduit la géométrie d'un PDF : brackets aux mêmes ratios
             # de marge (~7.3% horizontal, ~4.3% vertical).
@@ -163,7 +175,9 @@ def normalize_page(img: np.ndarray, is_photo: bool | None = None) -> np.ndarray:
             img = deskew(img)
 
     # Étape 2 : crop bbox + resize vers le repère final
-    x0, y0, x1, y1 = get_active_area(img)
+    # Pour les photos, chercher le papier blanc (is_photo=True) ;
+    # pour les PDFs, chercher le contenu sombre sur fond blanc (is_photo=False).
+    x0, y0, x1, y1 = get_active_area(img, is_photo=is_photo)
     H, W = img.shape[:2]
     mx = max(1, int(W * 0.005)); my = max(1, int(H * 0.005))
     x0 = min(W - 2, x0 + mx); y0 = min(H - 2, y0 + my)

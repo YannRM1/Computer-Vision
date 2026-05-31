@@ -73,6 +73,18 @@ def autoValidID(img_path: str,
     """
     img = cv2.imread(img_path)
     if img is None:
+        try:
+            img = cv2.imdecode(np.fromfile(img_path, dtype=np.uint8), cv2.IMREAD_COLOR)
+        except Exception:
+            img = None
+    if img is None:
+        try:
+            from PIL import Image as _PILImage
+            pil = _PILImage.open(img_path).convert("RGB")
+            img = cv2.cvtColor(np.array(pil), cv2.COLOR_RGB2BGR)
+        except Exception:
+            img = None
+    if img is None:
         print(f"  [WARN] Impossible de lire : {img_path}")
         return None, None
 

@@ -1,0 +1,125 @@
+============================================================
+ Traitement : EXAM_FORM1
+ Signatures : c:\Users\yannr\Desktop\Jupyter\Vision par ordinateur\Computer-Vision\PROJECT 2026 -DATABASE-20260518\SIGNATURES
+ R sultats  : c:\Users\yannr\Desktop\Jupyter\Vision par ordinateur\Computer-Vision\EXAM_FORM1_RESULTS
+============================================================
+
+--- PROGRAMME 1 : Validation des pr sences ---
+[P1] Chargement des signatures depuis : c:\Users\yannr\Desktop\Jupyter\Vision par ordinateur\Computer-Vision\PROJECT 2026 -DATABASE-20260518\SIGNATURES
+  -> 60 eleves charg s (1220 signatures)
+[P1] 32 images   traiter dans : c:\Users\yannr\Desktop\Jupyter\Vision par ordinateur\Computer-Vision\PROJECT 2026 -DATABASE-20260518\FORM1
+  EXAM_FORM1_19283.jpeg: grid=92834, sig=62306
+  EXAM_FORM1_50305.jpg: grid=3053, sig=63694
+  EXAM_FORM1_54331.jpg: grid=99932, sig=54331
+  EXAM_FORM1_58220.jpg: grid=22201, sig=63887
+  EXAM_FORM1_58927.jpg: grid=92792, sig=63694
+  EXAM_FORM1_61856.jpg: grid=99998, sig=61856
+  [WARN] Impossible de lire : c:\Users\yannr\Desktop\Jupyter\Vision par ordinateur\Computer-Vision\PROJECT 2026 -DATABASE-20260518\FORM1\EXAM_FORM1_61992.jpg
+  EXAM_FORM1_62034.jpeg: grid=88988, sig=62492
+  [WARN] Impossible de lire : c:\Users\yannr\Desktop\Jupyter\Vision par ordinateur\Computer-Vision\PROJECT 2026 -DATABASE-20260518\FORM1\EXAM_FORM1_62288.png
+  EXAM_FORM1_62298.jpeg: grid=29988, sig=63694
+  [WARN] Impossible de lire : c:\Users\yannr\Desktop\Jupyter\Vision par ordinateur\Computer-Vision\PROJECT 2026 -DATABASE-20260518\FORM1\EXAM_FORM1_62336.JPG
+  EXAM_FORM1_62358.jpeg: grid=97306, sig=62358
+  EXAM_FORM1_62380.jpeg: grid=99458, sig=62578
+  EXAM_FORM1_62401.jpg: grid=24010, sig=64038
+  EXAM_FORM1_62436.jpeg: grid=98989, sig=61856
+  EXAM_FORM1_62440.jpeg: grid=99999, sig=62440
+  EXAM_FORM1_62445.jpg: grid=69943, sig=None
+  EXAM_FORM1_62578.jpg: grid=49915, sig=58220
+  EXAM_FORM1_62598.jpg: grid=25880, sig=62411
+  EXAM_FORM1_62616.jpg: grid=7593, sig=62421
+  EXAM_FORM1_62645.jpeg: grid=15016, sig=63807
+  EXAM_FORM1_62766.jpg: grid=7711, sig=62318
+  EXAM_FORM1_63029.jpg: grid=44794, sig=62578
+  EXAM_FORM1_63272.jpg: grid=99998, sig=62645
+  EXAM_FORM1_63273.jpg: grid=99993, sig=62387
+  EXAM_FORM1_63694.jpg: grid=37050, sig=63694
+  EXAM_FORM1_63807.jpeg: grid=96822, sig=64038
+  EXAM_FORM1_63836.jpg: grid=99999, sig=61856
+  EXAM_FORM1_63887.jpeg: grid=27799, sig=62445
+  EXAM_FORM1_64413.jpg: grid=33139, sig=63694
+  EXAM_FORM1_65442.jpg: grid=420, sig=63694
+  EXAM_FORM1_75012.jpg: grid=98988, sig=62579
+[P1] R sultats sauvegard s : c:\Users\yannr\Desktop\Jupyter\Vision par ordinateur\Computer-Vision\EXAM_FORM1_RESULTS\EXAM_FORM1_PRESENCES.xlsx
+
+--- PROGRAMME 2 : Lecture automatique des formulaires ---
+[P2] Chargement des signatures depuis : c:\Users\yannr\Desktop\Jupyter\Vision par ordinateur\Computer-Vision\PROJECT 2026 -DATABASE-20260518\SIGNATURES
+  -> 60 eleves, 1220 signatures
+[P2] 43 formulaires PDF   traiter dans : c:\Users\yannr\Desktop\Jupyter\Vision par ordinateur\Computer-Vision\PROJECT 2026 -DATABASE-20260518\FORM1
+  [PDF] EXAM_FORM1_19283.pdf C:\Users\yannr\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\utils\data\dataloader.py:752: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+-> 9 questions, student_id=12835
+  [PDF] EXAM_FORM1_36912.pdf -> 9 questions, student_id=36912
+  [PDF] EXAM_FORM1_50305.pdf -> 9 questions, student_id=50305
+  [PDF] EXAM_FORM1_54331.pdf -> 9 questions, student_id=54331
+  [PDF] EXAM_FORM1_58220.pdf -> 9 questions, student_id=58220
+  [PDF] EXAM_FORM1_58927.pdf -> 10 questions, student_id=58927
+  [PDF] EXAM_FORM1_61856.pdf -> 9 questions, student_id=50688
+  [PDF] EXAM_FORM1_61992.pdf -> 9 questions, student_id=61292
+  [PDF] EXAM_FORM1_62034.pdf -> 8 questions, student_id=62034
+  [PDF] EXAM_FORM1_62288.pdf -> 9 questions, student_id=51177
+  [PDF] EXAM_FORM1_62298.pdf -> 8 questions, student_id=62298
+  [PDF] EXAM_FORM1_62306.pdf -> 9 questions, student_id=23063
+  [PDF] EXAM_FORM1_62336.pdf -> 9 questions, student_id=62336
+  [PDF] EXAM_FORM1_62358.pdf -> 7 questions, student_id=52347
+  [PDF] EXAM_FORM1_62369.pdf -> 9 questions, student_id=52588
+  [PDF] EXAM_FORM1_62370.pdf -> 9 questions, student_id=69876
+  [PDF] EXAM_FORM1_62380.pdf -> 7 questions, student_id=62380
+  [PDF] EXAM_FORM1_62401.pdf -> 8 questions, student_id=62401
+  [PDF] EXAM_FORM1_62411.pdf -> 9 questions, student_id=62411
+  [PDF] EXAM_FORM1_62427.pdf -> 6 questions, student_id=62427
+  [PDF] EXAM_FORM1_62436.pdf -> 9 questions, student_id=62436
+  [PDF] EXAM_FORM1_62440.pdf -> 9 questions, student_id=62440
+  [PDF] EXAM_FORM1_62445.pdf -> 10 questions, student_id=62445
+  [PDF] EXAM_FORM1_62492.pdf -> 7 questions, student_id=0
+  [PDF] EXAM_FORM1_62500.pdf -> 9 questions, student_id=62500
+  [PDF] EXAM_FORM1_62578.pdf -> 6 questions, student_id=62578
+  [PDF] EXAM_FORM1_62596.pdf -> 9 questions, student_id=62596
+  [PDF] EXAM_FORM1_62598.pdf -> 7 questions, student_id=62598
+  [PDF] EXAM_FORM1_62616.pdf -> 9 questions, student_id=62616
+  [PDF] EXAM_FORM1_62645.pdf -> 9 questions, student_id=62645
+  [PDF] EXAM_FORM1_62747.pdf -> 9 questions, student_id=81687
+  [PDF] EXAM_FORM1_62766.pdf -> 9 questions, student_id=51888
+  [PDF] EXAM_FORM1_63029.pdf -> 9 questions, student_id=63029
+  [PDF] EXAM_FORM1_63272.pdf -> 9 questions, student_id=62575
+  [PDF] EXAM_FORM1_63273.pdf -> 4 questions, student_id=0
+  [PDF] EXAM_FORM1_63694.pdf -> 9 questions, student_id=63694
+  [PDF] EXAM_FORM1_63807.pdf -> 9 questions, student_id=63807
+  [PDF] EXAM_FORM1_63836.pdf -> 9 questions, student_id=62826
+  [PDF] EXAM_FORM1_63838.pdf -> 9 questions, student_id=52727
+  [PDF] EXAM_FORM1_63887.pdf -> 9 questions, student_id=63887
+  [PDF] EXAM_FORM1_64413.pdf -> 9 questions, student_id=64413
+  [PDF] EXAM_FORM1_65442.pdf -> 9 questions, student_id=65442
+  [PDF] EXAM_FORM1_75012.pdf -> 9 questions, student_id=75012
+[P2] Termin . 43 fichiers g n r s dans : c:\Users\yannr\Desktop\Jupyter\Vision par ordinateur\Computer-Vision\EXAM_FORM1_RESULTS
+
+============================================================
+ Termin  en 529.9s
+ Fichier pr sences   : EXAM_FORM1_PRESENCES.xlsx
+ Fichiers formulaires: 43 xlsx g n r s
+============================================================
+
+[Done] exited with code=0 in 532.096 seconds
+
+
+
+EXEMPLE CSV RESULTAT POUR LE 62436 :
+
+Module	1G.1103
+Professor	DING
+Date	07/05/2026
+Code	5101-0
+Notes de cours	1
+Notes manuscrites	0
+Ordinateur portable	1
+Calculatrice	0
+Feuilles brouillon	10
+Note maximale	10
+Note pour valider	4
+	
+Prénom	Y
+Nom	L
+Validation signature	0
+Group	G04D
+STUDENT ID	62436
+Validation cryptogramme	0

@@ -76,6 +76,11 @@ def evaluate_form(form_dir, desc_db, form_name, out_rows):
             if ext in ("jpg", "jpeg", "png", "bmp"):
                 img = cv2.imread(path)
                 if img is None:
+                    try:
+                        img = cv2.imdecode(np.fromfile(path, dtype=np.uint8), cv2.IMREAD_COLOR)
+                    except Exception:
+                        img = None
+                if img is None:
                     continue
                 kind = "photo"
                 grid_id, sig_id, sc = process(img, desc_db, is_photo=True)
