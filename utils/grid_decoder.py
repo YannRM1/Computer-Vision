@@ -37,7 +37,7 @@ ROI_STUDENT_ID    = (725, 247, 155, 330)
 # fournit un mapping légèrement décalé par rapport au rendu PDF de référence.
 # Ces coordonnées ont été calibrées en mesurant la position réelle de la
 # grille sur des images normalisées issues de photos (FORM1/2/3).
-ROI_STUDENT_ID_PHOTO = (693, 217, 131, 328)
+ROI_STUDENT_ID_PHOTO = (692, 217, 131, 328)
 STUDENT_ID_ROWS   = 10
 STUDENT_ID_COLS   = 5
 
