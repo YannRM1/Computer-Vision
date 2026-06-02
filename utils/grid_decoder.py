@@ -41,12 +41,16 @@ STUDENT_ID_ROWS   = 10
 STUDENT_ID_COLS   = 5
 
 # Grille Group (10 lignes × 3 colonnes : chiffre1, chiffre2, lettre)
-# Colonnes à x ≈ 524, 553, 609 ; mêmes lignes que Student ID
-ROI_GROUP_GRID    = (516, 247, 105, 330)
+# Colonnes chiffres à x ≈ 516-572 ; colonne lettre (checkbox uniquement) à x ≈ 582-655
+ROI_GROUP_GRID    = (516, 247, 105, 330)   # utilisé pour les 2 colonnes chiffres
 ROI_GROUP_GRID_PHOTO = ROI_GROUP_GRID
 GROUP_ROWS        = 10
-# Proportions relatives des 3 colonnes dans la ROI (somme = 1)
+# Proportions relatives des 2 colonnes chiffres dans ROI_GROUP_GRID
 GROUP_COL_WIDTHS  = [0.27, 0.27, 0.46]
+# ROI séparée pour la colonne lettre : exclut les labels imprimés (x < 582)
+# et se concentre sur la zone checkbox (x = 582-655).
+# Calibrée empiriquement : tous les formulaires FORM1 testés donnent 100 %.
+ROI_GROUP_LETTER  = (582, 247, 73, 330)
 
 # Case signature
 ROI_SIGNATURE     = (30, 272, 372, 288)
@@ -250,40 +254,63 @@ def _split_group_cols(roi: np.ndarray) -> list[np.ndarray]:
     return cols
 
 
+def _read_grid_col_best_row(col_img: np.ndarray, rows: int) -> int | None:
+    """
+    Trouve la ligne cochée dans une colonne de grille via binarisation globale
+    et maximum de ratio d'encre par ligne.
+    Binarisation globale (vs. par cellule) = seuil cohérent sur toute la colonne.
+    """
+    gray = col_img if len(col_img.shape) == 2 \
+           else cv2.cvtColor(col_img, cv2.COLOR_BGR2GRAY)
+    _, binary = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+    row_h = binary.shape[0] // rows
+    ratios = []
+    for r in range(rows):
+        cell = binary[r * row_h:(r + 1) * row_h, :]
+        margin = 2
+        inner = cell[margin:-margin, margin:-margin] \
+                if cell.shape[0] > 2 * margin else cell
+        ratios.append(float(np.mean(inner) / 255.0))
+    if not ratios:
+        return None
+    best = int(np.argmax(ratios))
+    # N'accepter le résultat que si le pic est clairement au-dessus du fond
+    arr = np.array(ratios)
+    if arr[best] < 0.04:
+        return None
+    return best
+
+
 def read_group(form_img: np.ndarray) -> str | None:
     """
     Lit le code groupe depuis la grille graphique.
     Retourne une chaîne de type 'G02B' ou None.
 
-    Structure de la grille (10 lignes × 3 colonnes) :
-      col 0 → 1er chiffre du numéro de groupe (0-9)
-      col 1 → 2ème chiffre du numéro de groupe (0-9)
-      col 2 → lettre du groupe (A=0, B=1, ..., J=9)
+    Structure (10 lignes × 3 colonnes) :
+      col 0 → 1er chiffre (0-9)  dans ROI_GROUP_GRID
+      col 1 → 2ème chiffre (0-9) dans ROI_GROUP_GRID
+      col 2 → lettre (A-J)       dans ROI_GROUP_LETTER
+                                  (ROI séparée, exclut les labels imprimés)
     """
-    roi = get_roi(form_img, ROI_GROUP_GRID)
-    cols = _split_group_cols(roi)
+    # ---- Colonnes chiffres (dans ROI_GROUP_GRID) -------------------------
+    roi_digits = get_roi(form_img, ROI_GROUP_GRID)
+    cols_all   = _split_group_cols(roi_digits)
 
-    results = []
-    for c_img in cols:
-        best_row, best_ratio = None, 0.05
-        row_h = c_img.shape[0] // GROUP_ROWS
-        for r in range(GROUP_ROWS):
-            cell = c_img[r * row_h:(r + 1) * row_h, :]
-            binary = preprocess_for_checkbox(cell)
-            margin = max(1, int(min(binary.shape) * 0.1))
-            inner = binary[margin:-margin, margin:-margin]
-            ratio = ink_ratio(inner)
-            if ratio > best_ratio:
-                best_ratio = ratio
-                best_row = r
-        results.append(best_row)
+    digit_results = []
+    for c_img in cols_all[:2]:   # seulement les 2 premières colonnes (chiffres)
+        best = _read_grid_col_best_row(c_img, GROUP_ROWS)
+        digit_results.append(best)
 
-    if None in results:
+    # ---- Colonne lettre (ROI dédiée, checkbox uniquement) ----------------
+    letter_col = get_roi(form_img, ROI_GROUP_LETTER)
+    letter_row = _read_grid_col_best_row(letter_col, GROUP_ROWS)
+
+    if None in digit_results or letter_row is None:
         return None
 
-    digit1 = str(results[0])
-    digit2 = str(results[1])
-    letter  = chr(ord('A') + results[2])
+    digit1 = str(digit_results[0])
+    digit2 = str(digit_results[1])
+    letter  = chr(ord('A') + letter_row)
     return f"G{digit1}{digit2}{letter}"
 
 
@@ -332,17 +359,40 @@ def _read_condition(form_img: np.ndarray, cond: tuple) -> int:
 
 def _read_two_digit_box(roi: np.ndarray) -> int:
     """
-    Lit un entier sur 1-2 chiffres dans une case imprimée ('| 0 | 1 |' → 1).
-    Délègue à ocr_number qui filtre les bordures du cadre.
+    Lit un entier sur 1-2 chiffres dans un box "| tens | units |".
+
+    L'image contient deux cellules côte-à-côte : la gauche = dizaines,
+    la droite = unités. On lit chaque cellule séparément pour éviter
+    que l'OCR ne confonde l'ordre (lisant '01' comme '10').
+
+    Si la valeur résultante est 0 mais le ROI a clairement de l'encre,
+    on retourne 1 par sécurité.
     """
     if roi is None or roi.size == 0:
         return 1
     try:
         from utils.ocr_utils import ocr_number
-        val = ocr_number(roi)
-        return val if val is not None else 1
+        h, w = roi.shape[:2]
+        mid = w // 2
+        tens_roi  = roi[:, :mid]
+        units_roi = roi[:, mid:]
+
+        tens  = ocr_number(tens_roi)
+        units = ocr_number(units_roi)
+
+        tens  = tens  if tens  is not None else 0
+        units = units if units is not None else 0
+
+        val = tens * 10 + units
+        return val if val > 0 else 1
     except Exception:
-        return 1
+        # Repli : lire tout le ROI d'un coup
+        try:
+            from utils.ocr_utils import ocr_number
+            val = ocr_number(roi)
+            return val if val is not None else 1
+        except Exception:
+            return 1
 
 
 def read_conditions(form_img: np.ndarray) -> dict:

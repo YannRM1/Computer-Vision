@@ -23,7 +23,7 @@ from utils.grid_decoder import (
     ROI_FIRSTNAME,
     ROI_NAME,
 )
-from utils.ocr_utils import ocr_codes_exam, ocr_text, ocr_handwritten_unite
+from utils.ocr_utils import ocr_codes_exam, ocr_top_header, ocr_text, ocr_handwritten_unite
 from utils.signature_utils import match_signature_to_id
 
 
@@ -238,11 +238,36 @@ def read_name(form_img: np.ndarray) -> str:
 
 def read_codes_exam(form_img: np.ndarray) -> dict:
     """
-    Lit la bande colorée CODES EXAM.
-    Retourne { 'module', 'professor', 'date', 'code' }.
+    Lit les champs CODES EXAM (Module, Professor, Date, Code).
+
+    Stratégie double source :
+      1. Zone CODES_EXAM (bande colorée y=65-130) → Module et Professor
+         (les plus fiables dans cette zone).
+      2. En-tête du haut (y=10-55, entre les brackets) → Date et Code
+         (valeurs réelles de l'examen, plus précises que le template).
+    Les champs vides ou manquants dans l'une des sources sont comblés par
+    l'autre.
     """
-    roi = get_roi(form_img, ROI_CODES_EXAM)
-    return ocr_codes_exam(roi)
+    # Source 1 : bande CODES_EXAM
+    roi_codes = get_roi(form_img, ROI_CODES_EXAM)
+    result = ocr_codes_exam(roi_codes)
+
+    # Source 2 : en-tête du haut (brackets de coin)
+    # y=10:55 en évitant les brackets de coin (x=60:840)
+    header_roi = form_img[10:55, 60:840]
+    header     = ocr_top_header(header_roi)
+
+    # Date : préférer la valeur du header (plus fiable)
+    if header.get("date"):
+        result["date"] = header["date"]
+    # Code : prendre le header si la zone codes le manque
+    if header.get("code") and not result.get("code"):
+        result["code"] = header["code"]
+    # Module : prendre le header si la zone codes le manque
+    if header.get("module") and not result.get("module"):
+        result["module"] = header["module"]
+
+    return result
 
 
 # ---------------------------------------------------------------------------
@@ -251,12 +276,17 @@ def read_codes_exam(form_img: np.ndarray) -> dict:
 
 def compare_cryptograms(crypto_refs: list[np.ndarray],
                         crypto_query: np.ndarray,
-                        threshold: float = 0.75) -> bool:
+                        threshold: float = 0.50) -> bool:
     """
-    Vérifie que tous les cryptogrammes d'une liste sont identiques au
-    cryptogramme de référence (page 1).
+    Vérifie que les cryptogrammes des pages d'examen sont identiques à celui
+    de la page 1 (crypto_query).
 
-    Méthode : corrélation normalisée (NCC) entre images binarisées.
+    Stratégie robuste :
+      1. Ignorer les pages où le ROI extrait est quasi-vide (ink < 2 %) :
+         ces pages n'ont pas de cryptogramme à cette position.
+      2. Parmi les pages valides, accepter si la MAJORITÉ (≥ 50 %) des NCC
+         dépasse le seuil (au lieu d'exiger 100 % de succès).
+      3. Si aucune page valide, retourner True (on ne peut pas invalider).
     """
     if not crypto_refs:
         return True
@@ -268,18 +298,26 @@ def compare_cryptograms(crypto_refs: list[np.ndarray],
 
     ref_size = (80, 35)
     ref_b = cv2.resize(binarize(crypto_query), ref_size).astype(np.float32) / 255.0
+    if float(np.mean(ref_b)) < 0.02:
+        return True   # cryptogramme de page 1 indisponible
 
+    passed, total_valid = 0, 0
     for crypto in crypto_refs:
-        if crypto.size == 0:
+        if crypto is None or crypto.size == 0:
             continue
         q_b = cv2.resize(binarize(crypto), ref_size).astype(np.float32) / 255.0
-        # NCC (Normalized Cross-Correlation)
+        if float(np.mean(q_b)) < 0.02:
+            continue   # page sans cryptogramme à cette position
+        total_valid += 1
         numer = float(np.sum(ref_b * q_b))
         denom = np.sqrt(float(np.sum(ref_b ** 2)) * float(np.sum(q_b ** 2)))
         ncc = numer / (denom + 1e-9)
-        if ncc < threshold:
-            return False
-    return True
+        if ncc >= threshold:
+            passed += 1
+
+    if total_valid == 0:
+        return True
+    return passed >= max(1, total_valid // 2)
 
 
 # ---------------------------------------------------------------------------

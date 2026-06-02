@@ -87,6 +87,51 @@ _RE_PROF    = re.compile(r"Profess(?:or|eur)\s*[|:\s]\s*([\w-]+)", re.IGNORECASE
 _RE_DATE    = re.compile(r"Date\s*[|:\s]\s*(\d{1,2}[/.\-]\d{1,2}[/.\-]\d{2,4})",
                          re.IGNORECASE)
 _RE_CODE    = re.compile(r"Code\s*[|:\s]\s*([\w-]+)", re.IGNORECASE)
+# Date nue sans label (ex: "17/11/2025" dans le header du haut)
+_RE_DATE_BARE = re.compile(r"\b(\d{1,2}[/.\-]\d{1,2}[/.\-]\d{2,4})\b")
+
+
+def ocr_top_header(header_img: np.ndarray) -> dict:
+    """
+    Lit la bande d'en-tête (y ≈ 10-55 de la page normalisée) qui contient,
+    entre les brackets de coin, les champs :
+        [module_code]   [section_code]   [date]
+
+    Ces données sont plus fiables que la zone CODES_EXAM pour la date car
+    elles correspondent aux valeurs réelles de l'examen (pas au template).
+
+    Retourne {"module": str, "code": str, "date": str}.
+    """
+    gray = _to_gray(header_img)
+    clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8, 8))
+    eq = clahe.apply(gray)
+    big = cv2.resize(eq, (eq.shape[1] * 4, eq.shape[0] * 4),
+                     interpolation=cv2.INTER_CUBIC)
+    _, thresh = cv2.threshold(big, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    text1 = _ocr_raw(thresh)
+    text2 = _ocr_raw(big)
+    combined = text1 + " " + text2
+
+    result = {"module": "", "code": "", "date": ""}
+
+    # Date : chercher un motif DD/MM/YYYY ou variantes
+    m_date = _RE_DATE_BARE.search(combined)
+    if m_date:
+        result["date"] = m_date.group(1).strip()
+
+    # Les tokens alphanumériques restants (sans la date) → module et code
+    tokens = [t for t in re.split(r"\s+", combined)
+              if re.match(r"^[\w.\-]+$", t)
+              and not re.match(r"^\d{1,2}[/.\-]\d{1,2}[/.\-]\d{2,4}$", t)]
+    # Heuristique : module = token contenant un point (ex: IG.2405),
+    #               code   = token avec tirets (ex: S1-01-G1)
+    for tok in tokens:
+        if "." in tok and not result["module"]:
+            result["module"] = tok
+        elif "-" in tok and not result["code"]:
+            result["code"] = tok
+
+    return result
 
 
 def ocr_codes_exam(img: np.ndarray) -> dict:
@@ -101,16 +146,13 @@ def ocr_codes_exam(img: np.ndarray) -> dict:
         regex (autorise les caractères ambigus comme O/0).
     """
     gray = _to_gray(img)
-    # CLAHE pour neutraliser le fond coloré uniforme
     clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8, 8))
     eq = clahe.apply(gray)
     H, W = eq.shape
     big = cv2.resize(eq, (W * 4, H * 4), interpolation=cv2.INTER_CUBIC)
 
-    # Variante 1 : Otsu pur sur l'image upscalée
     _, b1 = cv2.threshold(big, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
     text1 = _ocr_raw(b1)
-    # Variante 2 : OCR direct sur niveau de gris CLAHE (EasyOCR sait gérer)
     text2 = _ocr_raw(big)
 
     combined = text1 + "  " + text2
@@ -487,7 +529,6 @@ def ocr_handwritten_exposant(img: np.ndarray) -> int | None:
     """Lit l'exposant manuscrit (entier, éventuellement négatif)."""
     if img is None or img.size == 0:
         return None
-    # Essai bas niveau d'abord
     gray = _to_gray(img)
     clahe = cv2.createCLAHE(clipLimit=4.0, tileGridSize=(2, 2))
     gray = clahe.apply(gray)
@@ -498,7 +539,6 @@ def ocr_handwritten_exposant(img: np.ndarray) -> int | None:
             return int("".join(str(d) for d in digits))
         except Exception:
             pass
-    # Fallback easyocr
     text = _ocr_handwritten(img, allowlist="0123456789-")
     text = re.sub(r"[^0-9\-]", "", text)
     try:

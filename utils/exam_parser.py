@@ -202,28 +202,35 @@ def _parse_mcq_choices(block_img: np.ndarray) -> dict[str, int]:
 def _has_numerical_answer(block_img: np.ndarray) -> bool:
     """
     Détecte si le bloc contient une zone de réponse numérique
-    (texte '.10' ou 'Value/Valeur').
-    Utilise une projection sur la colonne centrale pour repérer
-    la structure 'mantisse × 10^exposant'.
+    (structure 'mantisse × 10^exposant').
+
+    Critères robustes (ordre d'évaluation) :
+      1. Grand rectangle dans le tiers inférieur du bloc (case mantisse).
+         Seuil abaissé + binarisation Otsu pour les blocs clairs.
+      2. Si pas de rectangle mais aucune checkbox MCQ → probablement numérique.
     """
-    # Heuristique : un bloc numérique a une colonne centrale avec peu de cases
-    # mais des rectangles larges (les cases mantisse/exposant)
     h, w = block_img.shape[:2]
-    # Chercher des contours larges dans la zone centrale du bloc
     gray = cv2.cvtColor(block_img, cv2.COLOR_BGR2GRAY) \
            if len(block_img.shape) == 3 else block_img
-    _, binary = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY_INV)
 
-    # Un bloc numérique a une grande case mantisse (large et haute)
-    # dans la partie inférieure (y > 50% de la hauteur du bloc)
-    lower = binary[h // 2:, :]
-    num, _, stats, _ = cv2.connectedComponentsWithStats(lower, connectivity=8)
-    for i in range(1, num):
-        x, y, bw, bh, area = stats[i]
-        if bw > w * 0.12 and bh > h * 0.08 and area > 300:
-            return True
+    # Binarisation Otsu (plus robuste que seuil fixe 200)
+    _, binary_otsu = cv2.threshold(gray, 0, 255,
+                                   cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+    # Binarisation fixe (fallback pour scans clairs où Otsu sur-seuille)
+    _, binary_fixed = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY_INV)
 
-    # Alternative : chercher les checkboxes → si aucune, probablement numérique
+    for binary in (binary_fixed, binary_otsu):
+        # Chercher dans le tiers inférieur du bloc (pas seulement la moitié)
+        lower = binary[h * 2 // 3:, :]
+        num, _, stats, _ = cv2.connectedComponentsWithStats(lower,
+                                                             connectivity=8)
+        for i in range(1, num):
+            x, y, bw, bh, area = stats[i]
+            # Critères assouplis : petite case exposant aussi acceptable
+            if bw > w * 0.08 and bh > h * 0.05 and area > 150:
+                return True
+
+    # Fallback : si aucun checkbox MCQ détecté, supposer numérique
     boxes = _find_mcq_checkboxes(block_img)
     return len(boxes) == 0
 
@@ -293,13 +300,18 @@ def _parse_numerical_answer(block_img: np.ndarray) -> dict:
             bx, by, bw, bh = large_sorted_x[-1]
             unite_img = block_img[by:by + bh, bx:bx + bw]
 
-    # Fallback : fractions fixes
+    # Fallback : fractions fixes calibrées sur la structure du formulaire
+    # La zone de réponse numérique est toujours dans le tiers inférieur du bloc.
+    # Coordonnées relatives basées sur l'observation des blocs FORM1 :
+    #   - Mantisse  : grande boîte à gauche   (x ≈ 2-25%, y ≈ 72-95%)
+    #   - Exposant  : petite boîte au centre  (x ≈ 25-38%, y ≈ 65-85%)
+    #   - Unité     : boîte à droite          (x ≈ 42-68%, y ≈ 72-95%)
     if mantisse_img is None:
-        mantisse_img = block_img[int(h*0.68):int(h*0.92), int(w*0.03):int(w*0.22)]
+        mantisse_img = block_img[int(h*0.72):int(h*0.95), int(w*0.02):int(w*0.25)]
     if exposant_img is None:
-        exposant_img = block_img[int(h*0.58):int(h*0.76), int(w*0.24):int(w*0.36)]
+        exposant_img = block_img[int(h*0.65):int(h*0.85), int(w*0.25):int(w*0.38)]
     if unite_img is None:
-        unite_img = block_img[int(h*0.68):int(h*0.92), int(w*0.42):int(w*0.60)]
+        unite_img = block_img[int(h*0.72):int(h*0.95), int(w*0.42):int(w*0.68)]
 
     mantisse = ocr_handwritten_mantisse(mantisse_img)
     exposant = ocr_handwritten_exposant(exposant_img)
@@ -390,6 +402,7 @@ def parse_exam_pages(pdf_images: list[np.ndarray],
 # ---------------------------------------------------------------------------
 
 CHOICE_COLS = ["CHOIX A", "CHOIX B", "CHOIX C", "CHOIX D",
+       
                "CHOIX E", "CHOIX F", "CHOIX G", "CHOIX H"]
 
 
