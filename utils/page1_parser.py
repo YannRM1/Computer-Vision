@@ -122,34 +122,114 @@ def _clean_name_text(raw: str) -> str:
     return " ".join(cleaned.split()).strip()
 
 
+# Géométrie de la grille de cases-lettres (repère canonique 900×1270).
+# Le formulaire est désormais recalé : ces positions sont stables.
+NAME_CELL_X0    = 31.0    # bord gauche de la 1re case (x absolu)
+NAME_CELL_PITCH = 24.45   # pas horizontal entre cases
+NAME_CELLS      = 15      # nombre de cases
+FIRSTNAME_Y     = (211, 235)
+NAME_Y          = (270, 294)
+
+
+def collect_name_cells(form_img: np.ndarray, y_range: tuple) -> list:
+    """
+    Segmente une rangee de cases-lettres et renvoie la liste des sous-images
+    grises (interieur de case) des cases NON VIDES, dans l'ordre.
+
+    Reutilise par la lecture des noms ET par la generation du jeu de donnees
+    de fine-tuning (build_letter_dataset.py). Arret apres 2 cases vides
+    consecutives une fois au moins une lettre vue (noms contigus).
+    """
+    from utils.ocr_utils import _to_gray
+    if form_img is None or form_img.size == 0:
+        return []
+    y0, y1 = y_range
+    cells, empty_run, started = [], 0, False
+    for k in range(NAME_CELLS):
+        xa = int(round(NAME_CELL_X0 + k * NAME_CELL_PITCH))
+        xb = int(round(NAME_CELL_X0 + (k + 1) * NAME_CELL_PITCH))
+        cell = form_img[y0:y1, xa:xb]
+        if cell.size == 0:
+            continue
+        gray = _to_gray(cell)
+        ch, cw = gray.shape
+        inner = gray[3:max(4, ch - 3), 4:max(5, cw - 4)]
+        binv = cv2.threshold(inner, 150, 255, cv2.THRESH_BINARY_INV)[1]
+        mask = cv2.morphologyEx(binv, cv2.MORPH_OPEN, np.ones((2, 2), np.uint8))
+        if float(mask.mean()) / 255.0 < 0.02:
+            if started:
+                empty_run += 1
+                if empty_run >= 2:
+                    break
+            continue
+        empty_run = 0
+        started = True
+        cells.append(inner)
+    return cells
+
+
+def _read_letter_cells(form_img: np.ndarray, y_range: tuple) -> str:
+    """
+    Lit une rangee de cases-lettres manuscrites a partir de la grille fixe
+    (le recalage rend les positions stables). Chaque case est isolee et testee
+    (vide/pleine), puis les cases non vides sont reconnues :
+      1. par le CNN de lettres (utils.letter_cnn) si le modele est disponible ;
+      2. sinon repli sur easyocr case par case.
+
+    Arret anticipe : apres au moins une lettre, on s'arrete a la 2e case vide
+    consecutive (les noms sont contigus).
+    """
+    from utils import letter_cnn
+
+    cells = collect_name_cells(form_img, y_range)
+    if not cells:
+        return ""
+
+    # 1) Reconnaissance par CNN (haut niveau, autorise pour le texte).
+    preds = letter_cnn.predict(cells)
+    if preds is not None:
+        return "".join(p for p in preds if p)
+
+    # 2) Repli easyocr case par case (si modele CNN indisponible).
+    from utils.ocr_utils import _get_reader
+    reader = _get_reader()
+    letters = []
+    for inner in cells:
+        binv = cv2.threshold(inner, 150, 255, cv2.THRESH_BINARY_INV)[1]
+        mask = cv2.morphologyEx(binv, cv2.MORPH_OPEN, np.ones((2, 2), np.uint8))
+        letter_img = cv2.bitwise_not(mask)
+        big = cv2.resize(letter_img, (letter_img.shape[1] * 8, letter_img.shape[0] * 8),
+                         interpolation=cv2.INTER_CUBIC)
+        big = cv2.copyMakeBorder(big, 14, 14, 14, 14,
+                                 cv2.BORDER_CONSTANT, value=255)
+        res = reader.readtext(
+            big, detail=0,
+            allowlist="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
+        for r in res:
+            cleaned = "".join(c for c in str(r) if c.isalpha())
+            if cleaned:
+                letters.append(cleaned[0].upper())
+                break
+
+    return "".join(letters)
+
 def read_firstname(form_img: np.ndarray) -> str:
-    """
-    Lit le prénom manuscrit.
-    Essai 1 : OCR direct sur la ROI entière avec upscale ×6 (plus robuste
-              pour les ROIs de petite hauteur ~24 px).
-    Essai 2 : segmentation cellule par cellule (fallback).
-    """
-    roi = get_roi(form_img, ROI_FIRSTNAME)
-    raw = ocr_text(roi, scale=6)
-    cleaned = _clean_name_text(raw)
-    if cleaned:
-        return cleaned.capitalize()
-    result = _ocr_cells(roi)
-    return result.capitalize() if result else ""
+    """Lit le prénom manuscrit via la grille de cases (OCR lettre par lettre)."""
+    result = _read_letter_cells(form_img, FIRSTNAME_Y)
+    if result:
+        return result.capitalize()
+    # Repli : ancienne méthode OCR pleine ligne.
+    raw = ocr_text(get_roi(form_img, ROI_FIRSTNAME), scale=6)
+    return _clean_name_text(raw).capitalize()
 
 
 def read_name(form_img: np.ndarray) -> str:
-    """
-    Lit le nom manuscrit.
-    Même stratégie que read_firstname mais retourne en majuscules.
-    """
-    roi = get_roi(form_img, ROI_NAME)
-    raw = ocr_text(roi, scale=6)
-    cleaned = _clean_name_text(raw)
-    if cleaned:
-        return cleaned.upper()
-    result = _ocr_cells(roi)
-    return result.upper() if result else ""
+    """Lit le nom manuscrit via la grille de cases (OCR lettre par lettre)."""
+    result = _read_letter_cells(form_img, NAME_Y)
+    if result:
+        return result.upper()
+    raw = ocr_text(get_roi(form_img, ROI_NAME), scale=6)
+    return _clean_name_text(raw).upper()
 
 
 # ---------------------------------------------------------------------------

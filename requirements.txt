@@ -3,6 +3,8 @@ numpy
 openpyxl
 pymupdf
 easyocr
+torch
+torchvision
 scikit-image
 scikit-learn
 pandas
