@@ -449,15 +449,26 @@ def _segment_mantisse(img_gray: np.ndarray) -> float | None:
         return None
 
     digit_h_ref = max((c[2] for c in char_info), default=1)
-    digits = []
 
-    for cx, cw, ch_c, area, char_img in char_info:
-        # Séparateur décimal : composante très petite en hauteur et largeur
-        if ch_c < digit_h_ref * 0.45 and cw < digit_h_ref * 0.55:
+    # Classification des chiffres : CNN (haut niveau, autorise pour le texte
+    # manuscrit, sec. 4.1) en priorite, repli sur l'heuristique bas niveau.
+    # La detection du separateur decimal reste geometrique (composante petite).
+    from utils import digit_cnn
+    is_sep = [(ch_c < digit_h_ref * 0.45 and cw < digit_h_ref * 0.55)
+              for (cx, cw, ch_c, area, char_img) in char_info]
+    cnn_pred = digit_cnn.predict([ci[4] for ci, sep in zip(char_info, is_sep)
+                                  if not sep])
+    digits = []
+    k = 0
+    for (cx, cw, ch_c, area, char_img), sep in zip(char_info, is_sep):
+        if sep:
             digits.append(".")
-        else:
-            d = _classify_digit(char_img)
-            digits.append(str(d))
+            continue
+        ch = cnn_pred[k] if cnn_pred is not None else ""
+        k += 1
+        if not ch:                       # repli heuristique si CNN absent/illisible
+            ch = str(_classify_digit(char_img))
+        digits.append(ch)
 
     if not digits:
         return None
@@ -503,9 +514,17 @@ def ocr_handwritten_mantisse(img: np.ndarray) -> float | None:
             return None
 
     gray = _to_gray(img)
-
-    # Étape 1 : easyocr avec CLAHE × 8 (meilleure résolution)
     clahe = cv2.createCLAHE(clipLimit=5.0, tileGridSize=(2, 2))
+
+    # Étape 1 (prioritaire si CNN dispo) : segmentation bas niveau + CNN chiffres.
+    # Champ manuscrit -> on privilégie le réseau de neurones (axe 6.3).
+    from utils import digit_cnn
+    if digit_cnn.available():
+        result = _segment_mantisse(clahe.apply(gray))
+        if result is not None:
+            return result
+
+    # Étape 2 : easyocr avec CLAHE × 8 (repli, ou cas sans modèle CNN)
     eq = clahe.apply(gray)
     big = cv2.resize(eq, (eq.shape[1] * 8, eq.shape[0] * 8),
                      interpolation=cv2.INTER_CUBIC)
@@ -516,9 +535,8 @@ def ocr_handwritten_mantisse(img: np.ndarray) -> float | None:
         if val is not None:
             return val
 
-    # Étape 2 : segmentation bas niveau
-    eq2 = clahe.apply(gray)
-    result = _segment_mantisse(eq2)
+    # Étape 3 : segmentation bas niveau (repli heuristique sans CNN)
+    result = _segment_mantisse(clahe.apply(gray))
     if result is not None:
         return result
 
@@ -534,9 +552,17 @@ def ocr_handwritten_exposant(img: np.ndarray) -> int | None:
     gray = clahe.apply(gray)
     segs = _segment_digits(gray, min_width_frac=0.05)
     if segs:
-        digits = [_classify_digit(s) for s in segs]
+        # CNN de chiffres en priorité, repli heuristique case par case.
+        from utils import digit_cnn
+        cnn_pred = digit_cnn.predict(segs)
+        digits = []
+        for i, s in enumerate(segs):
+            ch = cnn_pred[i] if cnn_pred is not None else ""
+            if not ch:
+                ch = str(_classify_digit(s))
+            digits.append(ch)
         try:
-            return int("".join(str(d) for d in digits))
+            return int("".join(digits))
         except Exception:
             pass
     text = _ocr_handwritten(img, allowlist="0123456789-")

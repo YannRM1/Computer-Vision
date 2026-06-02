@@ -395,6 +395,24 @@ def _read_two_digit_box(roi: np.ndarray) -> int:
             return 1
 
 
+def read_note_maximale(form_img: np.ndarray) -> int:
+    """
+    Lit la note maximale de l'examen (ligne 10 de l'onglet PAGE-01).
+    Valeur imprimée sur 1-2 chiffres dans une case « | dizaines | unités | ».
+    """
+    roi = get_roi(form_img, ROI_NOTE_MAX)
+    return _read_two_digit_box(roi)
+
+
+def read_note_pour_valider(form_img: np.ndarray) -> int:
+    """
+    Lit la note pour valider l'examen (ligne 11 de l'onglet PAGE-01).
+    Valeur imprimée sur 1-2 chiffres dans une case « | dizaines | unités | ».
+    """
+    roi = get_roi(form_img, ROI_NOTE_VALID)
+    return _read_two_digit_box(roi)
+
+
 def read_conditions(form_img: np.ndarray) -> dict:
     """
     Retourne un dictionnaire avec les 5 conditions d'examen :

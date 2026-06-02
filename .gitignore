@@ -1,3 +1,34 @@
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+
+# --- Données volumineuses (présentes localement, non versionnées) ---
 emnist_data/
 *.zip
-__pycache__/
+
+# --- Jeux de données générés pour le fine-tuning ---
+letter_dataset.npz
+digit_dataset.npz
+dataset_preview.png
+
+# --- Logs / sorties de debug ---
+*.log
+debug/
+
+# --- Images de debug générées à la racine (régénérables) ---
+/block_*.png
+/p6_block_*.png
+/codes_*.png
+/crypto_*.png
+/header_hd.png
+/full_page_p1.png
+/top_band.png
+/top_section_full.png
+/exam_page*.png
+/brouillon_max_roi.png
+/emnist_orientation.png
+
+# NB : on garde sous Git le template (utils/assets/form_template_ref.png),
+# calibration_output/ et les modèles entraînés (models/*.pt) nécessaires au
+# fonctionnement du pipeline pour le challenge.
