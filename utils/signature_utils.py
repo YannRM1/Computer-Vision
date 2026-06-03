@@ -216,6 +216,35 @@ def build_descriptor_db(raw_db):
     return desc_db
 
 
+# Cache des bases de descripteurs, indexé par chemin absolu : la base n'est
+# construite qu'une seule fois même si les sous-fonctions reçoivent le chemin
+# STUDENT_CLASS_SIGNATURES à chaque appel (conformité §3 sans coût répété).
+_DESCRIPTOR_DB_CACHE = {}
+
+
+def get_descriptor_db(signatures):
+    """
+    Renvoie la base de descripteurs de signatures.
+
+    `signatures` (= STUDENT_CLASS_SIGNATURES du cahier des charges) peut être :
+      - un chemin (répertoire ou .zip) : la base est chargée et construite une
+        seule fois, puis mise en cache ;
+      - une base de descripteurs déjà construite (dict) : renvoyée telle quelle.
+
+    Cela permet aux sous-fonctions autoValidID / autoReadFormID de respecter la
+    signature de la consigne (passage de STUDENT_CLASS_SIGNATURES) tout en
+    restant performantes (pas de reconstruction à chaque image / PDF).
+    """
+    if not isinstance(signatures, (str, os.PathLike)):
+        return signatures or {}
+    key = os.path.abspath(os.fspath(signatures))
+    db = _DESCRIPTOR_DB_CACHE.get(key)
+    if db is None:
+        db = build_descriptor_db(load_signatures(signatures))
+        _DESCRIPTOR_DB_CACHE[key] = db
+    return db
+
+
 # ---------------------- Comparaison --------------------------------------
 
 def _cos(a, B):

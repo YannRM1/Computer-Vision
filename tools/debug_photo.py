@@ -4,11 +4,11 @@ Lance : python debug_photo.py
 Les images sont sauvegardées à côté de ce fichier (même dossier).
 """
 import os, sys, cv2, numpy as np
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.grid_decoder import normalize_page, ROI_STUDENT_ID_PHOTO, ROI_STUDENT_ID
 
-BASE = os.path.dirname(os.path.abspath(__file__))
+BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FORM1 = os.path.join(BASE, "PROJECT 2026 -DATABASE-20260518", "FORM1")
 
 # Choisir les photos à débugger (ID attendu dans le nom de fichier)

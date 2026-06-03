@@ -29,35 +29,16 @@ from utils.ocr_utils import (
 # Paramètres
 # ---------------------------------------------------------------------------
 
-HEADER_BAND_H  = 82     # hauteur de la bande Module/Code/Date en haut de page
-MIN_LINE_WIDTH = 380    # largeur min d'une ligne horizontale détectée
-                        # (abaissé de 480 à 380 pour les scans de moindre qualité)
-LINE_MERGE_TOL = 60     # tolérance de fusion pour les lignes proches (px)
-                        # (augmenté de 40 à 60 pour fusionner les lignes dupliquées)
-
-# Colonne gauche où chercher les checkboxes MCQ
-MCQ_X_START = 12
-MCQ_X_END   = 90
-MCQ_MIN_SZ  = 12        # taille min d'un côté de checkbox
-MCQ_MAX_SZ  = 35        # taille max d'un côté de checkbox
-MCQ_MIN_AREA = 80
-
-# Seuil de détection pour une case cochée
-CHECKED_INK_THRESHOLD = 0.10
-
-# Choix MCQ en ordre alphabétique
-MCQ_CHOICES = "ABCDEFGH"
-
-# Zones des réponses numériques (en proportion de la hauteur du bloc)
-# Mantisse : grande case à gauche de ".10"
-MANTISSE_X_FRAC = (0.05, 0.28)
-MANTISSE_Y_FRAC = (0.50, 0.88)
-# Exposant : petite case au-dessus de ".10"
-EXPOSANT_X_FRAC = (0.28, 0.42)
-EXPOSANT_Y_FRAC = (0.38, 0.66)
-# Unité : case à droite de ".10"
-UNITE_X_FRAC    = (0.48, 0.72)
-UNITE_Y_FRAC    = (0.55, 0.90)
+# Paramètres de réglage centralisés dans utils/config.py (§8 : éviter les
+# valeurs codées en dur dispersées). Ajuster les valeurs là-bas, pas ici.
+from utils.config import (
+    HEADER_BAND_H, MIN_LINE_WIDTH, LINE_MERGE_TOL,
+    MCQ_X_START, MCQ_X_END, MCQ_MIN_SZ, MCQ_MAX_SZ, MCQ_MIN_AREA,
+    CHECKED_INK_THRESHOLD, MCQ_CHOICES,
+    MANTISSE_X_FRAC, MANTISSE_Y_FRAC,
+    EXPOSANT_X_FRAC, EXPOSANT_Y_FRAC,
+    UNITE_X_FRAC, UNITE_Y_FRAC,
+)
 
 
 # ---------------------------------------------------------------------------

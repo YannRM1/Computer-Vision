@@ -23,7 +23,7 @@ import cv2
 import numpy as np
 
 # Imports projet
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils.grid_decoder    import (normalize_page, read_student_id,
                                     extract_signature_roi, set_photo_template)
 from utils.signature_utils import (load_signatures, build_descriptor_db,

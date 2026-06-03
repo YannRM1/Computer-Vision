@@ -25,7 +25,7 @@ try:
 except Exception:
     pass
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.image_io import imread_robust
 from utils.template_register import get_photo_template
@@ -37,7 +37,7 @@ try:
 except ImportError:
     fitz = None
 
-DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+DATA = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                     "PROJECT 2026 -DATABASE-20260518", "FORM1")
 
 

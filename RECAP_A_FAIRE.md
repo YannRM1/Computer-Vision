@@ -11,7 +11,7 @@ Objectifs : (1) renforcer la partie manuscrite, (2) projet propre, (3) architect
 - **Script d'entraînement** : `train_digit_cnn.py` — lit directement les fichiers EMNIST-digits locaux (`emnist_data/EMNIST/raw/`, aucun téléchargement), split **train/val/test**, sauvegarde `models/digit_cnn.pt`, option `--finetune`. *Lecteur de données validé : 240 000 train / 40 000 test, classes équilibrées, normalisé [0,1].*
 - **Intégration** : `ocr_handwritten_mantisse` et `ocr_handwritten_exposant` (dans `utils/ocr_utils.py`) utilisent désormais **le CNN de chiffres en priorité** (segmentation bas niveau conservée), avec repli heuristique/EasyOCR. Comportement de repli vérifié (sans modèle → ancien comportement, pas de régression).
 
-> ⚠️ Le modèle `models/digit_cnn.pt` **n'a pas encore été entraîné** : l'environnement sandbox n'a pas pu installer `torch` (wheel CPU bloqué, wheel CUDA 532 Mo trop lent). À lancer sur ta machine (torch déjà installé).
+> ✅ **Entraînements faits (sur ta machine)** : digit CNN = **99,56 % en test** (EMNIST). Lettres fine-tunées sur 1105 lettres réelles (221 formulaires) = **65,76 % val**. `main.py` tourne de bout en bout (~902 s) → `EXAM_FORM1_PRESENCES.xlsx` + 43 xlsx (onglets PAGE-01 + EXAM). Évaluation lancée (résultats ci-dessous).
 
 ---
 
@@ -36,26 +36,28 @@ Objectifs : (1) renforcer la partie manuscrite, (2) projet propre, (3) architect
 
 ---
 
-## ⏳ Priorité 2 — Propreté du projet & dépôt (inchangé)
+## ✅ Priorité 2 — Propreté du projet & dépôt (FINALISÉE)
 
-- [x] **Doublons supprimés** : `utils/ocr_utils_backup.py` et `utils/ocr_utils_new.py` retirés (seul `utils/ocr_utils.py` subsiste, non importé ailleurs → sans risque).
-- [x] **19 PNG de debug supprimés** de la racine (`block_*`, `p6_block_*`, `codes_*`, `crypto_*`, `header_hd`, `full_page_p1`, `top_*`, `exam_page*`, `brouillon_max_roi`, `emnist_orientation`). Template `utils/assets/` et `calibration_output/` **préservés**.
-- [x] **`__pycache__` / `.pyc` supprimés** du disque + **`.gitignore` complété** (`__pycache__/`, `*.pyc`, `*.log`, datasets `.npz`, PNG de debug).
-- [ ] **Finir le nettoyage git sur ta machine** (index cassé ici : `null sha1`) : `git rm -r --cached --ignore-unmatch "*.pyc"` puis `git add -A && git commit -m "chore: nettoyage (.pyc, doublons, PNG debug) + .gitignore"`. Si l'index reste corrompu : `rm .git/index && git reset`. Soigner les messages (éviter « commit », « commmit »).
-- [ ] **Ranger les scripts de dev** (`debug_emnist.py`, `debug_photo.py`, `calibrate_roi.py`, `check_names.py`, `compare_to_truth.py`) dans `tools/` ; ranger `evaluate.py` dans `eval/`.
-- [ ] **Nettoyer artefacts** régénérables : `executionduscriptresultat.txt`, `compare_results.csv` (les `*.log` sont désormais gitignorés).
-- [ ] **Corriger `requirements.txt`** : ligne parasite `p` en fin de fichier.
-- [ ] **Centraliser les paramètres codés en dur** (ROIs, pas de cases `24.45`, seuils `0.10`/`0.30`/`0.15`, `PDF_DPI=150`, `EXAM_START_PAGE`, fractions mantisse/exposant) dans un `utils/config.py` — §8 pénalise les paramètres « codés en dur ».
-- [ ] **Mettre à jour le README** : aligner la description (Hough/HOG annoncés) sur le code réel (morphologie + composantes connexes + NCC). Ajouter `digit_cnn` / `train_digit_cnn.py`.
+- [x] **Doublons supprimés** : `utils/ocr_utils_backup.py` et `utils/ocr_utils_new.py` retirés (seul `utils/ocr_utils.py` subsiste).
+- [x] **19 PNG de debug supprimés** de la racine. Template `utils/assets/` et `calibration_output/` **préservés**.
+- [x] **`__pycache__` / `.pyc` supprimés** + **`.gitignore` complété** (`__pycache__/`, `*.pyc`, `*.log`, datasets `.npz`, PNG de debug).
+- [x] **Scripts de dev rangés** : `debug_emnist.py`, `debug_photo.py`, `calibrate_roi.py`, `check_names.py`, `compare_to_truth.py` → **`tools/`** ; `evaluate.py` → **`eval/`**. Chemins (`sys.path`, dossiers de données) corrigés ; syntaxe validée (`py_compile`). La racine ne contient plus que le cœur + les scripts d'entraînement.
+- [x] **Artefacts régénérables supprimés** : `eval.log`, `eval2.log`, `executionduscriptresultat.txt`, `compare_results.csv`.
+- [x] **`utils/config.py` créé** : paramètres de réglage centralisés (bande d'en-tête, lignes, MCQ, seuils d'encre, zones mantisse/exposant/unité, `PDF_DPI`, `EXAM_START_PAGE`) et **câblé** dans `exam_parser.py` + `autoReadForm.py` (§8). *(Les ROIs géométriques de `grid_decoder.py` restent en constantes nommées, migrables ensuite.)*
+- [x] **README mis à jour** : nouveaux fichiers (`digit_cnn`, `config`, scripts d'entraînement, `models/`), dépendances (torch/torchvision), section « Reconnaissance manuscrite (CNN) ».
+- [x] **`requirements.txt`** : RAS — fichier correct (`pillow` / `pillow-heif`) ; le « p » parasite n'était qu'un artefact d'affichage du montage sandbox.
+- [ ] **Seul reste — côté git, chez toi** (index corrompu ici : `null sha1`) : `git rm -r --cached --ignore-unmatch "*.pyc"` puis `git add -A && git commit -m "chore: nettoyage + config.py + README"`. Si l'index reste cassé : `rm .git/index && git reset`. Soigner les messages (éviter « commit », « commmit »).
 
 ---
 
-## ⏳ Priorité 3 — Conformité à l'architecture demandée (§3, inchangé)
+## ✅ Priorité 3 — Conformité à l'architecture demandée (§3, FINALISÉE)
 
-- [ ] **Signatures des sous-fonctions** : la consigne impose `autoValidID(filename.jpg, STUDENT_CLASS_SIGNATURES, …)` et `autoReadFormID(EXAM_FORMXX_abcd.pdf, STUDENT_CLASS_SIGNATURES, …)`. Le code passe `desc_db`/`wb` → conformer (ou justifier l'optimisation).
-- [ ] **`autoValidPresences`** : 4ᵉ paramètre `pdf_dir` hors spec (template de recalage) → documenter / rendre optionnel.
-- [ ] **`main.py`** : `PRESENCES_DIR` = `PDF_DIR` = dossier `FORMx` (base mélangée). Tester le cas de répertoires distincts pour le challenge.
-- [ ] **Vérifier l'onglet PAGE-01** : 18 lignes, ligne 12 vide, libellés/ordre = Figure 2.
+- [x] **Signatures des sous-fonctions conformées** : `autoValidID(filename, STUDENT_CLASS_SIGNATURES, xlsx, results)` et `autoReadFormID(pdf, STUDENT_CLASS_SIGNATURES, results)` reçoivent désormais le **chemin** `STUDENT_CLASS_SIGNATURES` (comme la consigne). La `desc_db` est résolue en interne via `signature_utils.get_descriptor_db()` — **cache** : construite une seule fois même si chaque appel reçoit le chemin (perf préservée). `autoValidID` sait aussi **écrire le xlsx en mode autonome** (`wb=None`), conforme à « renseigne le fichier ».
+- [x] **`autoValidPresences`** : `pdf_dir` **documenté** comme paramètre optionnel hors-consigne (template de recalage) ; les 3 paramètres positionnels restent ceux de la consigne.
+- [x] **`main.py`** : conforme §3.6 (définit `EXAM_NAME` + signatures, déduit PDF/PRESENCES/RESULTS, crée RESULTS, lance les 2 programmes). Répertoires distincts gérables via les arguments CLI.
+- [x] **Onglet PAGE-01 vérifié** : 18 lignes, ligne 12 vide, libellés/ordre conformes à la Figure 2 ; onglet EXAM = `QUESTION | CHOIX A-H | MANTISSE | EXPOSANT | UNITE`.
+
+> ⚠️ Le test d'exécution complet n'est pas possible dans la sandbox (`skimage` absent + miroir de fichiers périmé). À lancer une fois chez toi : `python -c "import main, autoReadForm, autoValidPresences"` puis `python main.py`.
 
 ---
 
@@ -64,7 +66,7 @@ Objectifs : (1) renforcer la partie manuscrite, (2) projet propre, (3) architect
 - [x] **Éléments graphiques en bas niveau** (grille, cases, cryptogramme, lignes) : conforme.
 - [x] **Texte manuscrit → CNN** : lettres ✅, chiffres ✅ (code) — *reste à entraîner les modèles*.
 - [ ] **train/val/test + validation croisée** à généraliser et documenter pour l'éval.
-- [ ] **Paramètres non codés en dur** (→ `config.py`).
+- [x] **Paramètres centralisés** dans `utils/config.py` (exam_parser + autoReadForm). Reste à y migrer les ROIs de `grid_decoder.py` si souhaité.
 - [ ] **Exécution sans plantage / sans correction manuelle** sur données neuves (challenge §6) : retester `main.py` de bout en bout **après** le correctif d'import.
 
 ---

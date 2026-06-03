@@ -25,7 +25,7 @@ import cv2
 import numpy as np
 
 # Ajout du répertoire courant au path
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.grid_decoder import (
     normalize_page,
@@ -35,7 +35,7 @@ from utils.grid_decoder import (
     STUDENT_ID_COLS,
 )
 
-BASE_DIR    = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR    = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR    = os.path.join(BASE_DIR, "PROJECT 2026 -DATABASE-20260518", "FORM1")
 OUTPUT_DIR  = os.path.join(BASE_DIR, "calibration_output")
 IMG_EXTS    = {".jpg", ".jpeg", ".png", ".bmp", ".JPG", ".JPEG"}

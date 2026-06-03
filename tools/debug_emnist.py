@@ -52,7 +52,7 @@ def main():
         cv2.putText(label_col, nm, (2, r * cell + cell // 2),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 0), 1)
     montage = np.hstack([label_col, montage])
-    out = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+    out = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                        "emnist_orientation.png")
     cv2.imwrite(out, montage)
     print("Sauvegarde:", out)

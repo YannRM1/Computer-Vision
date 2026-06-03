@@ -1,9 +1,9 @@
 """
 PROGRAMME 1 : Validation des présences
 
-Fonctions principales :
-  autoValidPresences(presences_dir, signatures_dir, results_dir)
-  autoValidID(img_path, desc_db, output_xlsx_path, results_dir)
+Fonctions principales (cf. §3.3 du cahier des charges) :
+  autoValidPresences(EXAM_FORMXX_PRESENCES, STUDENT_CLASS_SIGNATURES, EXAM_FORMXX_RESULTS)
+  autoValidID(filename.jpg, STUDENT_CLASS_SIGNATURES, EXAM_FORMXX_PRESENCES.xlsx, EXAM_FORMXX_RESULTS)
 
 Produit : EXAM_FORMXX_PRESENCES.xlsx
   Colonnes : imageName | studentID_grid | studentID_signature
@@ -25,6 +25,7 @@ from utils.signature_utils import (
     load_signatures,
     build_descriptor_db,
     identify_signature,
+    get_descriptor_db,
 )
 
 # Extensions d'images acceptées
@@ -63,17 +64,29 @@ def _append_presence_row(wb: Workbook, xlsx_path: str,
 # ---------------------------------------------------------------------------
 
 def autoValidID(img_path: str,
-                desc_db: dict,
+                signatures,
                 xlsx_path: str,
                 results_dir: str,
                 wb: Workbook | None = None) -> tuple[int | None, str | None]:
     """
-    Traite une image de première page et met à jour le xlsx.
+    Sous-fonction du Programme 1 (cf. §3.3 du cahier des charges) :
+        autoValidID(filename.jpg, STUDENT_CLASS_SIGNATURES,
+                    EXAM_FORMXX_PRESENCES.xlsx, EXAM_FORMXX_RESULTS)
+
+    Lit le StudentID de la grille, extrait la signature, l'identifie dans la base
+    STUDENT_CLASS_SIGNATURES, puis écrit une ligne dans le xlsx des présences.
+
+    Args:
+        signatures : base STUDENT_CLASS_SIGNATURES (chemin) ou desc_db déjà
+                     construite ; résolue via get_descriptor_db (cache).
+        wb         : classeur déjà ouvert (optimisation lot). Si None, la
+                     fonction ouvre / écrit / sauvegarde elle-même xlsx_path.
 
     Returns:
         (studentID_grid, studentID_signature)
-        studentID_signature est l'ID reconnu par la signature, ou None.
     """
+    desc_db = get_descriptor_db(signatures)
+
     img = imread_robust(img_path)
     if img is None:
         print(f"  [WARN] Impossible de lire : {img_path}")
@@ -98,10 +111,16 @@ def autoValidID(img_path: str,
     else:
         id_sig = None
 
-    # 5. Écrire dans le xlsx
+    # 5. Écrire la ligne dans le xlsx (EXAM_FORMXX_PRESENCES.xlsx)
     image_name = os.path.basename(img_path)
     if wb is not None:
+        # Traitement par lot : on réutilise le classeur déjà ouvert.
         _append_presence_row(wb, xlsx_path, image_name,
+                             student_id_grid, id_sig)
+    elif xlsx_path and os.path.isfile(xlsx_path):
+        # Appel autonome (conforme à la consigne) : ouvrir / écrire / sauvegarder.
+        wb_local = openpyxl.load_workbook(xlsx_path)
+        _append_presence_row(wb_local, xlsx_path, image_name,
                              student_id_grid, id_sig)
 
     print(f"  {image_name}: grid={student_id_grid}, sig={id_sig}")
@@ -117,15 +136,17 @@ def autoValidPresences(presences_dir: str,
                        results_dir: str,
                        pdf_dir: str | None = None) -> str:
     """
-    Valide les présences pour tous les eleves.
+    Programme 1 (cf. §3.3 du cahier des charges) :
+        autoValidPresences(EXAM_FORMXX_PRESENCES, STUDENT_CLASS_SIGNATURES,
+                           EXAM_FORMXX_RESULTS)
 
     Args:
-        presences_dir  : répertoire contenant les photos de première page
-        signatures_dir : répertoire / ZIP avec la base de signatures
-        results_dir    : répertoire de sortie
-        pdf_dir        : répertoire contenant un PDF du même formulaire, servant
-                         de template de recalage. Si None, on cherche un PDF
-                         dans presences_dir.
+        presences_dir  : EXAM_FORMXX_PRESENCES — photos de première page
+        signatures_dir : STUDENT_CLASS_SIGNATURES — base de signatures (dir/zip)
+        results_dir    : EXAM_FORMXX_RESULTS — répertoire de sortie
+        pdf_dir        : (optionnel, hors signature de la consigne) répertoire
+                         d'un PDF du même formulaire servant de template de
+                         recalage. Si None, un PDF est cherché dans presences_dir.
 
     Returns:
         Chemin vers le fichier XLSX généré.
@@ -146,10 +167,11 @@ def autoValidPresences(presences_dir: str,
     xlsx_filename = exam_base + "_PRESENCES.xlsx"
     xlsx_path = os.path.join(results_dir, xlsx_filename)
 
+    # Construire la base de descripteurs une seule fois (mise en cache) ; les
+    # appels à autoValidID reçoivent ensuite le chemin et touchent le cache.
     print(f"[P1] Chargement des signatures depuis : {signatures_dir}")
-    raw_db  = load_signatures(signatures_dir)
-    print(f"  -> {len(raw_db)} eleves chargés ({sum(len(v) for v in raw_db.values())} signatures)")
-    desc_db = build_descriptor_db(raw_db)
+    desc_db = get_descriptor_db(signatures_dir)
+    print(f"  -> {len(desc_db)} eleves référencés")
 
     # Créer le fichier xlsx
     wb = _init_presence_xlsx(xlsx_path)
@@ -163,7 +185,9 @@ def autoValidPresences(presences_dir: str,
 
     for img_name in images:
         img_path = os.path.join(presences_dir, img_name)
-        autoValidID(img_path, desc_db, xlsx_path, results_dir, wb=wb)
+        # On passe le chemin STUDENT_CLASS_SIGNATURES (conforme §3.3) ; la
+        # desc_db est résolue via le cache. wb : classeur partagé (perf).
+        autoValidID(img_path, signatures_dir, xlsx_path, results_dir, wb=wb)
 
     print(f"[P1] Résultats sauvegardés : {xlsx_path}")
     return xlsx_path

@@ -23,12 +23,11 @@ from utils.grid_decoder   import (normalize_page, extract_cryptogram,
 from utils.template_register import get_photo_template
 from utils.page1_parser   import parse_page1
 from utils.exam_parser    import parse_exam_pages, questions_to_exam_rows, CHOICE_COLS
-from utils.signature_utils import load_signatures, build_descriptor_db
+from utils.signature_utils import (load_signatures, build_descriptor_db,
+                                   get_descriptor_db)
 
-# Index de la première page d'examen (0-indexé) = page 5 dans les PDFs
-EXAM_START_PAGE = 4
-# DPI pour la conversion PDF -> image
-PDF_DPI = 150
+# Paramètres centralisés (cf. utils/config.py)
+from utils.config import EXAM_START_PAGE, PDF_DPI
 
 
 # ---------------------------------------------------------------------------
@@ -97,19 +96,25 @@ def _write_xlsx(page1_data: dict,
 # ---------------------------------------------------------------------------
 
 def autoReadFormID(pdf_path: str,
-                   desc_db: dict,
+                   signatures,
                    results_dir: str) -> str:
     """
-    Lit un formulaire PDF et génère le xlsx correspondant.
+    Sous-fonction du Programme 2 (cf. §3.4 du cahier des charges) :
+        autoReadFormID(EXAM_FORMXX_abcd.pdf, STUDENT_CLASS_SIGNATURES,
+                       EXAM_FORMXX_RESULTS)
+
+    Lit un formulaire PDF et génère le xlsx correspondant (onglets PAGE-01 et EXAM).
 
     Args:
         pdf_path    : chemin vers le PDF
-        desc_db     : base de descripteurs de signatures
+        signatures  : base STUDENT_CLASS_SIGNATURES (chemin) ou desc_db déjà
+                      construite ; résolue via get_descriptor_db (cache).
         results_dir : répertoire de sortie
 
     Returns:
         Chemin vers le xlsx généré.
     """
+    desc_db      = get_descriptor_db(signatures)
     pdf_name     = os.path.splitext(os.path.basename(pdf_path))[0]
     xlsx_path    = os.path.join(results_dir, pdf_name + ".xlsx")
 
@@ -170,11 +175,10 @@ def autoReadForm(pdf_dir: str,
     # Template de recalage de la page 1 (figé, sinon rendu d'un PDF du dossier).
     set_photo_template(get_photo_template(pdf_dir))
 
-    # Charger la base de signatures
+    # Charger / construire la base de signatures une seule fois (mise en cache).
     print(f"[P2] Chargement des signatures depuis : {signatures_dir}")
-    raw_db  = load_signatures(signatures_dir)
-    print(f"  -> {len(raw_db)} eleves, {sum(len(v) for v in raw_db.values())} signatures")
-    desc_db = build_descriptor_db(raw_db)
+    desc_db = get_descriptor_db(signatures_dir)
+    print(f"  -> {len(desc_db)} eleves référencés")
 
     # Lister les PDFs
     pdfs = sorted([
@@ -186,7 +190,9 @@ def autoReadForm(pdf_dir: str,
     generated = []
     for pdf_name in pdfs:
         pdf_path = os.path.join(pdf_dir, pdf_name)
-        xlsx_path = autoReadFormID(pdf_path, desc_db, results_dir)
+        # On passe le chemin STUDENT_CLASS_SIGNATURES (conforme §3.4) ; la
+        # sous-fonction résout la desc_db via le cache (déjà construite).
+        xlsx_path = autoReadFormID(pdf_path, signatures_dir, results_dir)
         generated.append(xlsx_path)
 
     print(f"[P2] Terminé. {len(generated)} fichiers générés dans : {results_dir}")
