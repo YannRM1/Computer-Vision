@@ -214,13 +214,15 @@ def _read_letter_cells(form_img: np.ndarray, y_range: tuple) -> str:
     return "".join(letters)
 
 def read_firstname(form_img: np.ndarray) -> str:
-    """Lit le prénom manuscrit via la grille de cases (OCR lettre par lettre)."""
+    """Lit le prénom manuscrit via la grille de cases (OCR lettre par lettre).
+    Sortie en MAJUSCULES (cohérent avec la Figure 2 et le remplissage en
+    capitales du formulaire)."""
     result = _read_letter_cells(form_img, FIRSTNAME_Y)
     if result:
-        return result.capitalize()
+        return result.upper()
     # Repli : ancienne méthode OCR pleine ligne.
     raw = ocr_text(get_roi(form_img, ROI_FIRSTNAME), scale=6)
-    return _clean_name_text(raw).capitalize()
+    return _clean_name_text(raw).upper()
 
 
 def read_name(form_img: np.ndarray) -> str:

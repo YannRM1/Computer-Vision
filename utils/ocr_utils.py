@@ -407,61 +407,98 @@ def _ocr_handwritten(img: np.ndarray, allowlist: str) -> str:
     return text.strip()
 
 
+def _box_is_empty(img: np.ndarray, margin_frac: float = 0.08,
+                  min_ink_ratio: float = 0.010) -> bool:
+    """
+    True si la case (cadre retiré) ne contient quasiment pas d'encre.
+
+    Empêche le réseau de « halluciner » des chiffres dans une case vide
+    (ex. exposant absent -> doit rester None, pas 100001). On compte l'encre
+    en excluant les composantes assimilables au cadre.
+    """
+    gray = _to_gray(img)
+    h, w = gray.shape[:2]
+    m = max(2, int(min(h, w) * margin_frac))
+    inner = gray[m:h - m, m:w - m]
+    if inner.size == 0:
+        return True
+    _, b = cv2.threshold(inner, 200, 255, cv2.THRESH_BINARY_INV)
+    ih, iw = inner.shape[:2]
+    n, _, stats, _ = cv2.connectedComponentsWithStats(b, connectivity=8)
+    ink = 0
+    for i in range(1, n):
+        x, y, cw, ch, area = stats[i]
+        if cw > iw * 0.70 or ch > ih * 0.97:                       # bord de cadre
+            continue
+        if max(cw, ch) / max(1, min(cw, ch)) > 6 and area > 20:    # trait de cadre
+            continue
+        ink += int(area)
+    return (ink / float(inner.size)) < min_ink_ratio
+
+
 def _segment_mantisse(img_gray: np.ndarray) -> float | None:
     """
-    Segmente et classifie les chiffres d'une mantisse manuscrite.
+    Segmente et classifie les chiffres d'une mantisse manuscrite (bas niveau).
 
-    Stratégie :
-    1. Rogner les N premiers/derniers pixels sur chaque bord (= bordure du cadre).
-    2. Seuillage fixe (pas Otsu, trop sensible aux bordures) pour les chiffres.
-    3. Composantes connexes → classification chiffre par chiffre.
-    4. Détection du séparateur décimal (virgule/point).
+    Rognage du cadre -> seuillage -> composantes connexes. On ne conserve que :
+      - les composantes « chiffre » : hauteur proche de la plus grande trouvée ;
+      - le « séparateur décimal » : petite composante, étroite, dans la moitié
+        basse de la case (un point/virgule se pose sur la ligne de base).
+    Le bruit et les fragments de cadre sont rejetés (évite d'ajouter de faux
+    chiffres comme 3.1 -> 13.1). Classification par le CNN (repli heuristique).
+    Renvoie None si aucune composante chiffre (case vide / illisible).
     """
     h, w = img_gray.shape[:2]
-
-    # Marge à rogner pour éliminer les bordures du cadre
     margin = max(3, int(min(h, w) * 0.06))
     inner = img_gray[margin:h - margin, margin:w - margin]
-
     if inner.size == 0:
         return None
-
-    # Seuil fixe : tout pixel plus sombre que 210 est de l'encre
-    # (rouge manuscrit ≈ gray 120-160 selon l'image, blanc ≈ 230+)
-    _, binary = cv2.threshold(inner, 210, 255, cv2.THRESH_BINARY_INV)
-
-    num, labels, stats, _ = cv2.connectedComponentsWithStats(binary, connectivity=8)
-
-    char_info = []
     ih, iw = inner.shape[:2]
+
+    # Seuil fixe (l'encre rouge/noire ≈ gris < 210, blanc ≈ 230+).
+    _, binary = cv2.threshold(inner, 210, 255, cv2.THRESH_BINARY_INV)
+    num, _, stats, _ = cv2.connectedComponentsWithStats(binary, connectivity=8)
+
+    # 1) Pré-filtrage : retirer artefacts minuscules et fragments de cadre.
+    cand = []
     for i in range(1, num):
-        cx, cy, cw, ch_c, area = stats[i]
-        # Ignorer artefacts ou composantes qui couvrent presque tout
-        if area < 6 or cw > iw * 0.65 or ch_c > ih * 0.95:
+        cx, cy, cw, ch_c, area = (int(v) for v in stats[i])
+        if area < 6:
             continue
-        char_img = inner[max(0, cy - 1):cy + ch_c + 1,
-                         max(0, cx - 1):cx + cw + 1]
-        char_info.append((cx, cw, ch_c, area, char_img))
-
-    char_info.sort(key=lambda c: c[0])
-
-    if not char_info:
+        if cw > iw * 0.65 or ch_c > ih * 0.95:                       # trop gros
+            continue
+        if max(cw, ch_c) / max(1, min(cw, ch_c)) > 6 and area > 20:  # trait/cadre
+            continue
+        cand.append((cx, cy, cw, ch_c, area))
+    if not cand:
         return None
 
-    digit_h_ref = max((c[2] for c in char_info), default=1)
+    # 2) Hauteur de référence = plus grande composante (= un chiffre).
+    h_ref = max(c[3] for c in cand)
 
-    # Classification des chiffres : CNN (haut niveau, autorise pour le texte
-    # manuscrit, sec. 4.1) en priorite, repli sur l'heuristique bas niveau.
-    # La detection du separateur decimal reste geometrique (composante petite).
+    comps = []   # (cx, cw, ch_c, is_sep, char_img)
+    for (cx, cy, cw, ch_c, area) in cand:
+        is_digit = ch_c >= 0.55 * h_ref
+        is_sep = (not is_digit and ch_c <= 0.55 * h_ref
+                  and cw <= iw * 0.22
+                  and (cy + ch_c / 2.0) >= ih * 0.45)
+        if not is_digit and not is_sep:
+            continue                                                  # bruit
+        char_img = inner[max(0, cy - 1):cy + ch_c + 1,
+                         max(0, cx - 1):cx + cw + 1]
+        comps.append((cx, cw, ch_c, is_sep, char_img))
+
+    comps.sort(key=lambda c: c[0])
+    digit_imgs = [c[4] for c in comps if not c[3]]
+    if not digit_imgs:
+        return None
+
     from utils import digit_cnn
-    is_sep = [(ch_c < digit_h_ref * 0.45 and cw < digit_h_ref * 0.55)
-              for (cx, cw, ch_c, area, char_img) in char_info]
-    cnn_pred = digit_cnn.predict([ci[4] for ci, sep in zip(char_info, is_sep)
-                                  if not sep])
-    digits = []
-    k = 0
-    for (cx, cw, ch_c, area, char_img), sep in zip(char_info, is_sep):
-        if sep:
+    cnn_pred = digit_cnn.predict(digit_imgs)
+
+    digits, k = [], 0
+    for (cx, cw, ch_c, is_sep, char_img) in comps:
+        if is_sep:
             digits.append(".")
             continue
         ch = cnn_pred[k] if cnn_pred is not None else ""
@@ -470,23 +507,16 @@ def _segment_mantisse(img_gray: np.ndarray) -> float | None:
             ch = str(_classify_digit(char_img))
         digits.append(ch)
 
-    if not digits:
+    text = "".join(digits).strip(".")    # pas de point en tête/queue
+    if not text:
         return None
-
-    text = "".join(digits)
+    if text.count(".") > 1:              # garder un seul séparateur décimal
+        first = text.index(".")
+        text = text[:first + 1] + text[first + 1:].replace(".", "")
     try:
         return float(text)
     except ValueError:
-        # Nettoyer : supprimer les points en double, ne garder que les chiffres + 1 point
-        text2 = re.sub(r"[^0-9.]", "", text)
-        # Si plusieurs points, garder uniquement le premier
-        parts = text2.split(".")
-        if len(parts) > 2:
-            text2 = parts[0] + "." + "".join(parts[1:])
-        try:
-            return float(text2) if text2 else None
-        except ValueError:
-            return None
+        return None
 
 
 def ocr_handwritten_mantisse(img: np.ndarray) -> float | None:
@@ -499,6 +529,8 @@ def ocr_handwritten_mantisse(img: np.ndarray) -> float | None:
     3. easyocr sans allowlist restrictif (dernier recours)
     """
     if img is None or img.size == 0:
+        return None
+    if _box_is_empty(img):              # case vide -> pas de mantisse (anti-hallucination)
         return None
 
     def _try_parse(text: str) -> float | None:
@@ -546,6 +578,8 @@ def ocr_handwritten_mantisse(img: np.ndarray) -> float | None:
 def ocr_handwritten_exposant(img: np.ndarray) -> int | None:
     """Lit l'exposant manuscrit (entier, éventuellement négatif)."""
     if img is None or img.size == 0:
+        return None
+    if _box_is_empty(img):              # case vide -> exposant None (anti-hallucination)
         return None
     gray = _to_gray(img)
     clahe = cv2.createCLAHE(clipLimit=4.0, tileGridSize=(2, 2))
