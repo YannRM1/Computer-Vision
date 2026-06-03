@@ -68,6 +68,12 @@ def normalize_value(v):
                 return datetime.strptime(s, fmt).strftime("%d/%m/%Y")
             except ValueError:
                 continue
+        # Valeur numérique stockée en texte ('2.3', '17.0') -> nombre, pour
+        # comparer 2.3 (vérité texte) == 2.3 (float produit) numériquement.
+        try:
+            return float(s.replace(",", "."))
+        except ValueError:
+            pass
         return s.lower()
     if isinstance(v, float) and v.is_integer():
         return int(v)
@@ -86,13 +92,25 @@ def cells_equal(a, b):
     return na == nb
 
 
+def _norm_group(v):
+    """Group : ignore le préfixe 'G' (la vérité terrain est incohérente :
+    'G04E' ici, '05C' là). Comparer le code de groupe sans ce préfixe."""
+    if v is None:
+        return None
+    s = str(v).strip().upper()
+    return s[1:] if s.startswith("G") else s
+
+
 def compare_page1(prod_ws, truth_ws):
     """Retourne liste de tuples (ligne, libellé, axe, truth, prod, ok)."""
     rows = []
     for r, (label, axis) in PAGE01_AXES.items():
         t = truth_ws.cell(r, 2).value
         p = prod_ws.cell(r, 2).value
-        ok = cells_equal(t, p)
+        if label == "Group":                       # comparer sans le préfixe 'G'
+            ok = cells_equal(_norm_group(t), _norm_group(p))
+        else:
+            ok = cells_equal(t, p)
         rows.append((r, label, axis, t, p, ok))
     return rows
 

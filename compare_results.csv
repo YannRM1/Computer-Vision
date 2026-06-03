@@ -10,7 +10,7 @@ FORM1,19283,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,19283,PAGE-01,Feuilles brouillon,graphique,1,10,0
 FORM1,19283,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,19283,PAGE-01,Note pour valider,imprime,4,4,1
-FORM1,19283,PAGE-01,Prenom,manuscrit,Julien,Sulien,0
+FORM1,19283,PAGE-01,Prenom,manuscrit,Julien,SULIEN,0
 FORM1,19283,PAGE-01,Nom,manuscrit,Moreau,MOREAU,1
 FORM1,19283,PAGE-01,Validation signature,signature,1,1,1
 FORM1,19283,PAGE-01,Group,graphique,G04E,G04E,1
@@ -22,7 +22,7 @@ FORM1,19283,EXAM,R2C4,graphique,None,1,0
 FORM1,19283,EXAM,R3C1,imprime,2,2,1
 FORM1,19283,EXAM,R3C4,graphique,1,1,1
 FORM1,19283,EXAM,R4C1,imprime,3,3,1
-FORM1,19283,EXAM,R4C10,manuscrit,3.75,3175,0
+FORM1,19283,EXAM,R4C10,manuscrit,3.75,3.75,1
 FORM1,19283,EXAM,R4C11,manuscrit,2,2,1
 FORM1,19283,EXAM,R5C1,imprime,4,4,1
 FORM1,19283,EXAM,R5C3,graphique,1,1,1
@@ -91,7 +91,7 @@ FORM1,50305,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,50305,PAGE-01,Feuilles brouillon,graphique,1,110,0
 FORM1,50305,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,50305,PAGE-01,Note pour valider,imprime,4,4,1
-FORM1,50305,PAGE-01,Prenom,manuscrit,Victor,Ictok,0
+FORM1,50305,PAGE-01,Prenom,manuscrit,Victor,ICTOK,0
 FORM1,50305,PAGE-01,Nom,manuscrit,Pied,PIEU,0
 FORM1,50305,PAGE-01,Validation signature,signature,1,1,1
 FORM1,50305,PAGE-01,Group,graphique,G02A,G02A,1
@@ -103,14 +103,12 @@ FORM1,50305,EXAM,R3C1,imprime,2,2,1
 FORM1,50305,EXAM,R3C3,graphique,1,1,1
 FORM1,50305,EXAM,R4C1,imprime,3,3,1
 FORM1,50305,EXAM,R4C10,manuscrit,374.5,379.5,0
-FORM1,50305,EXAM,R4C11,manuscrit,None,100001,0
 FORM1,50305,EXAM,R5C1,imprime,4,4,1
 FORM1,50305,EXAM,R5C5,graphique,1,1,1
 FORM1,50305,EXAM,R6C1,imprime,5,5,1
 FORM1,50305,EXAM,R6C3,graphique,1,1,1
 FORM1,50305,EXAM,R7C1,imprime,6,6,1
 FORM1,50305,EXAM,R7C10,manuscrit,21.2,91.2,0
-FORM1,50305,EXAM,R7C11,manuscrit,None,10,0
 FORM1,50305,EXAM,R7C12,manuscrit,KHz,KHz,1
 FORM1,50305,EXAM,R8C1,imprime,7,7,1
 FORM1,50305,EXAM,R8C5,graphique,1,1,1
@@ -129,7 +127,7 @@ FORM1,54331,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,54331,PAGE-01,Feuilles brouillon,graphique,1,111,0
 FORM1,54331,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,54331,PAGE-01,Note pour valider,imprime,4,4,1
-FORM1,54331,PAGE-01,Prenom,manuscrit,ARTHUR,Rrhr,0
+FORM1,54331,PAGE-01,Prenom,manuscrit,ARTHUR,RRHR,0
 FORM1,54331,PAGE-01,Nom,manuscrit,DUPOND,DROND,0
 FORM1,54331,PAGE-01,Validation signature,signature,1,1,1
 FORM1,54331,PAGE-01,Group,graphique,G04J,G04J,1
@@ -147,8 +145,7 @@ FORM1,54331,EXAM,R5C5,graphique,1,1,1
 FORM1,54331,EXAM,R6C1,imprime,5,5,1
 FORM1,54331,EXAM,R6C4,graphique,1,1,1
 FORM1,54331,EXAM,R7C1,imprime,6,6,1
-FORM1,54331,EXAM,R7C10,manuscrit,3.1,13.1,0
-FORM1,54331,EXAM,R7C11,manuscrit,None,11,0
+FORM1,54331,EXAM,R7C10,manuscrit,3.1,3.1,1
 FORM1,54331,EXAM,R7C12,manuscrit,KHz,KHz,1
 FORM1,54331,EXAM,R8C1,imprime,7,7,1
 FORM1,54331,EXAM,R8C2,graphique,None,1,0
@@ -169,7 +166,7 @@ FORM1,58220,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,58220,PAGE-01,Feuilles brouillon,graphique,1,110,0
 FORM1,58220,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,58220,PAGE-01,Note pour valider,imprime,4,4,1
-FORM1,58220,PAGE-01,Prenom,manuscrit,SANDRA,Sandra,1
+FORM1,58220,PAGE-01,Prenom,manuscrit,SANDRA,SANDRA,1
 FORM1,58220,PAGE-01,Nom,manuscrit,DOE,DOE,1
 FORM1,58220,PAGE-01,Validation signature,signature,1,1,1
 FORM1,58220,PAGE-01,Group,graphique,G67A,G67A,1
@@ -180,7 +177,7 @@ FORM1,58220,EXAM,R2C3,graphique,1,1,1
 FORM1,58220,EXAM,R3C1,imprime,2,2,1
 FORM1,58220,EXAM,R3C3,graphique,1,1,1
 FORM1,58220,EXAM,R4C1,imprime,3,3,1
-FORM1,58220,EXAM,R4C10,manuscrit,0.14,116,0
+FORM1,58220,EXAM,R4C10,manuscrit,0.14,0.16,0
 FORM1,58220,EXAM,R4C11,manuscrit,1,1,1
 FORM1,58220,EXAM,R5C1,imprime,4,4,1
 FORM1,58220,EXAM,R5C4,graphique,1,1,1
@@ -207,7 +204,7 @@ FORM1,58927,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,58927,PAGE-01,Feuilles brouillon,graphique,1,110,0
 FORM1,58927,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,58927,PAGE-01,Note pour valider,imprime,4,4,1
-FORM1,58927,PAGE-01,Prenom,manuscrit,ROCKY,Rocry,0
+FORM1,58927,PAGE-01,Prenom,manuscrit,ROCKY,ROCRY,0
 FORM1,58927,PAGE-01,Nom,manuscrit,GRACE,GRACE,1
 FORM1,58927,PAGE-01,Validation signature,signature,1,1,1
 FORM1,58927,PAGE-01,Group,graphique,G19A,G19A,1
@@ -218,7 +215,7 @@ FORM1,58927,EXAM,R2C2,graphique,1,1,1
 FORM1,58927,EXAM,R3C1,imprime,2,2,1
 FORM1,58927,EXAM,R3C4,graphique,1,1,1
 FORM1,58927,EXAM,R4C1,imprime,3,3,1
-FORM1,58927,EXAM,R4C10,manuscrit,3.745,0.317655,0
+FORM1,58927,EXAM,R4C10,manuscrit,3.745,31765,0
 FORM1,58927,EXAM,R4C11,manuscrit,2,121,0
 FORM1,58927,EXAM,R5C1,imprime,4,4,1
 FORM1,58927,EXAM,R5C4,graphique,1,1,1
@@ -234,7 +231,6 @@ FORM1,58927,EXAM,R8C5,graphique,1,1,1
 FORM1,58927,EXAM,R9C1,imprime,8,8,1
 FORM1,58927,EXAM,R9C2,graphique,1,None,0
 FORM1,58927,EXAM,R9C10,manuscrit,None,4,0
-FORM1,58927,EXAM,R9C11,manuscrit,None,4,0
 FORM1,58927,EXAM,R10C1,imprime,9,9,1
 FORM1,58927,EXAM,R10C2,graphique,None,1,0
 FORM1,58927,EXAM,R10C5,graphique,1,None,0
@@ -262,7 +258,7 @@ FORM1,61856,EXAM,R3C2,graphique,None,1,0
 FORM1,61856,EXAM,R3C4,graphique,x,None,0
 FORM1,61856,EXAM,R3C5,graphique,None,1,0
 FORM1,61856,EXAM,R4C1,imprime,3,3,1
-FORM1,61856,EXAM,R4C10,manuscrit,2.3,0.23,0
+FORM1,61856,EXAM,R4C10,manuscrit,2.3,2.3,1
 FORM1,61856,EXAM,R4C11,manuscrit,None,2,0
 FORM1,61856,EXAM,R5C1,imprime,4,4,1
 FORM1,61856,EXAM,R5C2,graphique,None,1,0
@@ -271,7 +267,7 @@ FORM1,61856,EXAM,R5C6,graphique,None,1,0
 FORM1,61856,EXAM,R6C1,imprime,5,5,1
 FORM1,61856,EXAM,R6C2,graphique,x,None,0
 FORM1,61856,EXAM,R7C1,imprime,6,6,1
-FORM1,61856,EXAM,R7C10,manuscrit,17.0,17,0
+FORM1,61856,EXAM,R7C10,manuscrit,17.0,17,1
 FORM1,61856,EXAM,R7C11,manuscrit,None,111,0
 FORM1,61856,EXAM,R7C12,manuscrit,None,KHz,0
 FORM1,61856,EXAM,R8C1,imprime,7,7,1
@@ -331,7 +327,7 @@ FORM1,62034,PAGE-01,Calculatrice,graphique,0.0,0,1
 FORM1,62034,PAGE-01,Feuilles brouillon,graphique,1.0,110,0
 FORM1,62034,PAGE-01,Note maximale,imprime,10.0,10,1
 FORM1,62034,PAGE-01,Note pour valider,imprime,4.0,4,1
-FORM1,62034,PAGE-01,Prenom,manuscrit,Esteban,Eer,0
+FORM1,62034,PAGE-01,Prenom,manuscrit,Esteban,EER,0
 FORM1,62034,PAGE-01,Nom,manuscrit,Jeanningros,AN,0
 FORM1,62034,PAGE-01,Validation signature,signature,1.0,1,1
 FORM1,62034,PAGE-01,Group,graphique,None,G46B,0
@@ -342,7 +338,7 @@ FORM1,62034,EXAM,R2C4,graphique,X,None,0
 FORM1,62034,EXAM,R3C1,imprime,2.0,2,1
 FORM1,62034,EXAM,R3C4,graphique,X,1,0
 FORM1,62034,EXAM,R4C1,imprime,3.0,3,1
-FORM1,62034,EXAM,R4C10,manuscrit,3.745,13.775,0
+FORM1,62034,EXAM,R4C10,manuscrit,3.745,3.775,0
 FORM1,62034,EXAM,R4C11,manuscrit,2.0,121,0
 FORM1,62034,EXAM,R5C1,imprime,4.0,4,1
 FORM1,62034,EXAM,R5C4,graphique,X,1,0
@@ -373,10 +369,10 @@ FORM1,62288,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,62288,PAGE-01,Feuilles brouillon,graphique,1,10,0
 FORM1,62288,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62288,PAGE-01,Note pour valider,imprime,4,4,1
-FORM1,62288,PAGE-01,Prenom,manuscrit,LOU-ANN,Lo,0
+FORM1,62288,PAGE-01,Prenom,manuscrit,LOU-ANN,LO,0
 FORM1,62288,PAGE-01,Nom,manuscrit,BAPTISTE,BARI,0
 FORM1,62288,PAGE-01,Validation signature,signature,1,1,1
-FORM1,62288,PAGE-01,Group,graphique,03A,G03A,0
+FORM1,62288,PAGE-01,Group,graphique,03A,G03A,1
 FORM1,62288,PAGE-01,STUDENT ID,graphique,62288,62288,1
 FORM1,62288,PAGE-01,Validation cryptogramme,graphique,1,0,0
 FORM1,62288,EXAM,R2C1,imprime,1,1,1
@@ -414,10 +410,10 @@ FORM1,62298,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,62298,PAGE-01,Feuilles brouillon,graphique,1,10,0
 FORM1,62298,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62298,PAGE-01,Note pour valider,imprime,4,4,1
-FORM1,62298,PAGE-01,Prenom,manuscrit,Jade,Jade,1
+FORM1,62298,PAGE-01,Prenom,manuscrit,Jade,JADE,1
 FORM1,62298,PAGE-01,Nom,manuscrit,Kam,RAM,0
 FORM1,62298,PAGE-01,Validation signature,signature,1,1,1
-FORM1,62298,PAGE-01,Group,graphique,05C,G05C,0
+FORM1,62298,PAGE-01,Group,graphique,05C,G05C,1
 FORM1,62298,PAGE-01,STUDENT ID,graphique,62298,62298,1
 FORM1,62298,PAGE-01,Validation cryptogramme,graphique,1,1,1
 FORM1,62298,EXAM,R2C1,imprime,1,1,1
@@ -425,7 +421,7 @@ FORM1,62298,EXAM,R2C4,graphique,X,1,0
 FORM1,62298,EXAM,R3C1,imprime,2,2,1
 FORM1,62298,EXAM,R3C4,graphique,X,1,0
 FORM1,62298,EXAM,R4C1,imprime,3,3,1
-FORM1,62298,EXAM,R4C10,manuscrit,3.75,3.75,0
+FORM1,62298,EXAM,R4C10,manuscrit,3.75,3.75,1
 FORM1,62298,EXAM,R4C11,manuscrit,2,1,0
 FORM1,62298,EXAM,R5C1,imprime,4,4,1
 FORM1,62298,EXAM,R5C3,graphique,X,1,0
@@ -452,7 +448,7 @@ FORM1,62306,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,62306,PAGE-01,Feuilles brouillon,graphique,1,1110,0
 FORM1,62306,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62306,PAGE-01,Note pour valider,imprime,4,4,1
-FORM1,62306,PAGE-01,Prenom,manuscrit,EILEEN,Eileen,1
+FORM1,62306,PAGE-01,Prenom,manuscrit,EILEEN,EILEEN,1
 FORM1,62306,PAGE-01,Nom,manuscrit,MORGUE,AORGUE,0
 FORM1,62306,PAGE-01,Validation signature,signature,1,0,0
 FORM1,62306,PAGE-01,Group,graphique,G03E,G03E,1
@@ -493,10 +489,10 @@ FORM1,62358,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,62358,PAGE-01,Feuilles brouillon,graphique,1,1110,0
 FORM1,62358,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62358,PAGE-01,Note pour valider,imprime,4,4,1
-FORM1,62358,PAGE-01,Prenom,manuscrit,TRISTAN,Trstan,0
+FORM1,62358,PAGE-01,Prenom,manuscrit,TRISTAN,TRSTAN,0
 FORM1,62358,PAGE-01,Nom,manuscrit,PAU,PAI,0
 FORM1,62358,PAGE-01,Validation signature,signature,1,1,1
-FORM1,62358,PAGE-01,Group,graphique,00A,G00A,0
+FORM1,62358,PAGE-01,Group,graphique,00A,G00A,1
 FORM1,62358,PAGE-01,STUDENT ID,graphique,62358,62358,1
 FORM1,62358,PAGE-01,Validation cryptogramme,graphique,1,0,0
 FORM1,62358,EXAM,R2C1,imprime,1,1,1
@@ -504,7 +500,7 @@ FORM1,62358,EXAM,R2C4,graphique,1,1,1
 FORM1,62358,EXAM,R3C1,imprime,2,2,1
 FORM1,62358,EXAM,R3C4,graphique,1,1,1
 FORM1,62358,EXAM,R4C1,imprime,3,3,1
-FORM1,62358,EXAM,R4C10,manuscrit,3.75,3.75,0
+FORM1,62358,EXAM,R4C10,manuscrit,3.75,3.75,1
 FORM1,62358,EXAM,R4C11,manuscrit,2,2,1
 FORM1,62358,EXAM,R5C1,imprime,4,4,1
 FORM1,62358,EXAM,R5C3,graphique,1,1,1
@@ -538,10 +534,10 @@ FORM1,62369,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,62369,PAGE-01,Feuilles brouillon,graphique,1,110,0
 FORM1,62369,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62369,PAGE-01,Note pour valider,imprime,4,4,1
-FORM1,62369,PAGE-01,Prenom,manuscrit,Amine,Amine,1
+FORM1,62369,PAGE-01,Prenom,manuscrit,Amine,AMINE,1
 FORM1,62369,PAGE-01,Nom,manuscrit,MOUADNI,RDAOU,0
 FORM1,62369,PAGE-01,Validation signature,signature,1,0,0
-FORM1,62369,PAGE-01,Group,graphique,78H,G78H,0
+FORM1,62369,PAGE-01,Group,graphique,78H,G78H,1
 FORM1,62369,PAGE-01,STUDENT ID,graphique,62369,62369,1
 FORM1,62369,PAGE-01,Validation cryptogramme,graphique,1,1,1
 FORM1,62369,EXAM,R2C1,imprime,1,1,1
@@ -577,7 +573,7 @@ FORM1,62370,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,62370,PAGE-01,Feuilles brouillon,graphique,1,1110,0
 FORM1,62370,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62370,PAGE-01,Note pour valider,imprime,4,0,0
-FORM1,62370,PAGE-01,Prenom,manuscrit,Manon,Ma,0
+FORM1,62370,PAGE-01,Prenom,manuscrit,Manon,MA,0
 FORM1,62370,PAGE-01,Nom,manuscrit,George,RG,0
 FORM1,62370,PAGE-01,Validation signature,signature,1,0,0
 FORM1,62370,PAGE-01,Group,graphique,None,G82G,0
@@ -588,7 +584,7 @@ FORM1,62370,EXAM,R2C4,graphique,x,1,0
 FORM1,62370,EXAM,R3C1,imprime,2,2,1
 FORM1,62370,EXAM,R3C2,graphique,x,1,0
 FORM1,62370,EXAM,R4C1,imprime,3,3,1
-FORM1,62370,EXAM,R4C10,manuscrit,0.26,0.26,0
+FORM1,62370,EXAM,R4C10,manuscrit,0.26,0.26,1
 FORM1,62370,EXAM,R4C11,manuscrit,1,10041,0
 FORM1,62370,EXAM,R5C1,imprime,4,4,1
 FORM1,62370,EXAM,R5C3,graphique,x,1,0
@@ -615,7 +611,7 @@ FORM1,62380,PAGE-01,Calculatrice,graphique,1,0,0
 FORM1,62380,PAGE-01,Feuilles brouillon,graphique,2,10,0
 FORM1,62380,PAGE-01,Note maximale,imprime,20,10,0
 FORM1,62380,PAGE-01,Note pour valider,imprime,10,4,0
-FORM1,62380,PAGE-01,Prenom,manuscrit,Ethan,Ethan,1
+FORM1,62380,PAGE-01,Prenom,manuscrit,Ethan,ETHAN,1
 FORM1,62380,PAGE-01,Nom,manuscrit,Assayag,A,0
 FORM1,62380,PAGE-01,Validation signature,signature,1,0,0
 FORM1,62380,PAGE-01,Group,graphique,G02A,G62A,0
@@ -660,10 +656,10 @@ FORM1,62401,PAGE-01,Calculatrice,graphique,1,0,0
 FORM1,62401,PAGE-01,Feuilles brouillon,graphique,2,110,0
 FORM1,62401,PAGE-01,Note maximale,imprime,20,10,0
 FORM1,62401,PAGE-01,Note pour valider,imprime,10,4,0
-FORM1,62401,PAGE-01,Prenom,manuscrit,OSCAR,Oscar,1
+FORM1,62401,PAGE-01,Prenom,manuscrit,OSCAR,OSCAR,1
 FORM1,62401,PAGE-01,Nom,manuscrit,MILLET,LILLEI,0
 FORM1,62401,PAGE-01,Validation signature,signature,1,0,0
-FORM1,62401,PAGE-01,Group,graphique,04J,G04J,0
+FORM1,62401,PAGE-01,Group,graphique,04J,G04J,1
 FORM1,62401,PAGE-01,STUDENT ID,graphique,62401,62401,1
 FORM1,62401,PAGE-01,Validation cryptogramme,graphique,1,1,1
 FORM1,62401,EXAM,R2C1,imprime,1,1,1
@@ -671,7 +667,7 @@ FORM1,62401,EXAM,R2C4,graphique,1,1,1
 FORM1,62401,EXAM,R3C1,imprime,2,2,1
 FORM1,62401,EXAM,R3C4,graphique,1,1,1
 FORM1,62401,EXAM,R4C1,imprime,3,3,1
-FORM1,62401,EXAM,R4C10,manuscrit,3.75,3135,0
+FORM1,62401,EXAM,R4C10,manuscrit,3.75,3.35,0
 FORM1,62401,EXAM,R4C11,manuscrit,2,1,0
 FORM1,62401,EXAM,R5C1,imprime,4,4,1
 FORM1,62401,EXAM,R5C3,graphique,1,1,1
@@ -699,10 +695,10 @@ FORM1,62411,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,62411,PAGE-01,Feuilles brouillon,graphique,1,110,0
 FORM1,62411,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62411,PAGE-01,Note pour valider,imprime,4,4,1
-FORM1,62411,PAGE-01,Prenom,manuscrit,ESTEBAN,Epesan,0
+FORM1,62411,PAGE-01,Prenom,manuscrit,ESTEBAN,EPESAN,0
 FORM1,62411,PAGE-01,Nom,manuscrit,GLAIRON-MONDET,GLAIRONNIONDET,0
 FORM1,62411,PAGE-01,Validation signature,signature,1,0,0
-FORM1,62411,PAGE-01,Group,graphique,32D,G32D,0
+FORM1,62411,PAGE-01,Group,graphique,32D,G32D,1
 FORM1,62411,PAGE-01,STUDENT ID,graphique,62411,62411,1
 FORM1,62411,PAGE-01,Validation cryptogramme,graphique,1,1,1
 FORM1,62411,EXAM,R2C1,imprime,1,1,1
@@ -738,7 +734,7 @@ FORM1,62427,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,62427,PAGE-01,Feuilles brouillon,graphique,1,110,0
 FORM1,62427,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62427,PAGE-01,Note pour valider,imprime,4,4,1
-FORM1,62427,PAGE-01,Prenom,manuscrit,Camille,Cami,0
+FORM1,62427,PAGE-01,Prenom,manuscrit,Camille,CAMI,0
 FORM1,62427,PAGE-01,Nom,manuscrit,Chaptini,CIAPTINI,0
 FORM1,62427,PAGE-01,Validation signature,signature,1,1,1
 FORM1,62427,PAGE-01,Group,graphique,10C,G16C,0
@@ -749,7 +745,7 @@ FORM1,62427,EXAM,R2C4,graphique,1,1,1
 FORM1,62427,EXAM,R3C1,imprime,2,2,1
 FORM1,62427,EXAM,R3C4,graphique,1,1,1
 FORM1,62427,EXAM,R4C1,imprime,3,3,1
-FORM1,62427,EXAM,R4C10,manuscrit,3.75,3.75,0
+FORM1,62427,EXAM,R4C10,manuscrit,3.75,3.75,1
 FORM1,62427,EXAM,R4C11,manuscrit,2,9,0
 FORM1,62427,EXAM,R5C1,imprime,4,4,1
 FORM1,62427,EXAM,R5C3,graphique,1,1,1
@@ -784,7 +780,7 @@ FORM1,62436,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,62436,PAGE-01,Prenom,manuscrit,Yann,N,0
 FORM1,62436,PAGE-01,Nom,manuscrit,Roquigny--Martin,BLOSWLG NI NLALELZL,0
 FORM1,62436,PAGE-01,Validation signature,signature,1,0,0
-FORM1,62436,PAGE-01,Group,graphique,04J,G04J,0
+FORM1,62436,PAGE-01,Group,graphique,04J,G04J,1
 FORM1,62436,PAGE-01,STUDENT ID,graphique,62436,62436,1
 FORM1,62436,PAGE-01,Validation cryptogramme,graphique,1,1,1
 FORM1,62436,EXAM,R2C1,imprime,1,1,1
@@ -792,7 +788,7 @@ FORM1,62436,EXAM,R2C4,graphique,1,1,1
 FORM1,62436,EXAM,R3C1,imprime,2,2,1
 FORM1,62436,EXAM,R3C4,graphique,1,1,1
 FORM1,62436,EXAM,R4C1,imprime,3,3,1
-FORM1,62436,EXAM,R4C10,manuscrit,3.75,0.379,0
+FORM1,62436,EXAM,R4C10,manuscrit,3.75,3.79,0
 FORM1,62436,EXAM,R4C11,manuscrit,2,21,0
 FORM1,62436,EXAM,R5C1,imprime,4,4,1
 FORM1,62436,EXAM,R5C3,graphique,1,None,0
@@ -820,7 +816,7 @@ FORM1,62440,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,62440,PAGE-01,Feuilles brouillon,graphique,1,110,0
 FORM1,62440,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62440,PAGE-01,Note pour valider,imprime,4,4,1
-FORM1,62440,PAGE-01,Prenom,manuscrit,ANWAR,Anuar,0
+FORM1,62440,PAGE-01,Prenom,manuscrit,ANWAR,ANUAR,0
 FORM1,62440,PAGE-01,Nom,manuscrit,AL BITAR,ALRITAR,0
 FORM1,62440,PAGE-01,Validation signature,signature,1,1,1
 FORM1,62440,PAGE-01,Group,graphique,G03A,G03A,1
@@ -857,7 +853,7 @@ FORM1,62445,PAGE-01,Calculatrice,graphique,1,0,0
 FORM1,62445,PAGE-01,Feuilles brouillon,graphique,2,10,0
 FORM1,62445,PAGE-01,Note maximale,imprime,20,10,0
 FORM1,62445,PAGE-01,Note pour valider,imprime,10,4,0
-FORM1,62445,PAGE-01,Prenom,manuscrit,Maxime,Haxime,0
+FORM1,62445,PAGE-01,Prenom,manuscrit,Maxime,HAXIME,0
 FORM1,62445,PAGE-01,Nom,manuscrit,ETIENNE,ETRENUE,0
 FORM1,62445,PAGE-01,Validation signature,signature,1,1,1
 FORM1,62445,PAGE-01,Group,graphique,G02B,G02B,1
@@ -903,7 +899,7 @@ FORM1,62492,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,62492,PAGE-01,Feuilles brouillon,graphique,1,10,0
 FORM1,62492,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62492,PAGE-01,Note pour valider,imprime,4,None,0
-FORM1,62492,PAGE-01,Prenom,manuscrit,None,Idris,0
+FORM1,62492,PAGE-01,Prenom,manuscrit,None,IDRIS,0
 FORM1,62492,PAGE-01,Nom,manuscrit,None,IAOVL,0
 FORM1,62492,PAGE-01,Validation signature,signature,1,0,0
 FORM1,62492,PAGE-01,Group,graphique,None,G78H,0
@@ -914,7 +910,6 @@ FORM1,62492,EXAM,R2C5,graphique,x,1,0
 FORM1,62492,EXAM,R3C1,imprime,2,2,1
 FORM1,62492,EXAM,R3C2,graphique,x,1,0
 FORM1,62492,EXAM,R4C1,imprime,3,3,1
-FORM1,62492,EXAM,R4C10,manuscrit,None,44,0
 FORM1,62492,EXAM,R5C1,imprime,4,4,1
 FORM1,62492,EXAM,R5C3,graphique,x,1,0
 FORM1,62492,EXAM,R6C1,imprime,5,5,1
@@ -939,10 +934,10 @@ FORM1,62500,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,62500,PAGE-01,Feuilles brouillon,graphique,1,110,0
 FORM1,62500,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62500,PAGE-01,Note pour valider,imprime,4,4,1
-FORM1,62500,PAGE-01,Prenom,manuscrit,Kevan,Gbopeaoh,0
+FORM1,62500,PAGE-01,Prenom,manuscrit,Kevan,GBOPEAOH,0
 FORM1,62500,PAGE-01,Nom,manuscrit,GEOFFROY,MEVAN,0
 FORM1,62500,PAGE-01,Validation signature,signature,1,1,1
-FORM1,62500,PAGE-01,Group,graphique,78H,G78H,0
+FORM1,62500,PAGE-01,Group,graphique,78H,G78H,1
 FORM1,62500,PAGE-01,STUDENT ID,graphique,62500,62500,1
 FORM1,62500,PAGE-01,Validation cryptogramme,graphique,1,1,1
 FORM1,62500,EXAM,R2C1,imprime,1,1,1
@@ -978,7 +973,7 @@ FORM1,62578,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,62578,PAGE-01,Feuilles brouillon,graphique,1,110,0
 FORM1,62578,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62578,PAGE-01,Note pour valider,imprime,4,4,1
-FORM1,62578,PAGE-01,Prenom,manuscrit,None,Jenan,0
+FORM1,62578,PAGE-01,Prenom,manuscrit,None,JENAN,0
 FORM1,62578,PAGE-01,Nom,manuscrit,None,VIROI,0
 FORM1,62578,PAGE-01,Validation signature,signature,1,0,0
 FORM1,62578,PAGE-01,Group,graphique,None,G03B,0
@@ -997,7 +992,7 @@ FORM1,62578,EXAM,R5C3,graphique,1,1,1
 FORM1,62578,EXAM,R6C1,imprime,5,5,1
 FORM1,62578,EXAM,R6C4,graphique,1,1,1
 FORM1,62578,EXAM,R7C1,imprime,6,6,1
-FORM1,62578,EXAM,R7C10,manuscrit,1,57,0
+FORM1,62578,EXAM,R7C10,manuscrit,1,7,0
 FORM1,62578,EXAM,R7C11,manuscrit,0,101,0
 FORM1,62578,EXAM,R7C12,manuscrit,None,KHz,0
 FORM1,62578,EXAM,R8C1,imprime,7,7,1
@@ -1017,7 +1012,7 @@ FORM1,62596,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,62596,PAGE-01,Feuilles brouillon,graphique,1,110,0
 FORM1,62596,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62596,PAGE-01,Note pour valider,imprime,4,4,1
-FORM1,62596,PAGE-01,Prenom,manuscrit,Karl,Erl,0
+FORM1,62596,PAGE-01,Prenom,manuscrit,Karl,ERL,0
 FORM1,62596,PAGE-01,Nom,manuscrit,Bou Chaaya,R,0
 FORM1,62596,PAGE-01,Validation signature,signature,1,1,1
 FORM1,62596,PAGE-01,Group,graphique,None,G88C,0
@@ -1028,7 +1023,7 @@ FORM1,62596,EXAM,R2C3,graphique,X,None,0
 FORM1,62596,EXAM,R3C1,imprime,2,2,1
 FORM1,62596,EXAM,R3C2,graphique,X,1,0
 FORM1,62596,EXAM,R4C1,imprime,3,3,1
-FORM1,62596,EXAM,R4C10,manuscrit,1.03,1103,0
+FORM1,62596,EXAM,R4C10,manuscrit,1.03,1.03,1
 FORM1,62596,EXAM,R4C11,manuscrit,-2,1021,0
 FORM1,62596,EXAM,R5C1,imprime,4,4,1
 FORM1,62596,EXAM,R5C2,graphique,X,None,0
@@ -1055,10 +1050,10 @@ FORM1,62598,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,62598,PAGE-01,Feuilles brouillon,graphique,1,110,0
 FORM1,62598,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62598,PAGE-01,Note pour valider,imprime,4,4,1
-FORM1,62598,PAGE-01,Prenom,manuscrit,MARIA,Mara,0
+FORM1,62598,PAGE-01,Prenom,manuscrit,MARIA,MARA,0
 FORM1,62598,PAGE-01,Nom,manuscrit,FAZI,PAZ,0
 FORM1,62598,PAGE-01,Validation signature,signature,1,1,1
-FORM1,62598,PAGE-01,Group,graphique,02F,G02F,0
+FORM1,62598,PAGE-01,Group,graphique,02F,G02F,1
 FORM1,62598,PAGE-01,STUDENT ID,graphique,62598,62598,1
 FORM1,62598,PAGE-01,Validation cryptogramme,graphique,1,1,1
 FORM1,62598,EXAM,R2C1,imprime,1,1,1
@@ -1099,7 +1094,7 @@ FORM1,62616,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,62616,PAGE-01,Feuilles brouillon,graphique,1,110,0
 FORM1,62616,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62616,PAGE-01,Note pour valider,imprime,4,4,1
-FORM1,62616,PAGE-01,Prenom,manuscrit,Paule,Paule,1
+FORM1,62616,PAGE-01,Prenom,manuscrit,Paule,PAULE,1
 FORM1,62616,PAGE-01,Nom,manuscrit,Rochette,ROHERT,0
 FORM1,62616,PAGE-01,Validation signature,signature,1,1,1
 FORM1,62616,PAGE-01,Group,graphique,07 C,G07C,0
@@ -1113,7 +1108,6 @@ FORM1,62616,EXAM,R3C2,graphique,1,1,1
 FORM1,62616,EXAM,R3C3,graphique,None,1,0
 FORM1,62616,EXAM,R4C1,imprime,3,3,1
 FORM1,62616,EXAM,R4C10,manuscrit,1,1,1
-FORM1,62616,EXAM,R4C11,manuscrit,None,10,0
 FORM1,62616,EXAM,R4C12,manuscrit,W,U,0
 FORM1,62616,EXAM,R5C1,imprime,4,4,1
 FORM1,62616,EXAM,R5C4,graphique,1,1,1
@@ -1141,10 +1135,10 @@ FORM1,62645,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,62645,PAGE-01,Feuilles brouillon,graphique,1,10,0
 FORM1,62645,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62645,PAGE-01,Note pour valider,imprime,4,None,0
-FORM1,62645,PAGE-01,Prenom,manuscrit,Raphael,Raphael,1
+FORM1,62645,PAGE-01,Prenom,manuscrit,Raphael,RAPHAEL,1
 FORM1,62645,PAGE-01,Nom,manuscrit,SLAMA,SIANA,0
 FORM1,62645,PAGE-01,Validation signature,signature,1,0,0
-FORM1,62645,PAGE-01,Group,graphique,09C,G09C,0
+FORM1,62645,PAGE-01,Group,graphique,09C,G09C,1
 FORM1,62645,PAGE-01,STUDENT ID,graphique,62645,62645,1
 FORM1,62645,PAGE-01,Validation cryptogramme,graphique,1,1,1
 FORM1,62645,EXAM,R2C1,imprime,1,1,1
@@ -1159,7 +1153,7 @@ FORM1,62645,EXAM,R5C5,graphique,x,None,0
 FORM1,62645,EXAM,R6C1,imprime,5,5,1
 FORM1,62645,EXAM,R6C6,graphique,x,None,0
 FORM1,62645,EXAM,R7C1,imprime,6,6,1
-FORM1,62645,EXAM,R7C10,manuscrit,3.6,316,0
+FORM1,62645,EXAM,R7C10,manuscrit,3.6,3.6,1
 FORM1,62645,EXAM,R7C11,manuscrit,-2,12,0
 FORM1,62645,EXAM,R7C12,manuscrit,KHz,KHz,1
 FORM1,62645,EXAM,R8C1,imprime,7,7,1
@@ -1179,7 +1173,7 @@ FORM1,62747,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,62747,PAGE-01,Feuilles brouillon,graphique,1,1110,0
 FORM1,62747,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62747,PAGE-01,Note pour valider,imprime,4,4,1
-FORM1,62747,PAGE-01,Prenom,manuscrit,Dacheng,Uechanu,0
+FORM1,62747,PAGE-01,Prenom,manuscrit,Dacheng,UECHANU,0
 FORM1,62747,PAGE-01,Nom,manuscrit,Ji,D,0
 FORM1,62747,PAGE-01,Validation signature,signature,1,1,1
 FORM1,62747,PAGE-01,Group,graphique,2B,G02B,0
@@ -1197,8 +1191,7 @@ FORM1,62747,EXAM,R5C4,graphique,1,1,1
 FORM1,62747,EXAM,R6C1,imprime,5,5,1
 FORM1,62747,EXAM,R6C4,graphique,1,1,1
 FORM1,62747,EXAM,R7C1,imprime,6,6,1
-FORM1,62747,EXAM,R7C10,manuscrit,2.12,1.21,0
-FORM1,62747,EXAM,R7C11,manuscrit,None,10,0
+FORM1,62747,EXAM,R7C10,manuscrit,2.12,2.1,0
 FORM1,62747,EXAM,R7C12,manuscrit,khz,KHz,1
 FORM1,62747,EXAM,R8C1,imprime,7,7,1
 FORM1,62747,EXAM,R8C5,graphique,1,1,1
@@ -1217,7 +1210,7 @@ FORM1,62766,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,62766,PAGE-01,Feuilles brouillon,graphique,1,1110,0
 FORM1,62766,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62766,PAGE-01,Note pour valider,imprime,4,None,0
-FORM1,62766,PAGE-01,Prenom,manuscrit,None,Ruzi,0
+FORM1,62766,PAGE-01,Prenom,manuscrit,None,RUZI,0
 FORM1,62766,PAGE-01,Nom,manuscrit,None,LJ,0
 FORM1,62766,PAGE-01,Validation signature,signature,1,1,1
 FORM1,62766,PAGE-01,Group,graphique,None,G02B,0
@@ -1255,7 +1248,7 @@ FORM1,63272,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,63272,PAGE-01,Feuilles brouillon,graphique,1,110,0
 FORM1,63272,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,63272,PAGE-01,Note pour valider,imprime,4,4,1
-FORM1,63272,PAGE-01,Prenom,manuscrit,GUOKUANG,Gukang,0
+FORM1,63272,PAGE-01,Prenom,manuscrit,GUOKUANG,GUKANG,0
 FORM1,63272,PAGE-01,Nom,manuscrit,DENG,DENO,0
 FORM1,63272,PAGE-01,Validation signature,signature,1,1,1
 FORM1,63272,PAGE-01,Group,graphique,G02B,G02B,1
@@ -1274,7 +1267,7 @@ FORM1,63272,EXAM,R5C4,graphique,1,None,0
 FORM1,63272,EXAM,R6C1,imprime,5,5,1
 FORM1,63272,EXAM,R6C5,graphique,1,1,1
 FORM1,63272,EXAM,R7C1,imprime,6,6,1
-FORM1,63272,EXAM,R7C10,manuscrit,2.1,2.1,1
+FORM1,63272,EXAM,R7C10,manuscrit,2.1,2,0
 FORM1,63272,EXAM,R7C11,manuscrit,1,None,0
 FORM1,63272,EXAM,R7C12,manuscrit,None,KHz,0
 FORM1,63272,EXAM,R8C1,imprime,7,7,1
@@ -1294,7 +1287,7 @@ FORM1,63273,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,63273,PAGE-01,Feuilles brouillon,graphique,1,1110,0
 FORM1,63273,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,63273,PAGE-01,Note pour valider,imprime,4,11,0
-FORM1,63273,PAGE-01,Prenom,manuscrit,Lianghong,Lianging,0
+FORM1,63273,PAGE-01,Prenom,manuscrit,Lianghong,LIANGING,0
 FORM1,63273,PAGE-01,Nom,manuscrit,LI,LI,1
 FORM1,63273,PAGE-01,Validation signature,signature,1,1,1
 FORM1,63273,PAGE-01,Group,graphique,G02B,G02B,1
@@ -1341,7 +1334,7 @@ FORM1,63694,PAGE-01,Calculatrice,graphique,0.0,0,1
 FORM1,63694,PAGE-01,Feuilles brouillon,graphique,1.0,110,0
 FORM1,63694,PAGE-01,Note maximale,imprime,10.0,10,1
 FORM1,63694,PAGE-01,Note pour valider,imprime,4.0,4,1
-FORM1,63694,PAGE-01,Prenom,manuscrit,JACK,Jaok,0
+FORM1,63694,PAGE-01,Prenom,manuscrit,JACK,JAOK,0
 FORM1,63694,PAGE-01,Nom,manuscrit,BAUER,BAUER,1
 FORM1,63694,PAGE-01,Validation signature,signature,1.0,1,1
 FORM1,63694,PAGE-01,Group,graphique,G33C,G33C,1
@@ -1381,10 +1374,10 @@ FORM1,63807,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,63807,PAGE-01,Feuilles brouillon,graphique,1,110,0
 FORM1,63807,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,63807,PAGE-01,Note pour valider,imprime,4,None,0
-FORM1,63807,PAGE-01,Prenom,manuscrit,Wasil,Yasil,0
+FORM1,63807,PAGE-01,Prenom,manuscrit,Wasil,YASIL,0
 FORM1,63807,PAGE-01,Nom,manuscrit,Rhematally,RHEAATALLY,0
 FORM1,63807,PAGE-01,Validation signature,signature,1,1,1
-FORM1,63807,PAGE-01,Group,graphique,78H,G78H,0
+FORM1,63807,PAGE-01,Group,graphique,78H,G78H,1
 FORM1,63807,PAGE-01,STUDENT ID,graphique,63807,63807,1
 FORM1,63807,PAGE-01,Validation cryptogramme,graphique,1,1,1
 FORM1,63807,EXAM,R2C1,imprime,1,1,1
@@ -1461,7 +1454,7 @@ FORM1,63838,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,63838,PAGE-01,Feuilles brouillon,graphique,1,110,0
 FORM1,63838,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,63838,PAGE-01,Note pour valider,imprime,4,4,1
-FORM1,63838,PAGE-01,Prenom,manuscrit,khawla,Rnn,0
+FORM1,63838,PAGE-01,Prenom,manuscrit,khawla,RNN,0
 FORM1,63838,PAGE-01,Nom,manuscrit,El ouannass,EL,0
 FORM1,63838,PAGE-01,Validation signature,signature,1,0,0
 FORM1,63838,PAGE-01,Group,graphique,2,G01H,0
@@ -1503,10 +1496,10 @@ FORM1,63887,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,63887,PAGE-01,Feuilles brouillon,graphique,1,10,0
 FORM1,63887,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,63887,PAGE-01,Note pour valider,imprime,4,4,1
-FORM1,63887,PAGE-01,Prenom,manuscrit,ANGE  NOLWEN,Agenoiwea,0
+FORM1,63887,PAGE-01,Prenom,manuscrit,ANGE  NOLWEN,AGENOIWEA,0
 FORM1,63887,PAGE-01,Nom,manuscrit,DJUISSI KENMOE,DJIS,0
 FORM1,63887,PAGE-01,Validation signature,signature,1,0,0
-FORM1,63887,PAGE-01,Group,graphique,66B,G66B,0
+FORM1,63887,PAGE-01,Group,graphique,66B,G66B,1
 FORM1,63887,PAGE-01,STUDENT ID,graphique,63887,63887,1
 FORM1,63887,PAGE-01,Validation cryptogramme,graphique,1,1,1
 FORM1,63887,EXAM,R2C1,imprime,1,1,1
@@ -1542,7 +1535,7 @@ FORM1,64413,PAGE-01,Calculatrice,graphique,1,0,0
 FORM1,64413,PAGE-01,Feuilles brouillon,graphique,2,110,0
 FORM1,64413,PAGE-01,Note maximale,imprime,20,10,0
 FORM1,64413,PAGE-01,Note pour valider,imprime,10,4,0
-FORM1,64413,PAGE-01,Prenom,manuscrit,DIANE,Dane,0
+FORM1,64413,PAGE-01,Prenom,manuscrit,DIANE,DANE,0
 FORM1,64413,PAGE-01,Nom,manuscrit,CHABRERIE,CHAEREAIE,0
 FORM1,64413,PAGE-01,Validation signature,signature,1,0,0
 FORM1,64413,PAGE-01,Group,graphique,G06E,G06E,1
@@ -1553,7 +1546,7 @@ FORM1,64413,EXAM,R2C4,graphique,None,1,0
 FORM1,64413,EXAM,R3C1,imprime,2,2,1
 FORM1,64413,EXAM,R3C2,graphique,None,1,0
 FORM1,64413,EXAM,R4C1,imprime,3,3,1
-FORM1,64413,EXAM,R4C10,manuscrit,None,1175,0
+FORM1,64413,EXAM,R4C10,manuscrit,None,1.75,0
 FORM1,64413,EXAM,R4C11,manuscrit,None,121,0
 FORM1,64413,EXAM,R5C1,imprime,4,4,1
 FORM1,64413,EXAM,R5C3,graphique,None,1,0
@@ -1585,7 +1578,7 @@ FORM1,65442,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,65442,PAGE-01,Prenom,manuscrit,Pierre,I,0
 FORM1,65442,PAGE-01,Nom,manuscrit,Roule,R,0
 FORM1,65442,PAGE-01,Validation signature,signature,1,0,0
-FORM1,65442,PAGE-01,Group,graphique,03A,G03A,0
+FORM1,65442,PAGE-01,Group,graphique,03A,G03A,1
 FORM1,65442,PAGE-01,STUDENT ID,graphique,65442,65442,1
 FORM1,65442,PAGE-01,Validation cryptogramme,graphique,1,1,1
 FORM1,65442,EXAM,R2C1,imprime,1,1,1
@@ -1593,7 +1586,7 @@ FORM1,65442,EXAM,R2C4,graphique,1,1,1
 FORM1,65442,EXAM,R3C1,imprime,2,2,1
 FORM1,65442,EXAM,R3C4,graphique,1,1,1
 FORM1,65442,EXAM,R4C1,imprime,3,3,1
-FORM1,65442,EXAM,R4C10,manuscrit,3.75,1115,0
+FORM1,65442,EXAM,R4C10,manuscrit,3.75,1.15,0
 FORM1,65442,EXAM,R4C11,manuscrit,2,1101,0
 FORM1,65442,EXAM,R5C1,imprime,4,4,1
 FORM1,65442,EXAM,R5C4,graphique,1,1,1
@@ -1620,10 +1613,10 @@ FORM1,75012,PAGE-01,Calculatrice,graphique,0,0,1
 FORM1,75012,PAGE-01,Feuilles brouillon,graphique,1,110,0
 FORM1,75012,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,75012,PAGE-01,Note pour valider,imprime,4,4,1
-FORM1,75012,PAGE-01,Prenom,manuscrit,ERIC,Ersc,0
+FORM1,75012,PAGE-01,Prenom,manuscrit,ERIC,ERSC,0
 FORM1,75012,PAGE-01,Nom,manuscrit,LEMARCHANT,LLMARCHANT,0
 FORM1,75012,PAGE-01,Validation signature,signature,1,1,1
-FORM1,75012,PAGE-01,Group,graphique,09A,G09A,0
+FORM1,75012,PAGE-01,Group,graphique,09A,G09A,1
 FORM1,75012,PAGE-01,STUDENT ID,graphique,75012,75012,1
 FORM1,75012,PAGE-01,Validation cryptogramme,graphique,1,1,1
 FORM1,75012,EXAM,R2C1,imprime,1,1,1
@@ -1641,7 +1634,7 @@ FORM1,75012,EXAM,R5C12,manuscrit,dbm,None,0
 FORM1,75012,EXAM,R6C1,imprime,5,5,1
 FORM1,75012,EXAM,R6C4,graphique,2.12,1,0
 FORM1,75012,EXAM,R7C1,imprime,6,6,1
-FORM1,75012,EXAM,R7C10,manuscrit,1.05,4105,0
+FORM1,75012,EXAM,R7C10,manuscrit,1.05,4.05,0
 FORM1,75012,EXAM,R7C11,manuscrit,1,7,0
 FORM1,75012,EXAM,R7C12,manuscrit,KHz,KHz,1
 FORM1,75012,EXAM,R8C1,imprime,7,7,1

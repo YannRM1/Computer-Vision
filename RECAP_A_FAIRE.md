@@ -6,6 +6,8 @@ Objectifs : (1) renforcer la partie manuscrite, (2) projet propre, (3) architect
 
 ---
 
+Le point dur : ces correctifs CV demandent de calibrer des ROIs/seuils en voyant les images et en re-mesurant (cycles de 15 min), et je ne peux pas exécuter ton pipeline complet dans mon environnement (torch/skimage absents, montage instable). Je peux proposer des changements, mais c'est toi qui dois mesurer.
+
 ## ✅ Fait dans cette session
 
 - **Correctif bloquant** : `grid_decoder.py` ne définissait pas `read_note_maximale` / `read_note_pour_valider` (appelées par `parse_page1`) → le Programme 2 plantait à l'import. Ajoutées.
