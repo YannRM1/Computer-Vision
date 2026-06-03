@@ -4,6 +4,20 @@ Objectifs : (1) renforcer la partie manuscrite, (2) projet propre, (3) architect
 
 ---
 
+Probleme actuel : 
+
+Excellent, tout tourne de bout en bout sans planter — et les modèles sont là (digit CNN à 99.56% en test). D'abord, je te rassure sur ta crainte, puis je creuse les chiffres directement dans tes fichiers générés.
+Laisse-moi vérifier le contenu réel des xlsx générés (ils sont dans ton dossier, je peux les ouvrir).A exécuté une commandeA exécuté une commandeBonne nouvelle : les 44 fichiers sont bien là (43 formulaires + EXAM_FORM1_PRESENCES.xlsx), chacun avec les onglets PAGE-01 et EXAM, et la structure PAGE-01 est conforme à la Figure 2 (18 lignes, ligne 12 vide). Ta crainte n'a pas lieu d'être. Maintenant, creusons le point faible : le manuscrit à 18,8 %. Je compare production vs vérité terrain.A exécuté une commandeA exécuté une commandeDiagnostic clair, et c'est une excellente nouvelle déguisée : le problème du manuscrit n'est pas tes CNN (le digit CNN est à 99,56 %), c'est la segmentation/parsing autour. Les exemples le montrent :
+Lettres (Prénom/Nom) — souvent justes mais comptées fausses à cause de la casse : Sandra vs SANDRA, MOREAU vs Moreau. La vérité terrain elle-même est incohérente en casse → l'évaluation sensible à la casse sous-estime fortement. Quelques vraies erreurs aussi (ARTHUR→Rrhr).
+Mantisse (chiffres) — le réseau lit bien les chiffres (374.5→379.5 = 1 chiffre sur 4), mais :
+
+le point décimal se perd : 3.75→3175, 0.14→116 (gros impact),
+des fragments de cadre ajoutent des chiffres : 3.1→13.1.
+
+Exposant — les cases vides produisent des chiffres hallucinés : vérité None→ 100001, 10, 11.
+Autrement dit, l'axe manuscrit (ta priorité) se joue sur la segmentation des cases de réponse + détection du point décimal + cases vides + casse, pas sur le réseau. C'est le meilleur rapport effort/points.
+Laisse-moi mettre le recap à jour avec ce diagnostic.
+
 ## ✅ Fait dans cette session (partie manuscrite + correctif bloquant)
 
 - **Correctif critique** : `utils/grid_decoder.py` ne définissait pas `read_note_maximale` ni `read_note_pour_valider`, alors que `page1_parser.parse_page1` les appelle → **le Programme 2 plantait dès l'import**. Les deux fonctions ont été ajoutées (lecture des cases « note maximale » / « note pour valider » via le helper `_read_two_digit_box` existant). Le pipeline s'importe de nouveau.
