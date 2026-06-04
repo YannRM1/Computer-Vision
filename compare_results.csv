@@ -7,7 +7,7 @@ FORM1,19283,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,19283,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,19283,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,19283,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,19283,PAGE-01,Feuilles brouillon,graphique,1,10,0
+FORM1,19283,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,19283,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,19283,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,19283,PAGE-01,Prenom,manuscrit,Julien,SULIEN,0
@@ -48,7 +48,7 @@ FORM1,36912,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,36912,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,36912,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,36912,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,36912,PAGE-01,Feuilles brouillon,graphique,1,10,0
+FORM1,36912,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,36912,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,36912,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,36912,PAGE-01,Prenom,manuscrit,Miguel,M,0
@@ -88,7 +88,7 @@ FORM1,50305,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,50305,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,50305,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,50305,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,50305,PAGE-01,Feuilles brouillon,graphique,1,110,0
+FORM1,50305,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,50305,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,50305,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,50305,PAGE-01,Prenom,manuscrit,Victor,ICTOK,0
@@ -124,7 +124,7 @@ FORM1,54331,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,54331,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,54331,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,54331,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,54331,PAGE-01,Feuilles brouillon,graphique,1,111,0
+FORM1,54331,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,54331,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,54331,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,54331,PAGE-01,Prenom,manuscrit,ARTHUR,RRHR,0
@@ -163,7 +163,7 @@ FORM1,58220,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,58220,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,58220,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,58220,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,58220,PAGE-01,Feuilles brouillon,graphique,1,110,0
+FORM1,58220,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,58220,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,58220,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,58220,PAGE-01,Prenom,manuscrit,SANDRA,SANDRA,1
@@ -201,7 +201,7 @@ FORM1,58927,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,58927,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,58927,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,58927,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,58927,PAGE-01,Feuilles brouillon,graphique,1,110,0
+FORM1,58927,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,58927,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,58927,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,58927,PAGE-01,Prenom,manuscrit,ROCKY,ROCRY,0
@@ -242,7 +242,7 @@ FORM1,61856,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,61856,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,61856,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,61856,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,61856,PAGE-01,Feuilles brouillon,graphique,1,110,0
+FORM1,61856,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,61856,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,61856,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,61856,PAGE-01,Prenom,manuscrit,Jade,A,0
@@ -285,7 +285,7 @@ FORM1,61992,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,61992,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,61992,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,61992,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,61992,PAGE-01,Feuilles brouillon,graphique,1,110,0
+FORM1,61992,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,61992,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,61992,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,61992,PAGE-01,Prenom,manuscrit,Victor,T,0
@@ -300,14 +300,14 @@ FORM1,61992,EXAM,R3C1,imprime,2,2,1
 FORM1,61992,EXAM,R3C4,graphique,1,1,1
 FORM1,61992,EXAM,R4C1,imprime,3,3,1
 FORM1,61992,EXAM,R4C10,manuscrit,375,375,1
-FORM1,61992,EXAM,R4C11,manuscrit,0,4001,0
+FORM1,61992,EXAM,R4C11,manuscrit,0,41,0
 FORM1,61992,EXAM,R5C1,imprime,4,4,1
 FORM1,61992,EXAM,R5C3,graphique,1,1,1
 FORM1,61992,EXAM,R6C1,imprime,5,5,1
 FORM1,61992,EXAM,R6C5,graphique,1,1,1
 FORM1,61992,EXAM,R7C1,imprime,6,6,1
 FORM1,61992,EXAM,R7C10,manuscrit,14.8,14.8,1
-FORM1,61992,EXAM,R7C11,manuscrit,0,101,0
+FORM1,61992,EXAM,R7C11,manuscrit,0,10,0
 FORM1,61992,EXAM,R7C12,manuscrit,KHz,KHz,1
 FORM1,61992,EXAM,R8C1,imprime,7,7,1
 FORM1,61992,EXAM,R8C2,graphique,None,1,0
@@ -324,7 +324,7 @@ FORM1,62034,PAGE-01,Notes de cours,graphique,1.0,1,1
 FORM1,62034,PAGE-01,Notes manuscrites,graphique,0.0,0,1
 FORM1,62034,PAGE-01,Ordinateur portable,graphique,1.0,1,1
 FORM1,62034,PAGE-01,Calculatrice,graphique,0.0,0,1
-FORM1,62034,PAGE-01,Feuilles brouillon,graphique,1.0,110,0
+FORM1,62034,PAGE-01,Feuilles brouillon,graphique,1.0,1,1
 FORM1,62034,PAGE-01,Note maximale,imprime,10.0,10,1
 FORM1,62034,PAGE-01,Note pour valider,imprime,4.0,4,1
 FORM1,62034,PAGE-01,Prenom,manuscrit,Esteban,EER,0
@@ -366,7 +366,7 @@ FORM1,62288,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,62288,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,62288,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,62288,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,62288,PAGE-01,Feuilles brouillon,graphique,1,10,0
+FORM1,62288,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,62288,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62288,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,62288,PAGE-01,Prenom,manuscrit,LOU-ANN,LO,0
@@ -381,7 +381,7 @@ FORM1,62288,EXAM,R3C1,imprime,2,2,1
 FORM1,62288,EXAM,R3C5,graphique,1,1,1
 FORM1,62288,EXAM,R4C1,imprime,3,3,1
 FORM1,62288,EXAM,R4C10,manuscrit,3,3,1
-FORM1,62288,EXAM,R4C11,manuscrit,-1,114,0
+FORM1,62288,EXAM,R4C11,manuscrit,-1,14,0
 FORM1,62288,EXAM,R5C1,imprime,4,4,1
 FORM1,62288,EXAM,R5C2,graphique,1,1,1
 FORM1,62288,EXAM,R6C1,imprime,5,5,1
@@ -390,7 +390,7 @@ FORM1,62288,EXAM,R6C3,graphique,1,None,0
 FORM1,62288,EXAM,R6C4,graphique,None,1,0
 FORM1,62288,EXAM,R7C1,imprime,6,6,1
 FORM1,62288,EXAM,R7C10,manuscrit,3,3,1
-FORM1,62288,EXAM,R7C11,manuscrit,2,121,0
+FORM1,62288,EXAM,R7C11,manuscrit,2,12,0
 FORM1,62288,EXAM,R7C12,manuscrit,KHz,KHz,1
 FORM1,62288,EXAM,R8C1,imprime,7,7,1
 FORM1,62288,EXAM,R8C4,graphique,1,1,1
@@ -407,7 +407,7 @@ FORM1,62298,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,62298,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,62298,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,62298,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,62298,PAGE-01,Feuilles brouillon,graphique,1,10,0
+FORM1,62298,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,62298,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62298,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,62298,PAGE-01,Prenom,manuscrit,Jade,JADE,1
@@ -445,7 +445,7 @@ FORM1,62306,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,62306,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,62306,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,62306,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,62306,PAGE-01,Feuilles brouillon,graphique,1,1110,0
+FORM1,62306,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,62306,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62306,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,62306,PAGE-01,Prenom,manuscrit,EILEEN,EILEEN,1
@@ -486,7 +486,7 @@ FORM1,62358,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,62358,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,62358,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,62358,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,62358,PAGE-01,Feuilles brouillon,graphique,1,1110,0
+FORM1,62358,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,62358,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62358,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,62358,PAGE-01,Prenom,manuscrit,TRISTAN,TRSTAN,0
@@ -531,7 +531,7 @@ FORM1,62369,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,62369,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,62369,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,62369,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,62369,PAGE-01,Feuilles brouillon,graphique,1,110,0
+FORM1,62369,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,62369,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62369,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,62369,PAGE-01,Prenom,manuscrit,Amine,AMINE,1
@@ -547,7 +547,7 @@ FORM1,62369,EXAM,R3C2,graphique,1,None,0
 FORM1,62369,EXAM,R4C1,imprime,3,3,1
 FORM1,62369,EXAM,R4C2,graphique,1,None,0
 FORM1,62369,EXAM,R4C10,manuscrit,None,1,0
-FORM1,62369,EXAM,R4C11,manuscrit,None,1011,0
+FORM1,62369,EXAM,R4C11,manuscrit,None,111,0
 FORM1,62369,EXAM,R5C1,imprime,4,4,1
 FORM1,62369,EXAM,R5C2,graphique,1,1,1
 FORM1,62369,EXAM,R6C1,imprime,5,5,1
@@ -570,7 +570,7 @@ FORM1,62370,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,62370,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,62370,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,62370,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,62370,PAGE-01,Feuilles brouillon,graphique,1,1110,0
+FORM1,62370,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,62370,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62370,PAGE-01,Note pour valider,imprime,4,0,0
 FORM1,62370,PAGE-01,Prenom,manuscrit,Manon,MA,0
@@ -585,7 +585,7 @@ FORM1,62370,EXAM,R3C1,imprime,2,2,1
 FORM1,62370,EXAM,R3C2,graphique,x,1,0
 FORM1,62370,EXAM,R4C1,imprime,3,3,1
 FORM1,62370,EXAM,R4C10,manuscrit,0.26,0.26,1
-FORM1,62370,EXAM,R4C11,manuscrit,1,10041,0
+FORM1,62370,EXAM,R4C11,manuscrit,1,141,0
 FORM1,62370,EXAM,R5C1,imprime,4,4,1
 FORM1,62370,EXAM,R5C3,graphique,x,1,0
 FORM1,62370,EXAM,R6C1,imprime,5,5,1
@@ -608,7 +608,7 @@ FORM1,62380,PAGE-01,Notes de cours,graphique,0,1,0
 FORM1,62380,PAGE-01,Notes manuscrites,graphique,1,0,0
 FORM1,62380,PAGE-01,Ordinateur portable,graphique,0,1,0
 FORM1,62380,PAGE-01,Calculatrice,graphique,1,0,0
-FORM1,62380,PAGE-01,Feuilles brouillon,graphique,2,10,0
+FORM1,62380,PAGE-01,Feuilles brouillon,graphique,2,1,0
 FORM1,62380,PAGE-01,Note maximale,imprime,20,10,0
 FORM1,62380,PAGE-01,Note pour valider,imprime,10,4,0
 FORM1,62380,PAGE-01,Prenom,manuscrit,Ethan,ETHAN,1
@@ -653,7 +653,7 @@ FORM1,62401,PAGE-01,Notes de cours,graphique,0,1,0
 FORM1,62401,PAGE-01,Notes manuscrites,graphique,1,0,0
 FORM1,62401,PAGE-01,Ordinateur portable,graphique,0,1,0
 FORM1,62401,PAGE-01,Calculatrice,graphique,1,0,0
-FORM1,62401,PAGE-01,Feuilles brouillon,graphique,2,110,0
+FORM1,62401,PAGE-01,Feuilles brouillon,graphique,2,1,0
 FORM1,62401,PAGE-01,Note maximale,imprime,20,10,0
 FORM1,62401,PAGE-01,Note pour valider,imprime,10,4,0
 FORM1,62401,PAGE-01,Prenom,manuscrit,OSCAR,OSCAR,1
@@ -692,7 +692,7 @@ FORM1,62411,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,62411,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,62411,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,62411,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,62411,PAGE-01,Feuilles brouillon,graphique,1,110,0
+FORM1,62411,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,62411,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62411,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,62411,PAGE-01,Prenom,manuscrit,ESTEBAN,EPESAN,0
@@ -731,7 +731,7 @@ FORM1,62427,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,62427,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,62427,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,62427,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,62427,PAGE-01,Feuilles brouillon,graphique,1,110,0
+FORM1,62427,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,62427,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62427,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,62427,PAGE-01,Prenom,manuscrit,Camille,CAMI,0
@@ -774,7 +774,7 @@ FORM1,62436,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,62436,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,62436,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,62436,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,62436,PAGE-01,Feuilles brouillon,graphique,1,110,0
+FORM1,62436,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,62436,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62436,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,62436,PAGE-01,Prenom,manuscrit,Yann,N,0
@@ -813,7 +813,7 @@ FORM1,62440,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,62440,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,62440,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,62440,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,62440,PAGE-01,Feuilles brouillon,graphique,1,110,0
+FORM1,62440,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,62440,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62440,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,62440,PAGE-01,Prenom,manuscrit,ANWAR,ANUAR,0
@@ -828,7 +828,7 @@ FORM1,62440,EXAM,R3C1,imprime,2,2,1
 FORM1,62440,EXAM,R3C3,graphique,1,1,1
 FORM1,62440,EXAM,R4C1,imprime,3,3,1
 FORM1,62440,EXAM,R4C10,manuscrit,6.5,6.5,1
-FORM1,62440,EXAM,R4C11,manuscrit,1,1041,0
+FORM1,62440,EXAM,R4C11,manuscrit,1,14,0
 FORM1,62440,EXAM,R5C1,imprime,4,4,1
 FORM1,62440,EXAM,R5C3,graphique,1,1,1
 FORM1,62440,EXAM,R6C1,imprime,5,5,1
@@ -850,7 +850,7 @@ FORM1,62445,PAGE-01,Notes de cours,graphique,0,1,0
 FORM1,62445,PAGE-01,Notes manuscrites,graphique,1,0,0
 FORM1,62445,PAGE-01,Ordinateur portable,graphique,0,1,0
 FORM1,62445,PAGE-01,Calculatrice,graphique,1,0,0
-FORM1,62445,PAGE-01,Feuilles brouillon,graphique,2,10,0
+FORM1,62445,PAGE-01,Feuilles brouillon,graphique,2,1,0
 FORM1,62445,PAGE-01,Note maximale,imprime,20,10,0
 FORM1,62445,PAGE-01,Note pour valider,imprime,10,4,0
 FORM1,62445,PAGE-01,Prenom,manuscrit,Maxime,HAXIME,0
@@ -896,7 +896,7 @@ FORM1,62492,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,62492,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,62492,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,62492,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,62492,PAGE-01,Feuilles brouillon,graphique,1,10,0
+FORM1,62492,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,62492,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62492,PAGE-01,Note pour valider,imprime,4,None,0
 FORM1,62492,PAGE-01,Prenom,manuscrit,None,IDRIS,0
@@ -931,7 +931,7 @@ FORM1,62500,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,62500,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,62500,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,62500,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,62500,PAGE-01,Feuilles brouillon,graphique,1,110,0
+FORM1,62500,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,62500,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62500,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,62500,PAGE-01,Prenom,manuscrit,Kevan,GBOPEAOH,0
@@ -970,7 +970,7 @@ FORM1,62578,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,62578,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,62578,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,62578,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,62578,PAGE-01,Feuilles brouillon,graphique,1,110,0
+FORM1,62578,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,62578,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62578,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,62578,PAGE-01,Prenom,manuscrit,None,JENAN,0
@@ -993,7 +993,7 @@ FORM1,62578,EXAM,R6C1,imprime,5,5,1
 FORM1,62578,EXAM,R6C4,graphique,1,1,1
 FORM1,62578,EXAM,R7C1,imprime,6,6,1
 FORM1,62578,EXAM,R7C10,manuscrit,1,7,0
-FORM1,62578,EXAM,R7C11,manuscrit,0,101,0
+FORM1,62578,EXAM,R7C11,manuscrit,0,10,0
 FORM1,62578,EXAM,R7C12,manuscrit,None,KHz,0
 FORM1,62578,EXAM,R8C1,imprime,7,7,1
 FORM1,62578,EXAM,R8C3,graphique,1,1,1
@@ -1009,7 +1009,7 @@ FORM1,62596,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,62596,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,62596,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,62596,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,62596,PAGE-01,Feuilles brouillon,graphique,1,110,0
+FORM1,62596,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,62596,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62596,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,62596,PAGE-01,Prenom,manuscrit,Karl,ERL,0
@@ -1024,7 +1024,7 @@ FORM1,62596,EXAM,R3C1,imprime,2,2,1
 FORM1,62596,EXAM,R3C2,graphique,X,1,0
 FORM1,62596,EXAM,R4C1,imprime,3,3,1
 FORM1,62596,EXAM,R4C10,manuscrit,1.03,1.03,1
-FORM1,62596,EXAM,R4C11,manuscrit,-2,1021,0
+FORM1,62596,EXAM,R4C11,manuscrit,-2,121,0
 FORM1,62596,EXAM,R5C1,imprime,4,4,1
 FORM1,62596,EXAM,R5C2,graphique,X,None,0
 FORM1,62596,EXAM,R6C1,imprime,5,5,1
@@ -1047,7 +1047,7 @@ FORM1,62598,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,62598,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,62598,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,62598,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,62598,PAGE-01,Feuilles brouillon,graphique,1,110,0
+FORM1,62598,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,62598,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62598,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,62598,PAGE-01,Prenom,manuscrit,MARIA,MARA,0
@@ -1091,7 +1091,7 @@ FORM1,62616,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,62616,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,62616,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,62616,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,62616,PAGE-01,Feuilles brouillon,graphique,1,110,0
+FORM1,62616,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,62616,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62616,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,62616,PAGE-01,Prenom,manuscrit,Paule,PAULE,1
@@ -1116,7 +1116,7 @@ FORM1,62616,EXAM,R6C2,graphique,1,1,1
 FORM1,62616,EXAM,R6C4,graphique,None,1,0
 FORM1,62616,EXAM,R7C1,imprime,6,6,1
 FORM1,62616,EXAM,R7C10,manuscrit,2.12,2.12,1
-FORM1,62616,EXAM,R7C11,manuscrit,-1,1191,0
+FORM1,62616,EXAM,R7C11,manuscrit,-1,19,0
 FORM1,62616,EXAM,R7C12,manuscrit,None,KHz,0
 FORM1,62616,EXAM,R8C1,imprime,7,7,1
 FORM1,62616,EXAM,R8C3,graphique,1,1,1
@@ -1132,7 +1132,7 @@ FORM1,62645,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,62645,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,62645,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,62645,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,62645,PAGE-01,Feuilles brouillon,graphique,1,10,0
+FORM1,62645,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,62645,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62645,PAGE-01,Note pour valider,imprime,4,None,0
 FORM1,62645,PAGE-01,Prenom,manuscrit,Raphael,RAPHAEL,1
@@ -1147,14 +1147,14 @@ FORM1,62645,EXAM,R3C1,imprime,2,2,1
 FORM1,62645,EXAM,R3C3,graphique,x,1,0
 FORM1,62645,EXAM,R4C1,imprime,3,3,1
 FORM1,62645,EXAM,R4C10,manuscrit,3,3,1
-FORM1,62645,EXAM,R4C11,manuscrit,-2,42001,0
+FORM1,62645,EXAM,R4C11,manuscrit,-2,421,0
 FORM1,62645,EXAM,R5C1,imprime,4,4,1
 FORM1,62645,EXAM,R5C5,graphique,x,None,0
 FORM1,62645,EXAM,R6C1,imprime,5,5,1
 FORM1,62645,EXAM,R6C6,graphique,x,None,0
 FORM1,62645,EXAM,R7C1,imprime,6,6,1
 FORM1,62645,EXAM,R7C10,manuscrit,3.6,3.6,1
-FORM1,62645,EXAM,R7C11,manuscrit,-2,12,0
+FORM1,62645,EXAM,R7C11,manuscrit,-2,2,0
 FORM1,62645,EXAM,R7C12,manuscrit,KHz,KHz,1
 FORM1,62645,EXAM,R8C1,imprime,7,7,1
 FORM1,62645,EXAM,R8C2,graphique,x,1,0
@@ -1170,7 +1170,7 @@ FORM1,62747,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,62747,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,62747,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,62747,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,62747,PAGE-01,Feuilles brouillon,graphique,1,1110,0
+FORM1,62747,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,62747,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62747,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,62747,PAGE-01,Prenom,manuscrit,Dacheng,UECHANU,0
@@ -1207,7 +1207,7 @@ FORM1,62766,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,62766,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,62766,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,62766,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,62766,PAGE-01,Feuilles brouillon,graphique,1,1110,0
+FORM1,62766,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,62766,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,62766,PAGE-01,Note pour valider,imprime,4,None,0
 FORM1,62766,PAGE-01,Prenom,manuscrit,None,RUZI,0
@@ -1245,7 +1245,7 @@ FORM1,63272,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,63272,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,63272,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,63272,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,63272,PAGE-01,Feuilles brouillon,graphique,1,110,0
+FORM1,63272,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,63272,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,63272,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,63272,PAGE-01,Prenom,manuscrit,GUOKUANG,GUKANG,0
@@ -1259,7 +1259,7 @@ FORM1,63272,EXAM,R2C4,graphique,1,1,1
 FORM1,63272,EXAM,R3C1,imprime,2,2,1
 FORM1,63272,EXAM,R3C4,graphique,1,None,0
 FORM1,63272,EXAM,R4C1,imprime,3,3,1
-FORM1,63272,EXAM,R4C10,manuscrit,3.75,13.75,0
+FORM1,63272,EXAM,R4C10,manuscrit,3.75,3.75,1
 FORM1,63272,EXAM,R4C11,manuscrit,2,2,1
 FORM1,63272,EXAM,R5C1,imprime,4,4,1
 FORM1,63272,EXAM,R5C3,graphique,None,1,0
@@ -1284,9 +1284,9 @@ FORM1,63273,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,63273,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,63273,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,63273,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,63273,PAGE-01,Feuilles brouillon,graphique,1,1110,0
+FORM1,63273,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,63273,PAGE-01,Note maximale,imprime,10,10,1
-FORM1,63273,PAGE-01,Note pour valider,imprime,4,11,0
+FORM1,63273,PAGE-01,Note pour valider,imprime,4,None,0
 FORM1,63273,PAGE-01,Prenom,manuscrit,Lianghong,LIANGING,0
 FORM1,63273,PAGE-01,Nom,manuscrit,LI,LI,1
 FORM1,63273,PAGE-01,Validation signature,signature,1,1,1
@@ -1331,7 +1331,7 @@ FORM1,63694,PAGE-01,Notes de cours,graphique,1.0,1,1
 FORM1,63694,PAGE-01,Notes manuscrites,graphique,0.0,0,1
 FORM1,63694,PAGE-01,Ordinateur portable,graphique,1.0,1,1
 FORM1,63694,PAGE-01,Calculatrice,graphique,0.0,0,1
-FORM1,63694,PAGE-01,Feuilles brouillon,graphique,1.0,110,0
+FORM1,63694,PAGE-01,Feuilles brouillon,graphique,1.0,1,1
 FORM1,63694,PAGE-01,Note maximale,imprime,10.0,10,1
 FORM1,63694,PAGE-01,Note pour valider,imprime,4.0,4,1
 FORM1,63694,PAGE-01,Prenom,manuscrit,JACK,JAOK,0
@@ -1371,7 +1371,7 @@ FORM1,63807,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,63807,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,63807,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,63807,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,63807,PAGE-01,Feuilles brouillon,graphique,1,110,0
+FORM1,63807,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,63807,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,63807,PAGE-01,Note pour valider,imprime,4,None,0
 FORM1,63807,PAGE-01,Prenom,manuscrit,Wasil,YASIL,0
@@ -1386,7 +1386,7 @@ FORM1,63807,EXAM,R3C1,imprime,2,2,1
 FORM1,63807,EXAM,R3C4,graphique,1,1,1
 FORM1,63807,EXAM,R4C1,imprime,3,3,1
 FORM1,63807,EXAM,R4C10,manuscrit,3,3,1
-FORM1,63807,EXAM,R4C11,manuscrit,-3,1131,0
+FORM1,63807,EXAM,R4C11,manuscrit,-3,131,0
 FORM1,63807,EXAM,R5C1,imprime,4,4,1
 FORM1,63807,EXAM,R5C3,graphique,1,1,1
 FORM1,63807,EXAM,R6C1,imprime,5,5,1
@@ -1409,7 +1409,7 @@ FORM1,63836,PAGE-01,Notes de cours,graphique,0,1,0
 FORM1,63836,PAGE-01,Notes manuscrites,graphique,1,0,0
 FORM1,63836,PAGE-01,Ordinateur portable,graphique,0,1,0
 FORM1,63836,PAGE-01,Calculatrice,graphique,1,0,0
-FORM1,63836,PAGE-01,Feuilles brouillon,graphique,2,110,0
+FORM1,63836,PAGE-01,Feuilles brouillon,graphique,2,1,0
 FORM1,63836,PAGE-01,Note maximale,imprime,20,10,0
 FORM1,63836,PAGE-01,Note pour valider,imprime,10,4,0
 FORM1,63836,PAGE-01,Prenom,manuscrit,wissal,M,0
@@ -1451,7 +1451,7 @@ FORM1,63838,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,63838,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,63838,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,63838,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,63838,PAGE-01,Feuilles brouillon,graphique,1,110,0
+FORM1,63838,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,63838,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,63838,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,63838,PAGE-01,Prenom,manuscrit,khawla,RNN,0
@@ -1493,7 +1493,7 @@ FORM1,63887,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,63887,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,63887,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,63887,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,63887,PAGE-01,Feuilles brouillon,graphique,1,10,0
+FORM1,63887,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,63887,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,63887,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,63887,PAGE-01,Prenom,manuscrit,ANGE  NOLWEN,AGENOIWEA,0
@@ -1532,7 +1532,7 @@ FORM1,64413,PAGE-01,Notes de cours,graphique,0,1,0
 FORM1,64413,PAGE-01,Notes manuscrites,graphique,1,0,0
 FORM1,64413,PAGE-01,Ordinateur portable,graphique,0,1,0
 FORM1,64413,PAGE-01,Calculatrice,graphique,1,0,0
-FORM1,64413,PAGE-01,Feuilles brouillon,graphique,2,110,0
+FORM1,64413,PAGE-01,Feuilles brouillon,graphique,2,1,0
 FORM1,64413,PAGE-01,Note maximale,imprime,20,10,0
 FORM1,64413,PAGE-01,Note pour valider,imprime,10,4,0
 FORM1,64413,PAGE-01,Prenom,manuscrit,DIANE,DANE,0
@@ -1572,7 +1572,7 @@ FORM1,65442,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,65442,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,65442,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,65442,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,65442,PAGE-01,Feuilles brouillon,graphique,1,110,0
+FORM1,65442,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,65442,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,65442,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,65442,PAGE-01,Prenom,manuscrit,Pierre,I,0
@@ -1587,7 +1587,7 @@ FORM1,65442,EXAM,R3C1,imprime,2,2,1
 FORM1,65442,EXAM,R3C4,graphique,1,1,1
 FORM1,65442,EXAM,R4C1,imprime,3,3,1
 FORM1,65442,EXAM,R4C10,manuscrit,3.75,1.15,0
-FORM1,65442,EXAM,R4C11,manuscrit,2,1101,0
+FORM1,65442,EXAM,R4C11,manuscrit,2,111,0
 FORM1,65442,EXAM,R5C1,imprime,4,4,1
 FORM1,65442,EXAM,R5C4,graphique,1,1,1
 FORM1,65442,EXAM,R6C1,imprime,5,5,1
@@ -1610,7 +1610,7 @@ FORM1,75012,PAGE-01,Notes de cours,graphique,1,1,1
 FORM1,75012,PAGE-01,Notes manuscrites,graphique,0,0,1
 FORM1,75012,PAGE-01,Ordinateur portable,graphique,1,1,1
 FORM1,75012,PAGE-01,Calculatrice,graphique,0,0,1
-FORM1,75012,PAGE-01,Feuilles brouillon,graphique,1,110,0
+FORM1,75012,PAGE-01,Feuilles brouillon,graphique,1,1,1
 FORM1,75012,PAGE-01,Note maximale,imprime,10,10,1
 FORM1,75012,PAGE-01,Note pour valider,imprime,4,4,1
 FORM1,75012,PAGE-01,Prenom,manuscrit,ERIC,ERSC,0

@@ -38,9 +38,11 @@ MCQ_X_END   = 90
 MCQ_MIN_SZ  = 12         # taille min d'un côté de case
 MCQ_MAX_SZ  = 35         # taille max d'un côté de case
 MCQ_MIN_AREA = 80
-CHECKED_INK_THRESHOLD = 0.16   # ratio d'encre min pour considérer une case cochée
-                               # (relevé de 0.10 -> 0.16 pour réduire les faux
-                               #  positifs MCQ ; optimum via tools/sweep_mcq_threshold.py)
+CHECKED_INK_THRESHOLD = 0.10   # ratio d'encre min pour considérer une case cochée.
+                               # NB (mesuré via tools/sweep_mcq_threshold.py) : la
+                               # détection MCQ est INSENSIBLE à ce seuil sur [0.08, 0.30].
+                               # Les erreurs CHOIX viennent de la LOCALISATION des cases
+                               # (_find_mcq_checkboxes / assignation des lettres), pas du seuil.
 
 # Lettres de choix MCQ, en ordre alphabétique.
 MCQ_CHOICES = "ABCDEFGH"

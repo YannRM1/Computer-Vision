@@ -170,137 +170,10 @@ def ocr_codes_exam(img: np.ndarray) -> dict:
 # (sans OCR externe – approche composantes connexes)
 # -----------------------------------------------------------------------
 
-def _digit_features(cell_bin: np.ndarray) -> dict:
-    """
-    Calcule des caractéristiques d'une case binarisée contenant
-    un chiffre imprimé.
-    """
-    h, w = cell_bin.shape
-    total = h * w
-
-    ink   = int(np.count_nonzero(cell_bin))
-    ratio = ink / (total + 1e-6)
-
-    # Projections
-    col_proj = np.sum(cell_bin, axis=0) / 255.0
-    row_proj = np.sum(cell_bin, axis=1) / 255.0
-
-    # Centre de masse vertical
-    col_center = float(np.sum(col_proj * np.arange(w)) /
-                        (np.sum(col_proj) + 1e-6)) / w
-
-    # Densité des bandes verticales gauche / centre / droite
-    third = max(1, w // 3)
-    d_left   = float(np.mean(cell_bin[:, :third]))       / 255.0
-    d_mid    = float(np.mean(cell_bin[:, third:2*third])) / 255.0
-    d_right  = float(np.mean(cell_bin[:, 2*third:]))      / 255.0
-
-    # Densité haut / bas
-    half = max(1, h // 2)
-    d_top    = float(np.mean(cell_bin[:half, :])) / 255.0
-    d_bottom = float(np.mean(cell_bin[half:, :])) / 255.0
-
-    # Centre horizontal (pour détecter "0" creux vs "8" plein)
-    inner_h = max(1, h // 4)
-    inner_w = max(1, w // 4)
-    inner   = cell_bin[inner_h:-inner_h, inner_w:-inner_w] \
-              if h > 2*inner_h and w > 2*inner_w else cell_bin
-    d_inner = float(np.mean(inner)) / 255.0
-
-    return dict(ratio=ratio, col_center=col_center,
-                d_left=d_left, d_mid=d_mid, d_right=d_right,
-                d_top=d_top, d_bottom=d_bottom, d_inner=d_inner)
-
-
-def _classify_digit(cell_gray: np.ndarray) -> int:
-    """
-    Classifie un chiffre 0-9 dans une petite cellule.
-    Règles heuristiques bas niveau calibrées sur des chiffres
-    imprimés et manuscrits.
-    """
-    h, w = cell_gray.shape[:2]
-    if h < 2 or w < 2:
-        return 0
-
-    # Normaliser vers une taille standard
-    TARGET_H, TARGET_W = 80, 60
-    cell_big = cv2.resize(_to_gray(cell_gray), (TARGET_W, TARGET_H),
-                          interpolation=cv2.INTER_CUBIC)
-    _, bin_cell = cv2.threshold(cell_big, 0, 255,
-                                cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
-
-    # Rogner les bords (bordure de la case si présente)
-    margin = 4
-    if bin_cell.shape[0] > 2 * margin and bin_cell.shape[1] > 2 * margin:
-        bin_cell = bin_cell[margin:-margin, margin:-margin]
-
-    f = _digit_features(bin_cell)
-
-    bh, bw = bin_cell.shape
-    ratio = f['ratio']
-
-    # Cas extrême : image presque vide
-    if ratio < 0.04:
-        return 0
-
-    # --- Détection de "1" ---
-    # "1" : trait vertical fin (w_original << h_original) ou ratio encre faible
-    aspect = w / (h + 1e-6)
-    if aspect < 0.35 or (ratio < 0.18 and f['d_mid'] > f['d_left'] and
-                          f['d_mid'] > f['d_right']):
-        return 1
-
-    # --- Détection de "0" ---
-    # Anneau (centre creux, ratio modéré)
-    if f['d_inner'] < 0.12 and ratio > 0.22:
-        return 0
-
-    # --- Détection de "7" ---
-    if (f['d_top'] > 0.40 and f['d_left'] < 0.20 and
-            f['d_bottom'] < f['d_top'] * 0.7):
-        return 7
-
-    # --- Détection de "1" (basse densité) ---
-    if ratio < 0.18:
-        return 1
-
-    # --- "2" : dense en haut, diagonal vers le bas-gauche ---
-    if f['d_top'] > f['d_bottom'] * 1.25 and f['d_left'] > f['d_right'] * 0.8:
-        return 2
-
-    # --- "3" : concentré à droite ---
-    if f['d_right'] > f['d_left'] * 1.6:
-        return 3
-
-    # --- "8" : deux anneaux ---
-    if ratio > 0.50 and f['d_inner'] > 0.25:
-        return 8
-
-    # --- "4" : ligne verticale + horizontale ---
-    if 0.25 <= ratio <= 0.45 and abs(f['d_left'] - f['d_right']) < 0.10:
-        return 4
-
-    # --- "5" : arc supérieur gauche + ligne bas droite ---
-    if f['d_bottom'] > f['d_top'] * 1.2 and f['d_left'] > 0.20:
-        return 5
-
-    # --- "6" : boucle en bas ---
-    if f['d_bottom'] > 0.38 and f['d_inner'] < 0.20:
-        return 6
-
-    # --- "9" : boucle en haut ---
-    if f['d_top'] > 0.38 and f['d_inner'] < 0.20:
-        return 9
-
-    # Fallback
-    return int(round(ratio * 10)) % 10
-
-
-def ocr_digit(img: np.ndarray) -> str:
-    """Lit un chiffre unique imprimé dans une petite cellule."""
-    gray = _to_gray(img)
-    d = _classify_digit(gray)
-    return str(d)
+# Reconnaissance des chiffres : assurée par le CNN (utils/digit_cnn.py) pour le
+# manuscrit (mantisse / exposant) et par easyocr pour l'imprimé (ocr_number).
+# L'ancien classifieur heuristique (_classify_digit / _digit_features) a été retiré :
+# redondant avec le CNN et difficile à justifier (sec. 4.1 : réseaux pour le texte).
 
 
 def _segment_digits(img_gray: np.ndarray,
@@ -354,34 +227,19 @@ def _segment_digits(img_gray: np.ndarray,
 
 
 def ocr_number(img: np.ndarray) -> int | None:
-    """
-    Lit un entier imprimé dans une case (ex : Note maximale = 20).
-    Essaie easyocr d'abord, puis segmentation + classification bas niveau.
-    """
+    """Lit un entier imprimé dans une case (ex : Note maximale = 20) via easyocr."""
     if img is None or img.size == 0:
         return None
-
-    # -- Tentative easyocr (upscale agressif) ----------------------------
     gray = _to_gray(img)
     big  = cv2.resize(gray, (gray.shape[1] * 6, gray.shape[0] * 6),
                       interpolation=cv2.INTER_CUBIC)
     _, thresh = cv2.threshold(big, 0, 255,
                               cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-    text = _ocr_raw(thresh, allowlist="0123456789")
-    text = re.sub(r"\D", "", text)
+    text = re.sub(r"\D", "", _ocr_raw(thresh, allowlist="0123456789"))
     if text:
         try:
             return int(text)
         except ValueError:
-            pass
-
-    # -- Fallback : segmentation bas niveau + classification ---------------
-    digit_imgs = _segment_digits(gray)
-    if digit_imgs:
-        digits = [_classify_digit(d) for d in digit_imgs]
-        try:
-            return int("".join(str(d) for d in digits))
-        except Exception:
             pass
     return None
 
@@ -495,17 +353,16 @@ def _segment_mantisse(img_gray: np.ndarray) -> float | None:
 
     from utils import digit_cnn
     cnn_pred = digit_cnn.predict(digit_imgs)
+    if cnn_pred is None:                  # pas de modèle CNN -> repli easyocr en amont
+        return None
 
     digits, k = [], 0
     for (cx, cw, ch_c, is_sep, char_img) in comps:
         if is_sep:
             digits.append(".")
             continue
-        ch = cnn_pred[k] if cnn_pred is not None else ""
+        digits.append(cnn_pred[k])        # '' si illisible -> ignoré par le join
         k += 1
-        if not ch:                       # repli heuristique si CNN absent/illisible
-            ch = str(_classify_digit(char_img))
-        digits.append(ch)
 
     text = "".join(digits).strip(".")    # pas de point en tête/queue
     if not text:
@@ -523,10 +380,8 @@ def ocr_handwritten_mantisse(img: np.ndarray) -> float | None:
     """
     Lit la mantisse manuscrite (nombre décimal, encre rouge ou noire).
 
-    Stratégie en 3 étapes :
-    1. easyocr sur image agrandie + CLAHE (meilleur pour textes lisibles)
-    2. Segmentation bas niveau (fallback)
-    3. easyocr sans allowlist restrictif (dernier recours)
+    Deux étapes : segmentation bas niveau + CNN de chiffres (méthode principale),
+    puis repli easyocr (image agrandie + CLAHE) si le CNN échoue ou est absent.
     """
     if img is None or img.size == 0:
         return None
@@ -566,12 +421,6 @@ def ocr_handwritten_mantisse(img: np.ndarray) -> float | None:
         val = _try_parse(results)
         if val is not None:
             return val
-
-    # Étape 3 : segmentation bas niveau (repli heuristique sans CNN)
-    result = _segment_mantisse(clahe.apply(gray))
-    if result is not None:
-        return result
-
     return None
 
 
@@ -586,20 +435,14 @@ def ocr_handwritten_exposant(img: np.ndarray) -> int | None:
     gray = clahe.apply(gray)
     segs = _segment_digits(gray, min_width_frac=0.05)
     if segs:
-        # CNN de chiffres en priorité, repli heuristique case par case.
         from utils import digit_cnn
-        cnn_pred = digit_cnn.predict(segs)
-        digits = []
-        for i, s in enumerate(segs):
-            ch = cnn_pred[i] if cnn_pred is not None else ""
-            if not ch:
-                ch = str(_classify_digit(s))
-            digits.append(ch)
-        try:
-            return int("".join(digits))
-        except Exception:
-            pass
-    text = _ocr_handwritten(img, allowlist="0123456789-")
+        cnn_pred = digit_cnn.predict(segs)        # CNN de chiffres (manuscrit)
+        if cnn_pred is not None:
+            try:
+                return int("".join(cnn_pred))
+            except Exception:
+                pass
+    text = _ocr_handwritten(img, allowlist="0123456789-")   # repli easyocr
     text = re.sub(r"[^0-9\-]", "", text)
     try:
         return int(text) if text else None
