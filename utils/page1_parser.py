@@ -123,18 +123,80 @@ def _clean_name_text(raw: str) -> str:
 
 
 # Géométrie de la grille de cases-lettres (repère canonique 900×1270).
-# Le formulaire est désormais recalé : ces positions sont stables.
-NAME_CELL_X0    = 31.0    # bord gauche de la 1re case (x absolu)
-NAME_CELL_PITCH = 24.45   # pas horizontal entre cases
+# Valeurs NOMINALES : la position réelle varie de quelques pixels selon le
+# recalage ; la grille effective est ré-estimée sur chaque formulaire par
+# détection des séparateurs verticaux (_fit_name_grid).
+NAME_CELL_X0    = 31.0    # bord gauche nominal de la 1re case (x absolu)
+NAME_CELL_PITCH = 24.45   # pas horizontal nominal entre cases
 NAME_CELLS      = 15      # nombre de cases
+NAME_X_BAND     = (20, 430)   # bande de recherche des séparateurs (x absolu)
 FIRSTNAME_Y     = (211, 235)
 NAME_Y          = (270, 294)
+
+
+def _fit_name_grid(form_img: np.ndarray, y_range: tuple):
+    """
+    Estime (x0, pitch) de la grille de cases-lettres sur CE formulaire.
+
+    Bas niveau : projection verticale de la bande binarisée -> colonnes quasi
+    pleines = séparateurs de cases (+ quelques traits de lettres parasites).
+    On ajuste ensuite la grille régulière (offset, pas) qui explique le plus
+    de séparateurs détectés (vote type RANSAC). Repli sur la grille nominale
+    si le vote est trop faible.
+    """
+    from utils.ocr_utils import _to_gray
+    y0, y1 = y_range
+    xa, xb = NAME_X_BAND
+    band = form_img[y0:y1, xa:xb]
+    if band.size == 0:
+        return NAME_CELL_X0, NAME_CELL_PITCH
+    gray = _to_gray(band)
+    h = gray.shape[0]
+    binv = cv2.threshold(gray, 180, 255, cv2.THRESH_BINARY_INV)[1]
+    col_fill = binv.sum(axis=0) / (255.0 * h)
+
+    # Centres des runs de colonnes quasi pleines (séparateurs candidats)
+    seps, x = [], 0
+    w = len(col_fill)
+    while x < w:
+        if col_fill[x] > 0.70:
+            x2 = x
+            while x2 < w and col_fill[x2] > 0.70:
+                x2 += 1
+            seps.append((x + x2 - 1) / 2.0)
+            x = x2
+        else:
+            x += 1
+    if len(seps) < 6:
+        return NAME_CELL_X0, NAME_CELL_PITCH
+
+    best = None   # (score, -err, off, pitch)
+    for pitch in np.arange(23.0, 26.01, 0.25):
+        for off in seps:
+            if off > 2.5 * pitch:          # l'origine doit être près du bord gauche
+                continue
+            score, err = 0, 0.0
+            for k in range(NAME_CELLS + 1):
+                gx = off + k * pitch
+                d = min(abs(s - gx) for s in seps)
+                if d <= 2.0:
+                    score += 1
+                    err += d
+            if best is None or (score, -err) > (best[0], best[1]):
+                best = (score, -err, off, pitch)
+    if best is None or best[0] < 8:        # fit douteux -> grille nominale
+        return NAME_CELL_X0, NAME_CELL_PITCH
+    return xa + best[2], best[3]
 
 
 def collect_name_cells(form_img: np.ndarray, y_range: tuple) -> list:
     """
     Segmente une rangee de cases-lettres et renvoie la liste des sous-images
     grises (interieur de case) des cases NON VIDES, dans l'ordre.
+
+    La grille (origine, pas) est ré-estimée sur chaque formulaire par
+    _fit_name_grid (le recalage global laisse un jeu de quelques pixels qui
+    faisait dériver l'ancienne grille fixe d'une demi-case en fin de rangée).
 
     Reutilise par la lecture des noms ET par la generation du jeu de donnees
     de fine-tuning (build_letter_dataset.py). Arret apres 2 cases vides
@@ -144,19 +206,22 @@ def collect_name_cells(form_img: np.ndarray, y_range: tuple) -> list:
     if form_img is None or form_img.size == 0:
         return []
     y0, y1 = y_range
+    x0, pitch = _fit_name_grid(form_img, y_range)
     cells, empty_run, started = [], 0, False
     for k in range(NAME_CELLS):
-        xa = int(round(NAME_CELL_X0 + k * NAME_CELL_PITCH))
-        xb = int(round(NAME_CELL_X0 + (k + 1) * NAME_CELL_PITCH))
+        xa = int(round(x0 + k * pitch))
+        xb = int(round(x0 + (k + 1) * pitch))
         cell = form_img[y0:y1, xa:xb]
         if cell.size == 0:
             continue
         gray = _to_gray(cell)
         ch, cw = gray.shape
         inner = gray[3:max(4, ch - 3), 4:max(5, cw - 4)]
-        binv = cv2.threshold(inner, 150, 255, cv2.THRESH_BINARY_INV)[1]
-        mask = cv2.morphologyEx(binv, cv2.MORPH_OPEN, np.ones((2, 2), np.uint8))
-        if float(mask.mean()) / 255.0 < 0.02:
+        # Test de vacuité SANS ouverture morphologique : les traits fins
+        # (1 px à 150 dpi) d'un stylo léger étaient effacés par l'ouverture
+        # 2×2, faisant passer des lettres entières pour des cases vides.
+        binv = cv2.threshold(inner, 180, 255, cv2.THRESH_BINARY_INV)[1]
+        if int(np.count_nonzero(binv)) < max(10, int(0.015 * binv.size)):
             if started:
                 empty_run += 1
                 if empty_run >= 2:

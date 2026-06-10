@@ -211,9 +211,9 @@ def _has_numerical_answer(block_img: np.ndarray) -> bool:
             if bw > w * 0.08 and bh > h * 0.05 and area > 150:
                 return True
 
-    # Fallback : si aucun checkbox MCQ détecté, supposer numérique
+    # Fallback : si pas de vraie rangée de checkboxes MCQ (≥ 2), supposer numérique
     boxes = _find_mcq_checkboxes(block_img)
-    return len(boxes) == 0
+    return len(boxes) < 2
 
 
 def _find_answer_boxes(block_img: np.ndarray
@@ -331,7 +331,10 @@ def parse_question_block(block_img: np.ndarray,
 
     try:
         boxes = _find_mcq_checkboxes(content)
-        if boxes:
+        # Un vrai bloc MCQ comporte au moins 2 cases de choix alignées ; une
+        # seule « case » détectée est presque toujours un chiffre manuscrit de
+        # la mantisse qui déborde dans la bande gauche (bloc numérique).
+        if len(boxes) >= 2:
             result["choix"] = _parse_mcq_choices(content)
         elif _has_numerical_answer(content):
             num_data = _parse_numerical_answer(content)
@@ -367,10 +370,13 @@ def parse_exam_pages(pdf_images: list[np.ndarray],
         page_img = normalize_page(pdf_images[page_idx])
         blocks   = detect_question_blocks(page_img)
 
+        page_h = page_img.shape[0]
         for (y_start, y_end) in blocks:
             block = page_img[y_start:y_end, :]
             if block.shape[0] < 150:
                 continue  # bloc de pied de page (numéro, cryptogramme) → ignorer
+            if y_start > page_h - 170:
+                continue  # bande de pied de page, même si le bloc dépasse 150 px
             q_data = parse_question_block(block, q_num)
             all_questions.append(q_data)
             q_num += 1

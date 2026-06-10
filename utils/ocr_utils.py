@@ -336,10 +336,15 @@ def _segment_mantisse(img_gray: np.ndarray) -> float | None:
 
     comps = []   # (cx, cw, ch_c, is_sep, char_img)
     for (cx, cy, cw, ch_c, area) in cand:
-        is_digit = ch_c >= 0.55 * h_ref
-        is_sep = (not is_digit and ch_c <= 0.55 * h_ref
+        # Séparateur décimal : composante nettement plus basse que les chiffres,
+        # étroite, dont le CENTRE est dans la moitié basse (un point/virgule se
+        # pose sur la ligne de base ; une virgule manuscrite peut être assez
+        # haute, d'où le seuil 0.70*h_ref au lieu de 0.55).
+        center_y = cy + ch_c / 2.0
+        is_sep = (ch_c <= 0.70 * h_ref
                   and cw <= iw * 0.22
-                  and (cy + ch_c / 2.0) >= ih * 0.45)
+                  and center_y >= ih * 0.55)
+        is_digit = not is_sep and ch_c >= 0.55 * h_ref
         if not is_digit and not is_sep:
             continue                                                  # bruit
         char_img = inner[max(0, cy - 1):cy + ch_c + 1,
@@ -424,6 +429,78 @@ def ocr_handwritten_mantisse(img: np.ndarray) -> float | None:
     return None
 
 
+def _segment_exposant(img_gray: np.ndarray) -> int | None:
+    """
+    Segmente et classifie l'exposant manuscrit (entier, signe « - » possible).
+
+    Même approche bas niveau que _segment_mantisse : rognage du cadre,
+    seuillage, composantes connexes, rejet des fragments de cadre (qui étaient
+    lus comme des « 1 » par l'ancienne segmentation par projection : 2 -> 121).
+    Le signe moins est une composante large et plate à gauche des chiffres.
+    """
+    # On travaille sur le crop ENTIER (pas de rognage par marge : les chiffres
+    # écrits contre le cadre seraient amputés). Le cadre et ses fragments sont
+    # éliminés par filtrage des composantes (bords, traits fins, élongation).
+    inner = img_gray
+    ih, iw = inner.shape[:2]
+    if inner.size == 0:
+        return None
+
+    _, binary = cv2.threshold(inner, 210, 255, cv2.THRESH_BINARY_INV)
+    num, _, stats, _ = cv2.connectedComponentsWithStats(binary, connectivity=8)
+
+    cand = []
+    for i in range(1, num):
+        cx, cy, cw, ch_c, area = (int(v) for v in stats[i])
+        if area < 6:
+            continue
+        if cw > iw * 0.80 or ch_c > ih * 0.92:                       # cadre
+            continue
+        touches_edge = (cx <= 1 or cy <= 1
+                        or cx + cw >= iw - 1 or cy + ch_c >= ih - 1)
+        if touches_edge and (cw <= 3 or ch_c <= 3):                  # résidu de bord
+            continue
+        ratio = max(cw, ch_c) / max(1, min(cw, ch_c))
+        is_flat = cw > ch_c                       # candidat signe moins
+        # Trait vertical parasite (cadre) : très fin (≤ 2 px) ou très allongé
+        # contre un bord. Un « 1 » manuscrit fait ≥ 3 px de large et est
+        # éloigné des bords -> conservé.
+        if not is_flat and (cw <= 2 or (ratio > 6 and touches_edge)):
+            continue
+        cand.append((cx, cy, cw, ch_c, area))
+    if not cand:
+        return None
+
+    h_ref = max(c[3] for c in cand)
+    digits, neg = [], False
+    for (cx, cy, cw, ch_c, area) in sorted(cand, key=lambda c: c[0]):
+        # Signe moins : plat (plus large que haut), petit en hauteur,
+        # centré verticalement, et situé avant tout chiffre.
+        center_y = cy + ch_c / 2.0
+        if (not digits and cw >= 1.5 * ch_c and ch_c <= 0.45 * h_ref
+                and ih * 0.20 <= center_y <= ih * 0.80):
+            neg = True
+            continue
+        if ch_c < 0.55 * h_ref:
+            continue                                                 # bruit
+        digits.append(inner[max(0, cy - 1):cy + ch_c + 1,
+                            max(0, cx - 1):cx + cw + 1])
+    if not digits:
+        return None
+
+    from utils import digit_cnn
+    cnn_pred = digit_cnn.predict(digits)
+    if cnn_pred is None:
+        return None
+    text = "".join(cnn_pred)
+    if not text:
+        return None
+    try:
+        return -int(text) if neg else int(text)
+    except ValueError:
+        return None
+
+
 def ocr_handwritten_exposant(img: np.ndarray) -> int | None:
     """Lit l'exposant manuscrit (entier, éventuellement négatif)."""
     if img is None or img.size == 0:
@@ -433,15 +510,11 @@ def ocr_handwritten_exposant(img: np.ndarray) -> int | None:
     gray = _to_gray(img)
     clahe = cv2.createCLAHE(clipLimit=4.0, tileGridSize=(2, 2))
     gray = clahe.apply(gray)
-    segs = _segment_digits(gray, min_width_frac=0.05)
-    if segs:
-        from utils import digit_cnn
-        cnn_pred = digit_cnn.predict(segs)        # CNN de chiffres (manuscrit)
-        if cnn_pred is not None:
-            try:
-                return int("".join(cnn_pred))
-            except Exception:
-                pass
+    from utils import digit_cnn
+    if digit_cnn.available():
+        result = _segment_exposant(gray)
+        if result is not None:
+            return result
     text = _ocr_handwritten(img, allowlist="0123456789-")   # repli easyocr
     text = re.sub(r"[^0-9\-]", "", text)
     try:
