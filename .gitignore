@@ -37,5 +37,4 @@ debug/
 Thumbs.db
 
 # NB : restent versionnés le template (utils/assets/form_template_ref.png),
-# les modèles entraînés (models/*.pt) et les figures du rapport
-# (rapport/figures/*.png), nécessaires au pipeline et au rapport.
+# les modèles entraînés (models/*.pt) et le rapport (rapport/*.docx, *.pdf).

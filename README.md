@@ -21,6 +21,7 @@ Computer-Vision/
 ├── autoValidPresences.py      # PROGRAMME 1 — validation des présences (§3.3)
 ├── autoReadForm.py            # PROGRAMME 2 — lecture automatique des formulaires (§3.4)
 ├── requirements.txt
+├── PROJET COMPUTER VISION IG2045-2026.pdf   # consigne du projet
 │
 ├── utils/                     # Modules de traitement
 │   ├── config.py              # Hyper-paramètres centralisés (§8)
@@ -50,13 +51,9 @@ Computer-Vision/
 │   └── compare_results.csv    # Comparaison cellule par cellule (par axe)
 ├── tools/                     # Scripts de calibration / debug
 ├── notebooks/                 # Notebooks d'exploration et de développement
-├── rapport/                   # Rapport (.docx) et figures (rapport/figures/)
-├── docs/                      # Sujet du projet + notes de travail
+├── rapport/                   # Rapport (.docx + .pdf, figures intégrées au document)
 └── PROJECT 2026 -DATABASE-20260518/   # Base fournie (FORM1/2/3 + SIGNATURES)
 ```
-
-> Le dossier `.trash/` (s'il existe) contient des fichiers obsolètes mis de côté
-> lors du rangement ; il est ignoré par Git et peut être supprimé.
 
 ---
 
