@@ -33,7 +33,7 @@ import struct
 
 import numpy as np
 
-RAW = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+RAW = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                    "emnist_data", "EMNIST", "raw")
 
 

@@ -1,22 +1,25 @@
-# --- Python ---
+# === Caches Python ===
 __pycache__/
 *.pyc
 *.pyo
 
-# --- Données volumineuses (présentes localement, non versionnées) ---
+# === Données volumineuses (présentes localement, non versionnées) ===
 emnist_data/
 *.zip
 
-# --- Jeux de données générés pour le fine-tuning ---
+# === Jeux de données générés pour l'affinage (fine-tuning) ===
 letter_dataset.npz
 digit_dataset.npz
 dataset_preview.png
 
-# --- Logs / sorties de debug ---
+# === Sorties générées par le pipeline (régénérées par main.py) ===
+EXAM_*_RESULTS/
+calibration_output/
+
+# === Logs / images de debug régénérables ===
 *.log
 debug/
-
-# --- Images de debug générées à la racine (régénérables) ---
+.trash/
 /block_*.png
 /p6_block_*.png
 /codes_*.png
@@ -29,6 +32,10 @@ debug/
 /brouillon_max_roi.png
 /emnist_orientation.png
 
-# NB : on garde sous Git le template (utils/assets/form_template_ref.png),
-# calibration_output/ et les modèles entraînés (models/*.pt) nécessaires au
-# fonctionnement du pipeline pour le challenge.
+# === Système ===
+.DS_Store
+Thumbs.db
+
+# NB : restent versionnés le template (utils/assets/form_template_ref.png),
+# les modèles entraînés (models/*.pt) et les figures du rapport
+# (rapport/figures/*.png), nécessaires au pipeline et au rapport.

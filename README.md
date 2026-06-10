@@ -1,138 +1,128 @@
-# Projet Computer Vision IG.2405 – 2026
-**Lecture automatique de formulaires d'examens semi-structurés – DeepForm**
+# Projet Computer Vision IG.2405 — 2026
+**Lecture automatique de formulaires d'examens semi-structurés — DeepForm**
+
+Système de vision par ordinateur qui (1) valide les présences à partir des photos
+de première page et (2) lit automatiquement les formulaires d'examen numérisés
+(PDF), en produisant les fichiers Excel imposés par le cahier des charges.
+
+Conformément à la consigne (§4.1), les **éléments graphiques** (grilles, cases à
+cocher, cryptogrammes) sont traités par des **méthodes de bas niveau** (seuillage
+d'Otsu, morphologie, transformée de Hough, composantes connexes, corrélation
+normalisée) ; les **textes** imprimés et manuscrits sont confiés à des méthodes
+de **plus haut niveau** (OCR easyOCR ; réseaux de neurones convolutifs).
 
 ---
 
-## Structure du projet
+## Arborescence
 
 ```
 Computer-Vision/
+├── main.py                    # Point d'entrée — exécute les Programmes 1 et 2 (§3.6)
+├── autoValidPresences.py      # PROGRAMME 1 — validation des présences (§3.3)
+├── autoReadForm.py            # PROGRAMME 2 — lecture automatique des formulaires (§3.4)
+├── requirements.txt
 │
-├── main.py                    # Point d'entrée – lance les Programmes 1 et 2
-├── autoValidPresences.py      # Programme 1 : validation des présences
-├── autoReadForm.py            # Programme 2 : lecture automatique des formulaires
+├── utils/                     # Modules de traitement
+│   ├── config.py              # Hyper-paramètres centralisés (§8)
+│   ├── form_aligner.py        # Deskew (Hough), L-brackets, perspective
+│   ├── template_register.py   # Recalage photo par ORB + homographie RANSAC
+│   ├── grid_decoder.py        # Grilles (Student ID, Groupe, conditions), cryptogramme
+│   ├── checkbox_reader.py     # Détection bas niveau des cases (densité + motif X)
+│   ├── signature_utils.py     # Signature : HOG + moments de Hu + NCC de gabarit
+│   ├── page1_parser.py        # Assemblage de la page 1 (onglet PAGE-01)
+│   ├── exam_parser.py         # Pages d'examen (MCQ + réponses numériques) → onglet EXAM
+│   ├── ocr_utils.py           # OCR imprimé/manuscrit + segmentation des chiffres
+│   ├── digit_cnn.py           # CNN chiffres (mantisse/exposant) — inférence
+│   ├── letter_cnn.py          # CNN lettres (prénom/nom) — inférence
+│   ├── pdf_utils.py           # Rendu PDF → images (PyMuPDF)
+│   ├── image_io.py            # Lecture d'image robuste (JPEG/PNG/HEIF)
+│   └── assets/form_template_ref.png   # Gabarit de référence (repère 900×1270)
 │
-├── train_letter_cnn.py        # Entraînement / fine-tuning du CNN de lettres (EMNIST)
-├── train_digit_cnn.py         # Entraînement / fine-tuning du CNN de chiffres (EMNIST)
-├── build_letter_dataset.py    # Jeu de lettres annotées pour le fine-tuning
+├── models/                    # Poids entraînés (digit_cnn.pt, letter_cnn.pt)
+├── training/                  # Entraînement / affinage des CNN
+│   ├── train_digit_cnn.py     # CNN chiffres sur EMNIST-digits
+│   ├── train_letter_cnn.py    # CNN lettres sur EMNIST-letters
+│   └── build_letter_dataset.py# Jeu de lettres annotées (affinage par transfert)
 │
-├── utils/                     # Modules utilitaires
-│   ├── config.py              # Paramètres de réglage centralisés (§8)
-│   ├── form_aligner.py        # Deskew, détection zone active, normalisation
-│   ├── grid_decoder.py        # Lecture grilles graphiques (Student ID, Groupe, conditions)
-│   ├── checkbox_reader.py     # Détection cases cochées (bas niveau)
-│   ├── signature_utils.py     # Descripteurs HOG + Hu, similarité cosinus
-│   ├── ocr_utils.py           # OCR imprimé et manuscrit (EasyOCR + CNN)
-│   ├── letter_cnn.py          # CNN lettres manuscrites (Prénom / Nom)
-│   ├── digit_cnn.py           # CNN chiffres manuscrits (Mantisse / Exposant)
-│   ├── page1_parser.py        # Parser complet page 1
-│   ├── exam_parser.py         # Parser pages d'examen (MCQ + réponses numériques)
-│   └── pdf_utils.py           # Conversion PDF → images (PyMuPDF)
-│
-├── models/                    # Poids entraînés (letter_cnn.pt, digit_cnn.pt)
-│
-├── notebooks/                 # Notebooks d'analyse et de développement
-│   ├── 01_exploration_donnees.ipynb
-│   ├── 02_preprocessing_alignement.ipynb
-│   ├── 03_decodage_grille.ipynb
-│   ├── 04_signature_authentication.ipynb
-│   ├── 05_ocr_textes.ipynb
-│   ├── 06_programme1_presences.ipynb
-│   ├── 07_programme2_formulaires.ipynb
-│   └── 08_evaluation.ipynb
-│
-└── PROJECT 2026 -DATABASE-20260518/   # Base de données fournie
-    ├── FORM1/                 # Formulaire 1 (images + PDFs + vérités terrain)
-    ├── FORM2/                 # Formulaire 2
-    ├── FORM3/                 # Formulaire 3
-    └── SIGNATURES/            # Base de signatures (fichiers ZIP)
+├── eval/                      # Évaluation quantitative
+│   ├── evaluate.py            # Accuracies Student ID + signature (FORM1/2/3)
+│   ├── evaluation_results.csv # Résultats de référence (par image)
+│   └── compare_results.csv    # Comparaison cellule par cellule (par axe)
+├── tools/                     # Scripts de calibration / debug
+├── notebooks/                 # Notebooks d'exploration et de développement
+├── rapport/                   # Rapport (.docx) et figures (rapport/figures/)
+├── docs/                      # Sujet du projet + notes de travail
+└── PROJECT 2026 -DATABASE-20260518/   # Base fournie (FORM1/2/3 + SIGNATURES)
 ```
+
+> Le dossier `.trash/` (s'il existe) contient des fichiers obsolètes mis de côté
+> lors du rangement ; il est ignoré par Git et peut être supprimé.
 
 ---
 
 ## Utilisation
 
-### Lancement complet
+### Exécution complète
 ```bash
 python main.py
 ```
 
-### Avec paramètres personnalisés (challenge)
+### Adaptation pour le challenge (§5)
+Les seules lignes à adapter sont dans `main.py` (nom de l'examen et répertoires) :
+```python
+EXAM_NAME      = "EXAM_FORM1"          # examen à traiter
+SIGNATURES_DIR = ".../SIGNATURES"      # base STUDENT_CLASS_SIGNATURES
+```
+Les répertoires d'entrée/sortie sont déduits automatiquement ; le répertoire de
+résultats `EXAM_FORMXX_RESULTS/` est créé et rempli des fichiers `.xlsx`.
+On peut aussi passer les chemins en ligne de commande :
 ```bash
 python main.py EXAM_FORM2 "PROJECT 2026 -DATABASE-20260518/SIGNATURES"
 ```
 
-### Configuration dans `main.py`
-```python
-EXAM_NAME      = "EXAM_FORM1"   # Nom de l'examen à traiter
-SIGNATURES_DIR = "..."          # Chemin vers la base de signatures
-```
-
-Les répertoires d'entrée/sortie sont déduits automatiquement :
-- `DATA_ROOT/FORMX/`  → images de présence + PDFs
-- `EXAM_FORMX_RESULTS/` → fichiers xlsx générés
-
----
-
-## Sorties générées
-
-| Fichier | Description |
+### Sorties générées (dans `EXAM_FORMXX_RESULTS/`)
+| Fichier | Contenu |
 |---|---|
-| `EXAM_FORMX_PRESENCES.xlsx` | Validation présences (imageName, studentID_grid, studentID_signature) |
-| `EXAM_FORMX_XXXXX.xlsx` | Lecture formulaire (onglets PAGE-01 et EXAM) |
-
----
-
-## Dépendances
-```
-opencv-python
-numpy
-openpyxl
-pymupdf
-easyocr
-torch
-torchvision
-scikit-image
-scikit-learn
-pandas
-matplotlib
-```
+| `EXAM_FORMXX_PRESENCES.xlsx` | `imageName`, `studentID_grid`, `studentID_signature` |
+| `EXAM_FORMXX_NNNNN.xlsx` | Onglets `PAGE-01` (identité, conditions, notes, signature, cryptogramme) et `EXAM` (choix, mantisse, exposant, unité) |
 
 ---
 
 ## Reconnaissance manuscrite (CNN)
 
-Les champs manuscrits sont lus par deux petits CNN (même architecture, têtes
-différentes), entraînés sur EMNIST puis utilisés en inférence par `ocr_utils` /
-`page1_parser` (segmentation bas niveau, classification par réseau) :
+Deux petits CNN de même architecture (têtes différentes), entraînés sur EMNIST
+puis utilisés en inférence ; repli automatique sur easyOCR si un modèle est absent.
 
 | Champ | Module | Modèle |
 |---|---|---|
-| Prénom (L13) / Nom (L14) | `utils/letter_cnn.py` | `models/letter_cnn.pt` (26 classes A-Z) |
-| Mantisse / Exposant (onglet EXAM) | `utils/digit_cnn.py` | `models/digit_cnn.pt` (10 classes 0-9) |
+| Prénom / Nom | `utils/letter_cnn.py` | `models/letter_cnn.pt` (26 classes A–Z) |
+| Mantisse / Exposant | `utils/digit_cnn.py` | `models/digit_cnn.pt` (10 classes 0–9) |
 
 ```bash
-python train_letter_cnn.py                              # base EMNIST-letters
-python train_digit_cnn.py                               # base EMNIST-digits
-python build_letter_dataset.py                          # jeu annoté (formulaires)
-python train_letter_cnn.py --finetune letter_dataset.npz   # fine-tuning
+python training/train_digit_cnn.py                                  # EMNIST-digits
+python training/train_letter_cnn.py                                 # EMNIST-letters
+python training/build_letter_dataset.py                             # jeu annoté (formulaires)
+python training/train_letter_cnn.py --finetune letter_dataset.npz   # affinage par transfert
 ```
-Si un modèle est absent, la lecture retombe automatiquement sur l'OCR/heuristique.
 
 ---
 
-## Notebooks
+## Évaluation (reproduction)
 
-Les notebooks sont dans `notebooks/` et se lancent depuis Jupyter.
-Ils chargent automatiquement la racine du projet dans `sys.path`.
+```bash
+python eval/evaluate.py "PROJECT 2026 -DATABASE-20260518"   # Student ID + signature
+python tools/compare_to_truth.py                            # comparaison cellule/cellule par axe
+```
 
-| Notebook | Contenu |
-|---|---|
-| 01 | Exploration des données (images, PDFs, vérités terrain) |
-| 02 | Prétraitement : binarisation, deskew (Hough), normalisation |
-| 03 | Décodage grilles graphiques : Student ID, Groupe, MCQ, cryptogramme |
-| 04 | Authentification signatures : HOG + Moments de Hu + similarité cosinus |
-| 05 | OCR textes imprimés et manuscrits (EasyOCR) |
-| 06 | Programme 1 complet : autoValidPresences |
-| 07 | Programme 2 complet : autoReadForm |
-| 08 | Évaluation quantitative : split train/val/test, métriques par axe |
+Résultats de référence sur FORM1 (par cellule) : imprimé **83,6 %**, graphique
+**61,5 %**, signature **58,5 %**, manuscrit **22,9 %**, global **63,2 %**.
+CNN chiffres : **99,56 %** (test EMNIST). Détails et discussion dans `rapport/`.
+
+---
+
+## Dépendances
+```
+opencv-python  numpy  scikit-image  scikit-learn  openpyxl
+pymupdf  easyocr  torch  torchvision  pandas  matplotlib  pillow-heif
+```
+Installation : `pip install -r requirements.txt`
