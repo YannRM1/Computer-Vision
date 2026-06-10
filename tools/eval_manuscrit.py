@@ -71,10 +71,18 @@ def main():
         truth_path = os.path.join(form_dir, f"EXAM_{form}_{sid}.xlsx")
         if not os.path.isfile(truth_path):
             continue
-        twb = openpyxl.load_workbook(truth_path, data_only=True)
+        try:
+            twb = openpyxl.load_workbook(truth_path, data_only=True)
+        except Exception as e:
+            print(f"  [skip] vérité illisible : EXAM_{form}_{sid}.xlsx ({type(e).__name__})")
+            continue
 
-        imgs = pdf_to_images(os.path.join(form_dir, pdf))
-        norm = normalize_page(imgs[0], use_template=True)
+        try:
+            imgs = pdf_to_images(os.path.join(form_dir, pdf))
+            norm = normalize_page(imgs[0], use_template=True)
+        except Exception as e:
+            print(f"  [skip] PDF illisible : {pdf} ({type(e).__name__})")
+            continue
 
         # --- Prénom / Nom ------------------------------------------------
         preds = {"Prenom": read_firstname(norm), "Nom": read_name(norm)}
