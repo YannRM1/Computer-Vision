@@ -23,98 +23,13 @@ from utils.grid_decoder import (
     ROI_FIRSTNAME,
     ROI_NAME,
 )
-from utils.ocr_utils import ocr_codes_exam, ocr_top_header, ocr_text, ocr_handwritten_unite
+from utils.ocr_utils import ocr_codes_exam, ocr_top_header, ocr_text
 from utils.signature_utils import match_signature_to_id
 
 
 # ---------------------------------------------------------------------------
 # Lecture du prénom et du nom manuscrits
 # ---------------------------------------------------------------------------
-
-_CELL_W = 27   # largeur approximative d'une cellule de lettre (pixels normalisés)
-_MAX_CELLS = 15  # nombre max de cellules à lire
-
-
-def _ocr_cells(roi: np.ndarray) -> str:
-    """
-    Lit une rangée de cellules de lettres manuscrites.
-
-    Méthode : segmentation par colonnes séparatrices (projection verticale),
-    puis OCR cellule par cellule via easyocr.
-
-    Algorithme bas niveau :
-    1. Binariser l'image
-    2. Projection verticale -> identifier les colonnes séparatrices (forte densité)
-    3. Segmenter les cellules entre ces colonnes
-    4. OCR chaque cellule agrandie
-    5. Fusionner les lettres reconnues
-    """
-    from utils.ocr_utils import _get_reader, _to_gray
-    import re as _re
-
-    if roi is None or roi.size == 0:
-        return ""
-
-    gray = _to_gray(roi)
-    h, w = gray.shape
-
-    # Binariser pour projection
-    _, binary = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY_INV)
-    col_proj = np.sum(binary.astype(np.float32), axis=0) / (h * 255)
-
-    # Trouver les colonnes "vides" = séparatrices inter-cellules
-    # Entre chaque lettre, il y a une fine ligne verticale (densité élevée)
-    # ET des zones vides (densité faible)
-    # Détecter les transitions bas -> haut de la projection
-    # pour trouver le début de chaque cellule
-
-    # Alternative plus simple : détection des cellules par leur espacement régulier
-    # En cherchant le premier séparateur et en estimant la largeur
-    # Trouver les colonnes avec projection > 0.3 (probables séparateurs)
-    is_sep = col_proj > 0.30
-
-    # Trouver les runs de séparateurs
-    sep_starts = []
-    in_sep = False
-    for x, s in enumerate(is_sep):
-        if s and not in_sep:
-            in_sep = True
-            sep_starts.append(x)
-        elif not s and in_sep:
-            in_sep = False
-
-    if not sep_starts:
-        return ""
-
-    # Construire les ROIs des cellules (entre les séparateurs)
-    boundaries = [0] + sep_starts + [w]
-    cells = []
-    for i in range(len(boundaries) - 1):
-        x0, x1 = boundaries[i], boundaries[i + 1]
-        if x1 - x0 > 5:  # cellule de largeur minimum
-            cells.append((x0, x1))
-
-    if not cells:
-        return ""
-
-    reader = _get_reader()
-    letters = []
-    for x0, x1 in cells[:_MAX_CELLS]:
-        cell_img = roi[:, x0:x1]
-        if cell_img.shape[1] < 3:
-            continue
-        # Agrandir la cellule pour meilleure OCR
-        cell_big = cv2.resize(cell_img,
-                              (cell_img.shape[1] * 6, cell_img.shape[0] * 6),
-                              interpolation=cv2.INTER_CUBIC)
-        results = reader.readtext(cell_big, detail=0, allowlist="ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-        if results:
-            letter = _re.sub(r"[^A-Za-z]", "", "".join(results))
-            if letter:
-                letters.append(letter[0].upper())
-
-    return "".join(letters)
-
 
 def _clean_name_text(raw: str) -> str:
     import re

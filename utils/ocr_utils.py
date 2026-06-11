@@ -189,59 +189,9 @@ def ocr_codes_exam(img: np.ndarray) -> dict:
 # -----------------------------------------------------------------------
 
 # Reconnaissance des chiffres : assurée par le CNN (utils/digit_cnn.py) pour le
-# manuscrit (mantisse / exposant) et par easyocr pour l'imprimé (ocr_number).
-# L'ancien classifieur heuristique (_classify_digit / _digit_features) a été retiré :
-# redondant avec le CNN et difficile à justifier (sec. 4.1 : réseaux pour le texte).
-
-
-def _segment_digits(img_gray: np.ndarray,
-                    min_width_frac: float = 0.06,
-                    gap_frac: float = 0.04) -> list[np.ndarray]:
-    """
-    Segmente les chiffres d'une image via projection verticale.
-    Filtre les lignes de cadre (très fines ou très larges).
-
-    Returns liste de sous-images (une par chiffre détecté).
-    """
-    h, w = img_gray.shape[:2]
-
-    # Binariser (encre = 255)
-    _, binary = cv2.threshold(img_gray, 0, 255,
-                              cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
-
-    col_proj = np.sum(binary.astype(np.float32), axis=0)
-    max_proj = col_proj.max()
-    if max_proj < 1:
-        return []
-
-    # Normaliser
-    norm_proj = col_proj / max_proj
-
-    # Seuil de gap : colonne considérée vide si < gap_frac
-    gap_th = gap_frac
-
-    # Trouver les régions de contenu (encre détectée)
-    regions = []
-    in_region = False
-    start = 0
-    for x, v in enumerate(norm_proj):
-        if v > gap_th and not in_region:
-            in_region = True
-            start = x
-        elif v <= gap_th and in_region:
-            in_region = False
-            regions.append((start, x))
-    if in_region:
-        regions.append((start, w))
-
-    # Filtrer : on garde les régions de largeur entre min_width_frac et 60%
-    min_w = max(3, int(w * min_width_frac))
-    max_w = int(w * 0.60)
-    digit_imgs = []
-    for s, e in regions:
-        if min_w <= (e - s) <= max_w:
-            digit_imgs.append(img_gray[:, max(0, s-1):min(w, e+1)])
-    return digit_imgs
+# manuscrit (mantisse / exposant, segmentation par composantes connexes dans
+# _segment_mantisse / _segment_exposant) et par easyocr pour l'imprimé
+# (ocr_number).
 
 
 def ocr_number(img: np.ndarray) -> int | None:

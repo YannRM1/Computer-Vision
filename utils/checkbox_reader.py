@@ -148,22 +148,6 @@ def split_grid(roi: np.ndarray, rows: int, cols: int
     return cells
 
 
-def read_grid_checked(roi: np.ndarray, rows: int, cols: int,
-                      ink_threshold: float = 0.08,
-                      use_x_detection: bool = True
-                      ) -> list[tuple[int, int]]:
-    """
-    Retourne la liste des (row, col) cochées dans la grille.
-    """
-    cells = split_grid(roi, rows, cols)
-    checked = []
-    for r in range(rows):
-        for c in range(cols):
-            if is_checkbox_checked(cells[r][c], ink_threshold, use_x_detection):
-                checked.append((r, c))
-    return checked
-
-
 def read_grid_one_per_col(roi: np.ndarray, rows: int, cols: int,
                            ink_threshold: float = 0.05) -> list[int | None]:
     """

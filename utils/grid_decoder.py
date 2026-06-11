@@ -15,7 +15,6 @@ import numpy as np
 
 from utils.checkbox_reader import (
     read_grid_one_per_col,
-    read_grid_checked,
     preprocess_for_checkbox,
     ink_ratio,
     is_filled_square,
