@@ -182,21 +182,38 @@ def _parse_mcq_choices(block_img: np.ndarray) -> dict[str, int]:
 
 def _has_numerical_answer(block_img: np.ndarray) -> bool:
     """
-    Détecte si le bloc est une question NUMÉRIQUE (« mantisse × 10^exposant »).
+    Détecte si le bloc contient une zone de réponse numérique
+    (structure 'mantisse × 10^exposant').
 
-    On exige une PREUVE POSITIVE : la présence de cases de réponse encadrées
-    (détectées par _find_answer_boxes). On NE bascule PLUS en numérique par
-    simple absence de cases à cocher — c'était ce repli qui faisait halluciner
-    mantisse/exposant/unité sur des QCM dont les cases étaient mal détectées.
-
-    Critère insensible aux QCM : les cases à cocher sont trop petites pour être
-    prises pour des cases de réponse, et le texte d'option n'est pas encadré.
+    Critères robustes (ordre d'évaluation) :
+      1. Grand rectangle dans le tiers inférieur du bloc (case mantisse).
+         Seuil abaissé + binarisation Otsu pour les blocs clairs.
+      2. Si pas de rectangle mais aucune checkbox MCQ → probablement numérique.
     """
     h, w = block_img.shape[:2]
-    boxes = _find_answer_boxes(block_img)
-    if len(boxes) >= 2:                         # mantisse + exposant (cas typique)
-        return True
-    return any(bw >= 0.12 * w for (_x, _y, bw, _h) in boxes)   # ou 1 grande case
+    gray = cv2.cvtColor(block_img, cv2.COLOR_BGR2GRAY) \
+           if len(block_img.shape) == 3 else block_img
+
+    # Binarisation Otsu (plus robuste que seuil fixe 200)
+    _, binary_otsu = cv2.threshold(gray, 0, 255,
+                                   cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+    # Binarisation fixe (fallback pour scans clairs où Otsu sur-seuille)
+    _, binary_fixed = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY_INV)
+
+    for binary in (binary_fixed, binary_otsu):
+        # Chercher dans le tiers inférieur du bloc (pas seulement la moitié)
+        lower = binary[h * 2 // 3:, :]
+        num, _, stats, _ = cv2.connectedComponentsWithStats(lower,
+                                                             connectivity=8)
+        for i in range(1, num):
+            x, y, bw, bh, area = stats[i]
+            # Critères assouplis : petite case exposant aussi acceptable
+            if bw > w * 0.08 and bh > h * 0.05 and area > 150:
+                return True
+
+    # Fallback : si pas de vraie rangée de checkboxes MCQ (≥ 2), supposer numérique
+    boxes = _find_mcq_checkboxes(block_img)
+    return len(boxes) < 2
 
 
 def _find_answer_boxes(block_img: np.ndarray
