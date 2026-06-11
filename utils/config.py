@@ -6,7 +6,7 @@ Ce module regroupe les hyper-paramètres et constantes de réglage des étages d
 segmentation / lecture, afin d'avoir une source unique à ajuster pour le
 challenge plutôt que des valeurs dispersées dans le code.
 
-NB : les ROIs géométriques du formulaire (repère canonique 900×1270) restent
+NB : les ROIs géométriques du formulaire (repère canonique 900x1270) restent
 définis dans utils/grid_decoder.py (ROI_*), au plus près de leur usage ; ils
 pourront être migrés ici dans un second temps.
 """
@@ -46,6 +46,11 @@ CHECKED_INK_THRESHOLD = 0.10   # ratio d'encre min pour considérer une case coc
 
 # Lettres de choix MCQ, en ordre alphabétique.
 MCQ_CHOICES = "ABCDEFGH"
+
+# Case MCQ entierement noircie = choix ANNULE par l'eleve (convention du
+# formulaire : on noircit la case erronee puis on coche une autre avec un X).
+# Une croix X atteint ~0.30-0.55 de ratio d'encre, une case noircie ~0.90.
+MCQ_FILLED_CANCEL = 0.75
 
 # Zones des réponses numériques (fractions du bloc) — mantisse / exposant / unité.
 MANTISSE_X_FRAC = (0.05, 0.28)

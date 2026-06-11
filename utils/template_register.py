@@ -7,7 +7,7 @@ sur la bonne grille. Comme le gabarit du formulaire est identique pour tous les
 étudiants, on recale chaque photo sur un template propre par mise en
 correspondance de points (ORB) + homographie RANSAC.
 
-Le template est l'image normalisée d'une page 1 (repère canonique 900 × 1270).
+Le template est l'image normalisée d'une page 1 (repère canonique 900 x 1270).
 Après recalage, la photo se trouve dans CE MÊME repère : on peut donc lire tous
 les champs avec les ROIs calibrées pour les PDFs.
 """
@@ -20,7 +20,8 @@ _ORB = cv2.ORB_create(6000)
 _BF = cv2.BFMatcher(cv2.NORM_HAMMING)
 
 _WORK_MAX = 1500   # taille de travail pour la détection de features
-_MIN_GOOD = 15     # nombre minimal d'appariements valides
+_MIN_GOOD = 15     # nombre minimal d'appariements valides (knn)
+_MIN_INLIERS = 30  # nombre minimal d'inliers RANSAC pour accepter l'homographie
 
 
 class FormTemplate:
@@ -95,7 +96,7 @@ def get_photo_template(*pdf_dirs: str):
 def register_to_template(img_bgr: np.ndarray, template):
     """
     Recale `img_bgr` sur `template` et renvoie l'image redressée dans le repère
-    canonique (template.w × template.h), ou None si le recalage échoue.
+    canonique (template.w x template.h), ou None si le recalage échoue.
     """
     if template is None or template.des is None:
         return None
@@ -126,7 +127,12 @@ def register_to_template(img_bgr: np.ndarray, template):
     H, mask = cv2.findHomography(dst, src, cv2.RANSAC, 5.0)
     if H is None:
         return None
-    if mask is not None and int(mask.sum()) < _MIN_GOOD:
+    # Garde-fou : un recalage fiable laisse beaucoup d'inliers RANSAC. Quand il
+    # y en a très peu, l'homographie est estimée sur des appariements erronés et
+    # produit un redressement absurde (zoom sur une page d'examen, cf. photo
+    # 62766 lue « 9001 »). On exige donc nettement plus que le minimum de calcul.
+    inliers = int(mask.sum()) if mask is not None else 0
+    if inliers < _MIN_INLIERS:
         return None
 
     return cv2.warpPerspective(img_bgr, H, (template.w, template.h))

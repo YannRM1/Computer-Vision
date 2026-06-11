@@ -63,13 +63,40 @@ def letters_only(name):
     return re.sub(r"[^A-Za-z]", "", name).upper()
 
 
+def _first_n_cells(norm, y_range, n):
+    """Renvoie les n premieres cases de la grille de lettres (ajustee par
+    formulaire). Les noms sont ecrits a partir de la 1re case, contigus et
+    alignes a gauche : on apparie donc directement case k <-> lettre k, sans
+    dependre d'une detection vide/pleine (qui tronquait les lettres fines comme
+    I/J et faisait chuter le rendement du jeu de donnees)."""
+    from utils.page1_parser import _fit_name_grid, NAME_CELLS
+    from utils.ocr_utils import _to_gray
+    y0, y1 = y_range
+    x0, pitch = _fit_name_grid(norm, y_range)
+    cells = []
+    for k in range(min(n, NAME_CELLS)):
+        xa = int(round(x0 + k * pitch))
+        xb = int(round(x0 + (k + 1) * pitch))
+        cell = norm[y0:y1, xa:xb]
+        if cell.size == 0:
+            return None
+        g = _to_gray(cell)
+        ch, cw = g.shape
+        cells.append(g[3:max(4, ch - 3), 4:max(5, cw - 4)])
+    return cells
+
+
 def add_samples(norm, name, y_range, X, y, dropped):
-    """Apparie cases <-> lettres si les comptes coincident."""
+    """Extrait une case par lettre du nom (verite terrain) et l'ajoute au jeu.
+
+    Appariement par POSITION (case k <-> lettre k) sur les n premieres cases,
+    n = longueur du nom : robuste et a haut rendement (~1500 lettres sur les 3
+    formulaires, contre ~120 avec l'ancien appariement par comptage exact)."""
     letters = letters_only(name)
-    if not letters:
+    if not letters or len(letters) > 15:
         return
-    cells = collect_name_cells(norm, y_range)
-    if len(cells) != len(letters):
+    cells = _first_n_cells(norm, y_range, len(letters))
+    if cells is None or len(cells) != len(letters):
         dropped[0] += 1
         return
     for cell, ch in zip(cells, letters):

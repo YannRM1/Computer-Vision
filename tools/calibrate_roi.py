@@ -5,12 +5,12 @@ Lance ce script UNE FOIS pour produire des images de diagnostic.
 Il normalise chaque photo et dessine dessus :
   - Rectangle ROUGE  = ROI_STUDENT_ID_PHOTO (position actuelle, peut être décalée)
   - Rectangle VERT   = ROI_STUDENT_ID (même ROI que pour les PDFs, pour comparaison)
-  - Grille BLEUE     = découpage en 5 colonnes × 10 lignes du ROI photo
+  - Grille BLEUE     = découpage en 5 colonnes x 10 lignes du ROI photo
 
 Ouvre les images résultantes dans Paint (Windows) : la barre de statut affiche
 les coordonnées (x, y) du curseur. Repère le coin supérieur-gauche de la grille
 Student ID (les petites cases à cocher), note x et y, mesure la largeur w et
-la hauteur h totale des 5 colonnes × 10 lignes, puis mets à jour dans
+la hauteur h totale des 5 colonnes x 10 lignes, puis mets à jour dans
 utils/grid_decoder.py :
     ROI_STUDENT_ID_PHOTO = (x, y, w, h)
 
@@ -116,9 +116,9 @@ def main():
 
     print(f"\nImages sauvegardées dans : {OUTPUT_DIR}")
     print("\nComment mesurer le bon ROI :")
-    print("  1. Ouvre une image dans Paint (clic-droit → Ouvrir avec → Paint)")
+    print("  1. Ouvre une image dans Paint (clic-droit -> Ouvrir avec -> Paint)")
     print("  2. Survole le coin supérieur-gauche de la grille de cases Student ID")
-    print("     (les petites cases à cocher alignées en 5 colonnes × 10 lignes)")
+    print("     (les petites cases à cocher alignées en 5 colonnes x 10 lignes)")
     print("  3. Lis les coordonnées x,y dans la barre de statut en bas à gauche")
     print("  4. Mesure la largeur w (de la 1re à la 5e colonne) et")
     print("     la hauteur h (de la 1re à la 10e ligne)")

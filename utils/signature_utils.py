@@ -87,22 +87,30 @@ def load_signatures(sig_path):
 # ---------------------- Prétraitement ------------------------------------
 
 def _clean_frame_artifacts(binary):
+    """
+    Retire les seules BARRES de cadre (traits fins occupant presque toute la
+    largeur ou toute la hauteur de la vignette), sans toucher au tracé de la
+    signature.
+
+    NB : l'ancienne règle « composante touchant le bord ET d'aire importante
+    -> cadre » supprimait par erreur des signatures entières, car une signature
+    cursive est souvent une grande composante unique dont une boucle atteint le
+    bord (cas 62401, 62411 : tout le tracé était effacé). On ne rejette
+    désormais qu'une composante simultanément TRÈS allongée ET TRÈS fine ET
+    proche d'un bord — la signature d'un cadre rectangulaire.
+    """
     H, W = binary.shape
     n, labels, stats, _ = cv2.connectedComponentsWithStats(binary, connectivity=8)
     keep = np.zeros_like(binary)
-    border = max(2, int(min(H, W) * 0.03))
     for i in range(1, n):
         x, y, w, h, area = stats[i]
         if area < 8:
             continue
-        touches = (x <= border or y <= border or
-                   x + w >= W - border or y + h >= H - border)
-        # Composantes touchant les bords et "grosses" (cadre) -> rejetées
-        if touches and area > (H * W) * 0.005:
-            continue
-        # Composantes très allongées (lignes du cadre) -> rejetées
-        ratio = max(w, h) / max(1, min(w, h))
-        if ratio > 10 and area > 30:
+        # Barre horizontale de cadre : large et plate, collée en haut/bas.
+        is_hbar = (w > 0.85 * W and h < 0.12 * H)
+        # Barre verticale de cadre : haute et étroite, collée à gauche/droite.
+        is_vbar = (h > 0.85 * H and w < 0.12 * W)
+        if is_hbar or is_vbar:
             continue
         keep[labels == i] = 255
     return keep

@@ -160,7 +160,7 @@ def autoValidPresences(presences_dir: str,
     print(f"[P1] Recalage photo : {'template OK' if template else 'DESACTIVE (aucun template)'}")
 
     # Nom du fichier de sortie : EXAM_FORMXX_PRESENCES.xlsx
-    # Dérivé depuis results_dir (ex: .../EXAM_FORM1_RESULTS → EXAM_FORM1)
+    # Dérivé depuis results_dir (ex: .../EXAM_FORM1_RESULTS -> EXAM_FORM1)
     results_base  = os.path.basename(results_dir.rstrip("/\\"))
     exam_base     = results_base.replace("_RESULTS", "") if "_RESULTS" in results_base \
                     else os.path.basename(presences_dir.rstrip("/\\"))

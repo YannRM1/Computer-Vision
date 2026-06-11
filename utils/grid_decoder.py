@@ -1,9 +1,9 @@
 """
 Décodage des grilles graphiques de la page 1.
 
-Zones lues (formulaire normalisé 900×1270 px) :
-  - STUDENT ID grid : 5 colonnes × 10 lignes
-  - GROUP grid      : 3 colonnes × 10 lignes (2 chiffres + 1 lettre)
+Zones lues (formulaire normalisé 900x1270 px) :
+  - STUDENT ID grid : 5 colonnes x 10 lignes
+  - GROUP grid      : 3 colonnes x 10 lignes (2 chiffres + 1 lettre)
   - Conditions d'examen : 5 catégories YES/NO + champs Max number
 
 Toutes les méthodes utilisent uniquement des opérations bas niveau :
@@ -22,7 +22,7 @@ from utils.checkbox_reader import (
 )
 
 # ---------------------------------------------------------------------------
-# Constantes de calibration – coordonnées dans le formulaire 900 × 1270 px
+# Constantes de calibration – coordonnées dans le formulaire 900 x 1270 px
 # Calibrées empiriquement sur FORM2_62445 (Student ID 62445, Group G02B)
 # ---------------------------------------------------------------------------
 
@@ -31,7 +31,7 @@ ROI_CODES_EXAM    = (0, 65, 900, 65)
 
 # Grille Student ID
 # 5 colonnes (une par chiffre), 10 lignes (digits 0-9)
-# Colonnes à x ≈ 733, 761, 790, 818, 847 ; lignes à y ≈ 251, 286, …, 554
+# Colonnes à x ~ 733, 761, 790, 818, 847 ; lignes à y ~ 251, 286, …, 554
 ROI_STUDENT_ID    = (725, 247, 155, 330)
 # Depuis le recalage par template (cf. normalize_page), les photos sont
 # redressées dans le MÊME repère canonique que les PDFs. On utilise donc les
@@ -40,8 +40,8 @@ ROI_STUDENT_ID_PHOTO = ROI_STUDENT_ID
 STUDENT_ID_ROWS   = 10
 STUDENT_ID_COLS   = 5
 
-# Grille Group (10 lignes × 3 colonnes : chiffre1, chiffre2, lettre)
-# Colonnes chiffres à x ≈ 516-572 ; colonne lettre (checkbox uniquement) à x ≈ 582-655
+# Grille Group (10 lignes x 3 colonnes : chiffre1, chiffre2, lettre)
+# Colonnes chiffres à x ~ 516-572 ; colonne lettre (checkbox uniquement) à x ~ 582-655
 ROI_GROUP_GRID    = (516, 247, 105, 330)   # utilisé pour les 2 colonnes chiffres
 ROI_GROUP_GRID_PHOTO = ROI_GROUP_GRID
 GROUP_ROWS        = 10
@@ -68,7 +68,7 @@ ROI_FIRSTNAME     = (3, 211, 415, 24)
 ROI_NAME          = (3, 270, 415, 24)
 
 # Section CONDITIONS D'EXAMEN
-# Cases YES/NO à y ≈ 784 (taille 26×26)
+# Cases YES/NO à y ~ 784 (taille 26x26)
 # Ordre : Lecture notes, Double-sided, Laptop, Calculator, Scratch paper
 COND_Y_YESNO      = (784, 810)
 COND_CHECKBOX_W   = 26
@@ -88,8 +88,10 @@ ROI_NOTES_COMBINED = (505, 900, 128, 108)   # contient les deux valeurs empilée
 ROI_NOTE_MAX       = (510, 903, 118, 48)     # conservé pour fallback
 ROI_NOTE_VALID     = (510, 951, 118, 48)     # conservé pour fallback
 
-# Cryptogramme (petit graphique bas de page)
-ROI_CRYPTO     = (180, 1228, 94, 42)
+# Cryptogramme (petit graphique bas de page). Le glyphe occupe x~[234,274],
+# y~[1239,1269] dans le repere canonique : l'ancien ROI (180,1228,94,42)
+# coupait son bord droit et son bas (verifie sur PDF et photo).
+ROI_CRYPTO     = (180, 1225, 130, 45)
 
 
 # ---------------------------------------------------------------------------
@@ -120,9 +122,9 @@ def get_active_area(img: np.ndarray,
     Retourne (x0, y0, x1, y1) de la zone active du formulaire.
 
     - PDF  (is_photo=False) : cherche les pixels sombres (encre) sur fond blanc
-      → THRESH_BINARY_INV, seuil fixe 200.
+      -> THRESH_BINARY_INV, seuil fixe 200.
     - Photo (is_photo=True) : cherche le papier blanc sur fond sombre (bureau)
-      → THRESH_BINARY, seuil fixe 200.
+      -> THRESH_BINARY, seuil fixe 200.
       Avec un fond sombre, THRESH_BINARY_INV marquerait aussi le bureau comme
       "contenu" et renverrait la bounding-box de toute l'image.
     """
@@ -173,12 +175,20 @@ def normalize_page(img: np.ndarray, is_photo: bool | None = None,
     if is_photo is None:
         is_photo = _looks_like_photo(img)
 
+    # Photo anormalement haute = plusieurs pages photographiees d'un coup
+    # (ex. FORM3_62766, ratio h/w ~6.7 au lieu de ~1.4 pour une page). On ne
+    # garde que la page du haut (la page 1 d'identification) avant recalage.
+    if is_photo:
+        h0, w0 = img.shape[:2]
+        if h0 > 2.0 * w0:
+            img = img[:int(round(w0 * 1.45)), :]
+
     from utils.form_aligner import deskew
 
     # Étape 1 : recaler sur le template de référence par homographie (ORB).
     # On le fait pour les photos (toujours) et pour les PDFs de page 1 quand
     # use_template=True. En cas de succès, l'image est déjà dans le repère
-    # canonique (FORM_W × FORM_H) -> on renvoie directement et toutes les ROIs
+    # canonique (FORM_W x FORM_H) -> on renvoie directement et toutes les ROIs
     # s'appliquent. Les pages d'examen (use_template=False) ne sont pas
     # concernées : elles ne matcheraient pas le template de page 1.
     want_template = _PHOTO_TEMPLATE is not None and (is_photo or use_template)
@@ -286,10 +296,10 @@ def read_group(form_img: np.ndarray) -> str | None:
     Lit le code groupe depuis la grille graphique.
     Retourne une chaîne de type 'G02B' ou None.
 
-    Structure (10 lignes × 3 colonnes) :
-      col 0 → 1er chiffre (0-9)  dans ROI_GROUP_GRID
-      col 1 → 2ème chiffre (0-9) dans ROI_GROUP_GRID
-      col 2 → lettre (A-J)       dans ROI_GROUP_LETTER
+    Structure (10 lignes x 3 colonnes) :
+      col 0 -> 1er chiffre (0-9)  dans ROI_GROUP_GRID
+      col 1 -> 2ème chiffre (0-9) dans ROI_GROUP_GRID
+      col 2 -> lettre (A-J)       dans ROI_GROUP_LETTER
                                   (ROI séparée, exclut les labels imprimés)
     """
     # ---- Colonnes chiffres (dans ROI_GROUP_GRID) -------------------------
@@ -324,7 +334,7 @@ def _read_condition(form_img: np.ndarray, cond: tuple) -> int:
     Retourne :
       0           si NO est coché
       1           si YES est coché sans champ 'Max number'
-      max_number  si YES est coché avec champ 'Max number' (≥ 1)
+      max_number  si YES est coché avec champ 'Max number' (>= 1)
     """
     x_yes, x_no, has_max, x_max0, x_max1, y_max0, y_max1 = cond
     y0, y1 = COND_Y_YESNO

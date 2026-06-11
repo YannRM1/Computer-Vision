@@ -51,7 +51,7 @@ def _extract_ink_channel(img: np.ndarray) -> np.ndarray:
         return img
     b, g, r = cv2.split(img)
     if float(np.mean(r)) < float(np.mean(g)) - 15:
-        return cv2.bitwise_not(g)   # stylo rouge → canal vert inversé
+        return cv2.bitwise_not(g)   # stylo rouge -> canal vert inversé
     return cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 
@@ -91,9 +91,23 @@ _RE_CODE    = re.compile(r"Code\s*[|:\s]\s*([\w-]+)", re.IGNORECASE)
 _RE_DATE_BARE = re.compile(r"\b(\d{1,2}[/.\-]\d{1,2}[/.\-]\d{2,4})\b")
 
 
+def _valid_date(s: str) -> bool:
+    """Rejette les dates OCR aberrantes (jour > 31, mois > 12), p.ex. la
+    lecture parasite « 52-01-62 » sur une page sans vraie date. Évite d'écrire
+    une date manifestement fausse dans le xlsx."""
+    parts = re.split(r"[/.\-]", s.strip())
+    if len(parts) != 3:
+        return False
+    try:
+        d, m = int(parts[0]), int(parts[1])
+    except ValueError:
+        return False
+    return 1 <= d <= 31 and 1 <= m <= 12
+
+
 def ocr_top_header(header_img: np.ndarray) -> dict:
     """
-    Lit la bande d'en-tête (y ≈ 10-55 de la page normalisée) qui contient,
+    Lit la bande d'en-tête (y ~ 10-55 de la page normalisée) qui contient,
     entre les brackets de coin, les champs :
         [module_code]   [section_code]   [date]
 
@@ -114,12 +128,13 @@ def ocr_top_header(header_img: np.ndarray) -> dict:
 
     result = {"module": "", "code": "", "date": ""}
 
-    # Date : chercher un motif DD/MM/YYYY ou variantes
-    m_date = _RE_DATE_BARE.search(combined)
-    if m_date:
-        result["date"] = m_date.group(1).strip()
+    # Date : chercher un motif DD/MM/YYYY ou variantes (validée jour/mois)
+    for m_date in _RE_DATE_BARE.finditer(combined):
+        if _valid_date(m_date.group(1)):
+            result["date"] = m_date.group(1).strip()
+            break
 
-    # Les tokens alphanumériques restants (sans la date) → module et code
+    # Les tokens alphanumériques restants (sans la date) -> module et code
     tokens = [t for t in re.split(r"\s+", combined)
               if re.match(r"^[\w.\-]+$", t)
               and not re.match(r"^\d{1,2}[/.\-]\d{1,2}[/.\-]\d{2,4}$", t)]
@@ -161,7 +176,10 @@ def ocr_codes_exam(img: np.ndarray) -> dict:
                      (_RE_DATE, "date"), (_RE_CODE, "code")]:
         m = pat.search(combined)
         if m:
-            result[key] = m.group(1).strip()
+            val = m.group(1).strip()
+            if key == "date" and not _valid_date(val):
+                continue                       # date aberrante -> ignorée
+            result[key] = val
     return result
 
 
@@ -313,7 +331,7 @@ def _segment_mantisse(img_gray: np.ndarray) -> float | None:
         return None
     ih, iw = inner.shape[:2]
 
-    # Seuil fixe (l'encre rouge/noire ≈ gris < 210, blanc ≈ 230+).
+    # Seuil fixe (l'encre rouge/noire ~ gris < 210, blanc ~ 230+).
     _, binary = cv2.threshold(inner, 210, 255, cv2.THRESH_BINARY_INV)
     num, _, stats, _ = cv2.connectedComponentsWithStats(binary, connectivity=8)
 
@@ -416,7 +434,7 @@ def ocr_handwritten_mantisse(img: np.ndarray) -> float | None:
         if result is not None:
             return result
 
-    # Étape 2 : easyocr avec CLAHE × 8 (repli, ou cas sans modèle CNN)
+    # Étape 2 : easyocr avec CLAHE x 8 (repli, ou cas sans modèle CNN)
     eq = clahe.apply(gray)
     big = cv2.resize(eq, (eq.shape[1] * 8, eq.shape[0] * 8),
                      interpolation=cv2.INTER_CUBIC)
@@ -462,8 +480,8 @@ def _segment_exposant(img_gray: np.ndarray) -> int | None:
             continue
         ratio = max(cw, ch_c) / max(1, min(cw, ch_c))
         is_flat = cw > ch_c                       # candidat signe moins
-        # Trait vertical parasite (cadre) : très fin (≤ 2 px) ou très allongé
-        # contre un bord. Un « 1 » manuscrit fait ≥ 3 px de large et est
+        # Trait vertical parasite (cadre) : très fin (<= 2 px) ou très allongé
+        # contre un bord. Un « 1 » manuscrit fait >= 3 px de large et est
         # éloigné des bords -> conservé.
         if not is_flat and (cw <= 2 or (ratio > 6 and touches_edge)):
             continue

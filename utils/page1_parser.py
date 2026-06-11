@@ -44,7 +44,7 @@ def _ocr_cells(roi: np.ndarray) -> str:
 
     Algorithme bas niveau :
     1. Binariser l'image
-    2. Projection verticale → identifier les colonnes séparatrices (forte densité)
+    2. Projection verticale -> identifier les colonnes séparatrices (forte densité)
     3. Segmenter les cellules entre ces colonnes
     4. OCR chaque cellule agrandie
     5. Fusionner les lettres reconnues
@@ -65,7 +65,7 @@ def _ocr_cells(roi: np.ndarray) -> str:
     # Trouver les colonnes "vides" = séparatrices inter-cellules
     # Entre chaque lettre, il y a une fine ligne verticale (densité élevée)
     # ET des zones vides (densité faible)
-    # Détecter les transitions bas → haut de la projection
+    # Détecter les transitions bas -> haut de la projection
     # pour trouver le début de chaque cellule
 
     # Alternative plus simple : détection des cellules par leur espacement régulier
@@ -122,7 +122,7 @@ def _clean_name_text(raw: str) -> str:
     return " ".join(cleaned.split()).strip()
 
 
-# Géométrie de la grille de cases-lettres (repère canonique 900×1270).
+# Géométrie de la grille de cases-lettres (repère canonique 900x1270).
 # Valeurs NOMINALES : la position réelle varie de quelques pixels selon le
 # recalage ; la grille effective est ré-estimée sur chaque formulaire par
 # détection des séparateurs verticaux (_fit_name_grid).
@@ -219,7 +219,7 @@ def collect_name_cells(form_img: np.ndarray, y_range: tuple) -> list:
         inner = gray[3:max(4, ch - 3), 4:max(5, cw - 4)]
         # Test de vacuité SANS ouverture morphologique : les traits fins
         # (1 px à 150 dpi) d'un stylo léger étaient effacés par l'ouverture
-        # 2×2, faisant passer des lettres entières pour des cases vides.
+        # 2x2, faisant passer des lettres entières pour des cases vides.
         binv = cv2.threshold(inner, 180, 255, cv2.THRESH_BINARY_INV)[1]
         if int(np.count_nonzero(binv)) < max(10, int(0.015 * binv.size)):
             if started:
@@ -308,9 +308,9 @@ def read_codes_exam(form_img: np.ndarray) -> dict:
     Lit les champs CODES EXAM (Module, Professor, Date, Code).
 
     Stratégie double source :
-      1. Zone CODES_EXAM (bande colorée y=65-130) → Module et Professor
+      1. Zone CODES_EXAM (bande colorée y=65-130) -> Module et Professor
          (les plus fiables dans cette zone).
-      2. En-tête du haut (y=10-55, entre les brackets) → Date et Code
+      2. En-tête du haut (y=10-55, entre les brackets) -> Date et Code
          (valeurs réelles de l'examen, plus précises que le template).
     Les champs vides ou manquants dans l'une des sources sont comblés par
     l'autre.
@@ -351,7 +351,7 @@ def compare_cryptograms(crypto_refs: list[np.ndarray],
     Stratégie robuste :
       1. Ignorer les pages où le ROI extrait est quasi-vide (ink < 2 %) :
          ces pages n'ont pas de cryptogramme à cette position.
-      2. Parmi les pages valides, accepter si la MAJORITÉ (≥ 50 %) des NCC
+      2. Parmi les pages valides, accepter si la MAJORITÉ (>= 50 %) des NCC
          dépasse le seuil (au lieu d'exiger 100 % de succès).
       3. Si aucune page valide, retourner True (on ne peut pas invalider).
     """

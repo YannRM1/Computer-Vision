@@ -1,5 +1,5 @@
 """
-Lecture automatique des pages d'examen (page 5 → fin).
+Lecture automatique des pages d'examen (page 5 -> fin).
 
 Approche bas niveau :
   - Détection des blocs de questions par lignes horizontales longues
@@ -32,6 +32,7 @@ from utils.ocr_utils import (
 # Paramètres de réglage centralisés dans utils/config.py (§8 : éviter les
 # valeurs codées en dur dispersées). Ajuster les valeurs là-bas, pas ici.
 from utils.config import (
+    MCQ_FILLED_CANCEL,
     HEADER_BAND_H, MIN_LINE_WIDTH, LINE_MERGE_TOL,
     MCQ_X_START, MCQ_X_END, MCQ_MIN_SZ, MCQ_MAX_SZ, MCQ_MIN_AREA,
     CHECKED_INK_THRESHOLD, MCQ_CHOICES,
@@ -135,19 +136,40 @@ def _find_mcq_checkboxes(block_img: np.ndarray) -> list[tuple[int, int, int, int
         if (MCQ_MIN_SZ <= w <= MCQ_MAX_SZ and
                 MCQ_MIN_SZ <= h <= MCQ_MAX_SZ and
                 area >= MCQ_MIN_AREA):
-            # Ratio W/H proche de 1 → case carrée
+            # Ratio W/H proche de 1 -> case carrée
             if 0.5 < w / (h + 1e-6) < 2.0:
                 boxes.append((x + MCQ_X_START, y, w, h))
 
+    boxes = _keep_aligned_column(boxes)
     return sorted(boxes, key=lambda b: b[1])  # trier par y
 
 
-def _is_checked_box(block_img: np.ndarray, x: int, y: int,
-                    w: int, h: int) -> bool:
+def _keep_aligned_column(boxes: list[tuple[int, int, int, int]],
+                         x_tol: int = 10
+                         ) -> list[tuple[int, int, int, int]]:
     """
-    Détermine si une case est cochée.
-    Utilise la densité d'encre et la détection du motif X.
+    Ne conserve que la plus grande COLONNE de cases verticalement alignées
+    (même bord gauche, à x_tol près).
+
+    Les vraies cases à cocher MCQ sont empilées en colonne dans la marge gauche,
+    toutes au même x. Des fragments de l'énoncé (lettres, morceaux d'équation)
+    tombent parfois dans la bande de recherche et étaient comptés comme des
+    cases, décalant l'assignation des lettres (A,B,…). En gardant le groupe le
+    plus nombreux partageant le même x, on élimine ces intrus.
     """
+    if len(boxes) <= 1:
+        return boxes
+    best: list = []
+    for ref in boxes:
+        grp = [b for b in boxes if abs(b[0] - ref[0]) <= x_tol]
+        if len(grp) > len(best):
+            best = grp
+    return best
+
+
+def _box_ink_ratio(block_img: np.ndarray, x: int, y: int,
+                   w: int, h: int) -> tuple[float, bool]:
+    """Retourne (ratio d'encre intérieur, présence d'un motif X) pour une case."""
     roi = block_img[y:y + h, x:x + w]
     binary = preprocess_for_checkbox(roi)
     margin = max(2, int(min(binary.shape) * 0.12))
@@ -155,24 +177,51 @@ def _is_checked_box(block_img: np.ndarray, x: int, y: int,
         inner = binary[margin:-margin, margin:-margin]
     else:
         inner = binary
-    ratio = ink_ratio(inner)
-    if ratio < CHECKED_INK_THRESHOLD:
-        return False
-    return has_x_pattern(inner) or ratio > 0.30
+    return ink_ratio(inner), has_x_pattern(inner)
 
 
 def _parse_mcq_choices(block_img: np.ndarray) -> dict[str, int]:
     """
     Détecte les choix MCQ cochés dans le bloc.
+
+    Critère RELATIF (par question) plutôt qu'un seuil absolu : une case vide ne
+    contient que le bord du carré (ratio d'encre ~0.13), une case cochée ressort
+    nettement au-dessus de cette ligne de base — que la marque soit un grand X
+    (~0.5) ou une simple coche légère (~0.29). Comparer chaque case aux autres
+    cases de LA MÊME question rend la décision robuste à l'épaisseur du trait et
+    au niveau de gris du scan (là où un seuil fixe ratait les coches légères).
+
     Retourne {'A': 1/None, 'B': 1/None, ...} pour les choix présents.
     """
     boxes = _find_mcq_checkboxes(block_img)
     result = {}
+    feats = []   # (ratio, has_x) par case, dans l'ordre des lettres
     for idx, (x, y, w, h) in enumerate(boxes):
         if idx >= len(MCQ_CHOICES):
             break
+        feats.append(_box_ink_ratio(block_img, x, y, w, h))
+
+    if not feats:
+        return result
+
+    ratios = [f[0] for f in feats]
+    # Ligne de base = médiane des cases (la plupart sont vides).
+    baseline = float(np.median(ratios))
+
+    for idx, (ratio, is_x) in enumerate(feats):
         letter = MCQ_CHOICES[idx]
-        result[letter] = 1 if _is_checked_box(block_img, x, y, w, h) else None
+        # Case quasi entierement noircie = choix ANNULE par l'eleve (il noircit
+        # la case erronee puis coche une autre avec un X) -> non cochee.
+        if ratio >= MCQ_FILLED_CANCEL:
+            result[letter] = None
+            continue
+        # Cochée si :
+        #  - marque forte absolue (grand X ou case bien remplie), ou
+        #  - encre nettement supérieure à la ligne de base des cases vides.
+        strong  = is_x or ratio > 0.32
+        relative = (ratio > baseline + 0.07 and ratio > 0.16)
+        x_light  = is_x and ratio > baseline + 0.03
+        result[letter] = 1 if (strong or relative or x_light) else None
     return result
 
 
@@ -183,12 +232,12 @@ def _parse_mcq_choices(block_img: np.ndarray) -> dict[str, int]:
 def _has_numerical_answer(block_img: np.ndarray) -> bool:
     """
     Détecte si le bloc contient une zone de réponse numérique
-    (structure 'mantisse × 10^exposant').
+    (structure 'mantisse x 10^exposant').
 
     Critères robustes (ordre d'évaluation) :
       1. Grand rectangle dans le tiers inférieur du bloc (case mantisse).
          Seuil abaissé + binarisation Otsu pour les blocs clairs.
-      2. Si pas de rectangle mais aucune checkbox MCQ → probablement numérique.
+      2. Si pas de rectangle mais aucune checkbox MCQ -> probablement numérique.
     """
     h, w = block_img.shape[:2]
     gray = cv2.cvtColor(block_img, cv2.COLOR_BGR2GRAY) \
@@ -211,7 +260,7 @@ def _has_numerical_answer(block_img: np.ndarray) -> bool:
             if bw > w * 0.08 and bh > h * 0.05 and area > 150:
                 return True
 
-    # Fallback : si pas de vraie rangée de checkboxes MCQ (≥ 2), supposer numérique
+    # Fallback : si pas de vraie rangée de checkboxes MCQ (>= 2), supposer numérique
     boxes = _find_mcq_checkboxes(block_img)
     return len(boxes) < 2
 
@@ -284,9 +333,9 @@ def _parse_numerical_answer(block_img: np.ndarray) -> dict:
     # Fallback : fractions fixes calibrées sur la structure du formulaire
     # La zone de réponse numérique est toujours dans le tiers inférieur du bloc.
     # Coordonnées relatives basées sur l'observation des blocs FORM1 :
-    #   - Mantisse  : grande boîte à gauche   (x ≈ 2-25%, y ≈ 72-95%)
-    #   - Exposant  : petite boîte au centre  (x ≈ 25-38%, y ≈ 65-85%)
-    #   - Unité     : boîte à droite          (x ≈ 42-68%, y ≈ 72-95%)
+    #   - Mantisse  : grande boîte à gauche   (x ~ 2-25%, y ~ 72-95%)
+    #   - Exposant  : petite boîte au centre  (x ~ 25-38%, y ~ 65-85%)
+    #   - Unité     : boîte à droite          (x ~ 42-68%, y ~ 72-95%)
     if mantisse_img is None:
         mantisse_img = block_img[int(h*0.72):int(h*0.95), int(w*0.02):int(w*0.25)]
     if exposant_img is None:
@@ -342,7 +391,7 @@ def parse_question_block(block_img: np.ndarray,
         else:
             result["choix"] = {}
     except Exception:
-        pass  # bloc illisible → résultat vide
+        pass  # bloc illisible -> résultat vide
 
     return result
 
@@ -354,7 +403,7 @@ def parse_question_block(block_img: np.ndarray,
 def parse_exam_pages(pdf_images: list[np.ndarray],
                      exam_start_page: int = 4) -> list[dict]:
     """
-    Parse les pages d'examen (index exam_start_page → fin).
+    Parse les pages d'examen (index exam_start_page -> fin).
 
     Args:
         pdf_images      : liste d'images BGR (issues de pdf_to_images)
@@ -374,7 +423,7 @@ def parse_exam_pages(pdf_images: list[np.ndarray],
         for (y_start, y_end) in blocks:
             block = page_img[y_start:y_end, :]
             if block.shape[0] < 150:
-                continue  # bloc de pied de page (numéro, cryptogramme) → ignorer
+                continue  # bloc de pied de page (numéro, cryptogramme) -> ignorer
             if y_start > page_h - 170:
                 continue  # bande de pied de page, même si le bloc dépasse 150 px
             q_data = parse_question_block(block, q_num)

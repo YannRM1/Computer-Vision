@@ -20,6 +20,8 @@ calibration_output/
 *.log
 debug/
 .trash/
+/_dbg_exam.png
+/compare_results.csv
 /block_*.png
 /p6_block_*.png
 /codes_*.png

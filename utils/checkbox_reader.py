@@ -54,7 +54,7 @@ def has_x_pattern(binary_roi: np.ndarray, min_diag_ratio: float = 0.12) -> bool:
     Approche :
       - Erosion pour supprimer le bruit de bord
       - Calcul de la diagonale principale et anti-diagonale
-      - Si les deux ont une densité d'encre > min_diag_ratio → X détecté
+      - Si les deux ont une densité d'encre > min_diag_ratio -> X détecté
     """
     if binary_roi.size == 0:
         return False
@@ -67,9 +67,9 @@ def has_x_pattern(binary_roi: np.ndarray, min_diag_ratio: float = 0.12) -> bool:
     if h < 4 or w < 4:
         return ink_ratio(eroded) > 0.15
 
-    # Projection diagonale principale (top-left → bottom-right)
+    # Projection diagonale principale (top-left -> bottom-right)
     diag_main = np.array([eroded[int(i * h / w), i] for i in range(w)])
-    # Projection anti-diagonale (top-right → bottom-left)
+    # Projection anti-diagonale (top-right -> bottom-left)
     diag_anti = np.array([eroded[int(i * h / w), w - 1 - i] for i in range(w)])
 
     ratio_main = np.count_nonzero(diag_main) / len(diag_main)
@@ -102,7 +102,7 @@ def is_checkbox_checked(roi: np.ndarray,
 
     ratio = ink_ratio(inner)
     if ratio < ink_threshold:
-        return False  # trop peu d'encre → case vide
+        return False  # trop peu d'encre -> case vide
 
     if use_x_detection:
         return has_x_pattern(inner) or ratio > 0.30  # croix ou carré plein
@@ -111,7 +111,7 @@ def is_checkbox_checked(roi: np.ndarray,
 
 def is_filled_square(roi: np.ndarray, threshold: float = 0.35) -> bool:
     """
-    Détecte un carré plein (■) comme utilisé pour YES dans les conditions
+    Détecte un carré plein ([plein]) comme utilisé pour YES dans les conditions
     d'examen. Seuil plus élevé que pour un X.
     """
     binary = preprocess_for_checkbox(roi)
@@ -129,7 +129,7 @@ def is_filled_square(roi: np.ndarray, threshold: float = 0.35) -> bool:
 def split_grid(roi: np.ndarray, rows: int, cols: int
                ) -> list[list[np.ndarray]]:
     """
-    Découpe une ROI en une grille de (rows × cols) cellules.
+    Découpe une ROI en une grille de (rows x cols) cellules.
     Retourne cells[row][col].
     """
     h, w = roi.shape[:2]

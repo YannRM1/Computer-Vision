@@ -122,6 +122,14 @@ def compare_exam(prod_ws, truth_ws):
     axis_map = {1: "imprime", 10: "manuscrit", 11: "manuscrit", 12: "manuscrit"}
     for c in range(2, 10): axis_map[c] = "graphique"  # CHOIX A-H
 
+    def _is_checked(v):
+        """Une case MCQ est 'cochée' qu'elle soit notée 1, 'X' ou 'x' dans la
+        vérité terrain (convention incohérente d'un fichier à l'autre)."""
+        if v is None:
+            return False
+        s = str(v).strip().lower()
+        return s not in ("", "0", "none")
+
     max_r = max(truth_ws.max_row, prod_ws.max_row)
     for r in range(2, max_r + 1):
         # Skip empty truth rows
@@ -133,7 +141,10 @@ def compare_exam(prod_ws, truth_ws):
             if t is None and p is None:
                 continue
             axis = axis_map.get(c, "autre")
-            ok = cells_equal(t, p)
+            if 2 <= c <= 9:                       # CHOIX A-H : comparer "coché/non"
+                ok = (_is_checked(t) == _is_checked(p))
+            else:
+                ok = cells_equal(t, p)
             cell = f"R{r}C{c}"
             rows.append((cell, axis, t, p, ok))
     return rows
