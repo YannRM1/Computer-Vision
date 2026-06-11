@@ -100,17 +100,20 @@ def prep_cell(cell):
     binv = cv2.morphologyEx(binv, cv2.MORPH_OPEN, np.ones((2, 2), np.uint8))
     H, W = binv.shape
 
-    # Supprime les fragments de cadre : composantes tres allongees couvrant
-    # >70% de la largeur (trait horizontal) ou de la hauteur (trait vertical).
+    # Supprime les residus de cadre : composantes tres allongees ET collees
+    # au bord du crop. La condition de contact preserve les lettres en trait
+    # plein (I, T), qui sont allongees mais centrees dans la case.
     n, lab, stats, _ = cv2.connectedComponentsWithStats(binv, connectivity=8)
     clean = np.zeros_like(binv)
     for i in range(1, n):
         x, y, bw, bh, area = stats[i]
         if area < 4:
             continue
-        if bw > 0.75 * W and bh < 0.30 * H:      # ligne horizontale (bordure)
+        if (bw > 0.75 * W and bh < 0.30 * H
+                and (y <= 2 or y + bh >= H - 2)):   # ligne horiz. au bord
             continue
-        if bh > 0.75 * H and bw < 0.30 * W:      # ligne verticale (bordure)
+        if (bh > 0.75 * H and bw < 0.30 * W
+                and (x <= 2 or x + bw >= W - 2)):   # ligne vert. au bord
             continue
         clean[lab == i] = 255
     binv = clean

@@ -38,6 +38,9 @@ DATA = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                     "PROJECT 2026 -DATABASE-20260518")
 IMG_EXTS = (".jpg", ".jpeg", ".png", ".bmp", ".JPG", ".JPEG")
 
+# Crops bruts (niveaux de gris) collectes pour l'apercu lisible.
+_PREVIEW_RAW = []
+
 
 def render_pdf_p1(path, dpi=150):
     doc = fitz.open(path)
@@ -63,6 +66,17 @@ def letters_only(name):
     return re.sub(r"[^A-Za-z]", "", name).upper()
 
 
+def is_single_token(name):
+    """True si le nom est un seul mot contigu (sans espace ni tiret).
+
+    Un nom compose (« AL BITAR », « LOU-ANN ») occupe une case VIDE a
+    l'emplacement de l'espace/tiret : l'appariement par position decale alors
+    TOUTES les etiquettes d'une case (la case vide recoit la lettre suivante).
+    On exclut donc ces noms du jeu : mieux vaut ~5 % de donnees en moins que
+    des labels faux."""
+    return len(re.findall(r"[A-Za-z]+", name)) == 1
+
+
 def _first_n_cells(norm, y_range, n):
     """Renvoie les n premieres cases de la grille de lettres (ajustee par
     formulaire). Les noms sont ecrits a partir de la 1re case, contigus et
@@ -86,14 +100,22 @@ def _first_n_cells(norm, y_range, n):
     return cells
 
 
-def add_samples(norm, name, y_range, X, y, dropped):
+def add_samples(norm, name, y_range, X, y, groups, sid, dropped):
     """Extrait une case par lettre du nom (verite terrain) et l'ajoute au jeu.
 
     Appariement par POSITION (case k <-> lettre k) sur les n premieres cases,
     n = longueur du nom : robuste et a haut rendement (~1500 lettres sur les 3
-    formulaires, contre ~120 avec l'ancien appariement par comptage exact)."""
+    formulaires, contre ~120 avec l'ancien appariement par comptage exact).
+
+    `groups` recoit l'identifiant etudiant de chaque lettre : indispensable
+    pour la validation croisee par GROUPE (toutes les lettres d'un meme
+    scripteur dans le meme fold, sinon le K-fold est optimiste : le reseau
+    reconnait l'ecriture de la personne, pas la lettre)."""
     letters = letters_only(name)
     if not letters or len(letters) > 15:
+        return
+    if not is_single_token(name):       # nom compose -> etiquettes decalees
+        dropped[0] += 1
         return
     cells = _first_n_cells(norm, y_range, len(letters))
     if cells is None or len(cells) != len(letters):
@@ -105,11 +127,14 @@ def add_samples(norm, name, y_range, X, y, dropped):
             continue
         X.append(arr.astype(np.float32))
         y.append(ord(ch) - ord('A'))
+        groups.append(int(sid))
+        if len(_PREVIEW_RAW) < 70:          # crops bruts pour l'apercu lisible
+            _PREVIEW_RAW.append((cell.copy(), ch))
 
 
 def main():
     set_photo_template(get_photo_template(DATA))  # template figé (form identique)
-    X, y = [], []
+    X, y, groups = [], [], []
     dropped = [0]
     n_forms = 0
 
@@ -133,8 +158,8 @@ def main():
                                           is_photo=False, use_template=True)
                 except Exception:
                     continue
-                add_samples(norm, tf, FIRSTNAME_Y, X, y, dropped)
-                add_samples(norm, tn, NAME_Y, X, y, dropped)
+                add_samples(norm, tf, FIRSTNAME_Y, X, y, groups, sid, dropped)
+                add_samples(norm, tn, NAME_Y, X, y, groups, sid, dropped)
                 n_forms += 1
             elif mi:
                 sid = mi.group(1)
@@ -150,8 +175,8 @@ def main():
                     norm = normalize_page(img, is_photo=True)
                 except Exception:
                     continue
-                add_samples(norm, tf, FIRSTNAME_Y, X, y, dropped)
-                add_samples(norm, tn, NAME_Y, X, y, dropped)
+                add_samples(norm, tf, FIRSTNAME_Y, X, y, groups, sid, dropped)
+                add_samples(norm, tn, NAME_Y, X, y, groups, sid, dropped)
                 n_forms += 1
 
     if not X:
@@ -159,30 +184,41 @@ def main():
         return
     X = np.stack(X)
     y = np.array(y, dtype=np.int64)
+    groups = np.array(groups, dtype=np.int64)
     out = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                        "letter_dataset.npz")
-    np.savez_compressed(out, X=X, y=y)
+    np.savez_compressed(out, X=X, y=y, groups=groups)
     # repartition par lettre
     counts = {chr(ord('A') + i): int((y == i).sum()) for i in range(26)}
-    print(f"[dataset] {len(X)} lettres depuis {n_forms} formulaires "
+    print(f"[dataset] {len(X)} lettres, {len(np.unique(groups))} etudiants, {n_forms} formulaires "
           f"(noms ignores car comptage incoherent : {dropped[0]})")
     print("[dataset] repartition:",
           " ".join(f"{k}:{v}" for k, v in counts.items() if v))
     print(f"[dataset] sauvegarde : {out}")
 
-    # apercu visuel (50 premieres)
-    prev = X[:50]
-    tiles = [cv2.copyMakeBorder((t * 255).astype(np.uint8), 1, 10, 1, 1,
-             cv2.BORDER_CONSTANT, value=0) for t in prev]
-    for t, lab in zip(tiles, y[:50]):
-        cv2.putText(t, chr(ord('A') + lab), (2, t.shape[0] - 1),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.35, 255, 1)
-    rows = [np.hstack(tiles[i:i + 10]) for i in range(0, len(tiles), 10)]
-    w = max(r.shape[1] for r in rows)
-    rows = [cv2.copyMakeBorder(r, 0, 0, 0, w - r.shape[1],
-            cv2.BORDER_CONSTANT, value=0) for r in rows]
-    cv2.imwrite(os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                "dataset_preview.png"), np.vstack(rows))
+    # Apercu LISIBLE : crops bruts en niveaux de gris + label sous chaque case
+    # (les entrees binarisees 28x28 du CNN sont peu parlantes pour un humain).
+    TW, TH, LB, PER_ROW = 72, 84, 26, 14
+    rows_img, row = [], []
+    for cell, ch in _PREVIEW_RAW:
+        g = cell if cell.ndim == 2 else cv2.cvtColor(cell, cv2.COLOR_BGR2GRAY)
+        t = cv2.resize(g, (TW, TH), interpolation=cv2.INTER_CUBIC)
+        t = cv2.cvtColor(t, cv2.COLOR_GRAY2BGR)
+        cv2.rectangle(t, (0, 0), (TW - 1, TH - 1), (180, 180, 180), 1)
+        band = np.full((LB, TW, 3), 255, np.uint8)
+        cv2.putText(band, ch, (TW // 2 - 8, LB - 7),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (30, 60, 140), 2)
+        row.append(np.vstack([t, band]))
+        if len(row) == PER_ROW:
+            rows_img.append(np.hstack(row)); row = []
+    if row:
+        pad = [np.full((TH + LB, TW, 3), 255, np.uint8)] * (PER_ROW - len(row))
+        rows_img.append(np.hstack(row + pad))
+    if rows_img:
+        canvas = cv2.copyMakeBorder(np.vstack(rows_img), 8, 8, 8, 8,
+                                    cv2.BORDER_CONSTANT, value=(255, 255, 255))
+        cv2.imwrite(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                    "dataset_preview.png"), canvas)
     print("[dataset] apercu : dataset_preview.png")
 
 

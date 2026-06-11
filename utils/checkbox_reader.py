@@ -173,6 +173,19 @@ def read_grid_one_per_col(roi: np.ndarray, rows: int, cols: int,
             inner = binary[margin:-margin, margin:-margin] if (
                 binary.shape[0] > 2 * margin and binary.shape[1] > 2 * margin
             ) else binary
+            # Retire les lignes horizontales traversantes (bord d'un cadre
+            # voisin entre dans la cellule quand le recalage derive) :
+            # une croix ne traverse jamais toute la largeur.
+            H_i, W_i = inner.shape[:2]
+            if H_i > 4 and W_i > 4:
+                n_cc, lab, stats, _ = cv2.connectedComponentsWithStats(inner, 8)
+                cleaned = np.zeros_like(inner)
+                for i in range(1, n_cc):
+                    x, y, w_c, h_c, _a = stats[i]
+                    if w_c > 0.85 * W_i and h_c < 0.35 * H_i:
+                        continue
+                    cleaned[lab == i] = 255
+                inner = cleaned
             ratios.append(ink_ratio(inner))
 
         best_row = int(np.argmax(ratios))

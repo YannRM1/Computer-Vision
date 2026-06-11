@@ -304,14 +304,15 @@ def _segment_mantisse(img_gray: np.ndarray) -> float | None:
 
     comps = []   # (cx, cw, ch_c, is_sep, char_img)
     for (cx, cy, cw, ch_c, area) in cand:
-        # Séparateur décimal : composante nettement plus basse que les chiffres,
-        # étroite, dont le CENTRE est dans la moitié basse (un point/virgule se
-        # pose sur la ligne de base ; une virgule manuscrite peut être assez
-        # haute, d'où le seuil 0.70*h_ref au lieu de 0.55).
+        # Séparateur décimal : composante plus basse que les chiffres, étroite,
+        # dont le centre ET le sommet sont dans la moitié basse (un point ou
+        # une virgule part de la ligne de base ; un chiffre court démarre en
+        # haut de la zone d'écriture).
         center_y = cy + ch_c / 2.0
         is_sep = (ch_c <= 0.70 * h_ref
                   and cw <= iw * 0.22
-                  and center_y >= ih * 0.55)
+                  and center_y >= ih * 0.55
+                  and cy >= ih * 0.40)
         is_digit = not is_sep and ch_c >= 0.55 * h_ref
         if not is_digit and not is_sep:
             continue                                                  # bruit

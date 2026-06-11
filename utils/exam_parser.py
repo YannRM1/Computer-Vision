@@ -208,17 +208,15 @@ def _parse_mcq_choices(block_img: np.ndarray) -> dict[str, int]:
     # Ligne de base = médiane des cases (la plupart sont vides).
     baseline = float(np.median(ratios))
 
+    # Convention imprimee sur le formulaire : une case entierement noircie
+    # (ratio >= MCQ_FILLED_CANCEL, contre ~0.3-0.55 pour une croix) est un
+    # choix corrige -> interpretee non cochee, conformement aux instructions.
     for idx, (ratio, is_x) in enumerate(feats):
         letter = MCQ_CHOICES[idx]
-        # Case quasi entierement noircie = choix ANNULE par l'eleve (il noircit
-        # la case erronee puis coche une autre avec un X) -> non cochee.
         if ratio >= MCQ_FILLED_CANCEL:
             result[letter] = None
             continue
-        # Cochée si :
-        #  - marque forte absolue (grand X ou case bien remplie), ou
-        #  - encre nettement supérieure à la ligne de base des cases vides.
-        strong  = is_x or ratio > 0.32
+        strong   = is_x or ratio > 0.32
         relative = (ratio > baseline + 0.07 and ratio > 0.16)
         x_light  = is_x and ratio > baseline + 0.03
         result[letter] = 1 if (strong or relative or x_light) else None
@@ -426,6 +424,17 @@ def parse_exam_pages(pdf_images: list[np.ndarray],
                 continue  # bloc de pied de page (numéro, cryptogramme) -> ignorer
             if y_start > page_h - 170:
                 continue  # bande de pied de page, même si le bloc dépasse 150 px
+            # Bloc final quasi vide touchant le bas de page = pied de page
+            # (cryptogramme + numero), pas une question : le compter
+            # decalerait la numerotation. Encre mesuree : questions >= 0.029,
+            # pieds de page <= 0.018.
+            if y_end >= page_h - 5:
+                gray_b = cv2.cvtColor(block, cv2.COLOR_BGR2GRAY) \
+                         if block.ndim == 3 else block
+                ink = float((cv2.threshold(gray_b, 200, 255,
+                            cv2.THRESH_BINARY_INV)[1] > 0).mean())
+                if ink < 0.022:
+                    continue
             q_data = parse_question_block(block, q_num)
             all_questions.append(q_data)
             q_num += 1

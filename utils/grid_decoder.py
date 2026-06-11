@@ -88,8 +88,7 @@ ROI_NOTE_MAX       = (510, 903, 118, 48)     # conservé pour fallback
 ROI_NOTE_VALID     = (510, 951, 118, 48)     # conservé pour fallback
 
 # Cryptogramme (petit graphique bas de page). Le glyphe occupe x~[234,274],
-# y~[1239,1269] dans le repere canonique : l'ancien ROI (180,1228,94,42)
-# coupait son bord droit et son bas (verifie sur PDF et photo).
+# y~[1239,1269] dans le repere canonique ; marge incluse de chaque cote.
 ROI_CRYPTO     = (180, 1225, 130, 45)
 
 

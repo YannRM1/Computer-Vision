@@ -45,8 +45,11 @@ NAME_CELL_X0    = 31.0    # bord gauche nominal de la 1re case (x absolu)
 NAME_CELL_PITCH = 24.45   # pas horizontal nominal entre cases
 NAME_CELLS      = 15      # nombre de cases
 NAME_X_BAND     = (20, 430)   # bande de recherche des séparateurs (x absolu)
-FIRSTNAME_Y     = (211, 235)
-NAME_Y          = (270, 294)
+# Bande etendue de 4 px vers le haut : les lettres hautes (T, D, M)
+# depassent du rang nominal ; la ligne superieure du peigne incluse par
+# cette extension est filtree par le nettoyage de bord de prep_cell.
+FIRSTNAME_Y     = (207, 235)
+NAME_Y          = (266, 294)
 
 
 def _fit_name_grid(form_img: np.ndarray, y_range: tuple):
@@ -274,9 +277,17 @@ def compare_cryptograms(crypto_refs: list[np.ndarray],
         return True
 
     def binarize(img: np.ndarray) -> np.ndarray:
+        """Binarise puis recadre sur la boite englobante de l'encre : les
+        pages d'examen ne sont pas recalees sur le template, le glyphe se
+        deplace donc dans le crop. Le recadrage rend la NCC invariante en
+        translation et en echelle."""
         gray = img if len(img.shape) == 2 else cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         _, b = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
-        return b
+        ys, xs = np.nonzero(b)
+        if len(xs) < 20:
+            return b
+        x0, x1, y0, y1 = xs.min(), xs.max(), ys.min(), ys.max()
+        return b[y0:y1 + 1, x0:x1 + 1]
 
     ref_size = (80, 35)
     ref_b = cv2.resize(binarize(crypto_query), ref_size).astype(np.float32) / 255.0
