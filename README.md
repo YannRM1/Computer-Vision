@@ -111,9 +111,19 @@ python eval/evaluate.py "PROJECT 2026 -DATABASE-20260518"   # Student ID + signa
 python tools/compare_to_truth.py                            # comparaison cellule/cellule par axe
 ```
 
-Résultats de référence sur FORM1 (par cellule) : imprimé **83,6 %**, graphique
-**61,5 %**, signature **58,5 %**, manuscrit **22,9 %**, global **63,2 %**.
-CNN chiffres : **99,56 %** (test EMNIST). Détails et discussion dans `rapport/`.
+Résultats de référence (par cellule, contre les vérités terrain fournies) :
+
+| Axe | FORM1 | FORM2 | FORM3 | Global |
+|---|---|---|---|---|
+| Imprimé | 88,2 % | 94,8 % | 99,7 % | **94,7 %** |
+| Graphique | 85,1 % | 79,4 % | 74,0 % | **79,0 %** |
+| Signature | 78,0 % | 62,8 % | 67,4 % | **69,2 %** |
+| Manuscrit | 48,8 % | 36,9 % | 27,0 % | **35,9 %** |
+| **Global** | **79,5 %** | **74,5 %** | **72,9 %** | **75,3 %** |
+
+CNN chiffres : **99,56 %** (test EMNIST). CNN lettres : validation croisée
+5-fold **par scripteur** (GroupKFold) : **66,0 % ± 3,5** par lettre sur
+écritures jamais vues. Détails et discussion dans `rapport/`.
 
 ---
 

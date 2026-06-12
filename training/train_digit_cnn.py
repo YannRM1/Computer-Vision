@@ -86,7 +86,7 @@ def main():
     from torch.utils.data import DataLoader, TensorDataset, random_split
 
     import sys
-    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     from utils.digit_cnn import build_model, MODEL_PATH
 
     ap = argparse.ArgumentParser()
@@ -175,25 +175,37 @@ def main():
 
 def finetune(args):
     """Fine-tune le CNN pre-entraine EMNIST sur les chiffres reels des
-    formulaires (digit_dataset.npz). Petite base -> augmentation + LR faible."""
+    formulaires (digit_dataset.npz).
+
+    Methodologie identique au CNN lettres (sec. 4.2.2, validation croisee) :
+      1. K-fold (K=5) PAR ETUDIANT (GroupKFold), chaque fold repartant des
+         poids EMNIST purs (models/digit_cnn_emnist.pt) -> accuracy
+         moyenne +/- ecart-type sur scripteurs jamais vus.
+      2. Modele final re-entraine sur 100 %% des donnees -> models/digit_cnn.pt.
+    """
     import torch
     import torch.nn as nn
-    from torch.utils.data import DataLoader, TensorDataset, random_split
+    from torch.utils.data import DataLoader, TensorDataset
     import sys
-    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     from utils.digit_cnn import build_model, MODEL_PATH
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     data = np.load(args.finetune)
-    X = torch.from_numpy(data["X"]).float().unsqueeze(1)   # (N,1,28,28)
+    X = torch.from_numpy(data["X"]).float().unsqueeze(1)
     y = torch.from_numpy(data["y"]).long()
-    print(f"[finetune] {len(X)} chiffres, classes presentes : "
-          f"{sorted(set(y.tolist()))}")
+    if "groups" not in data:
+        print("[finetune] ERREUR : digit_dataset.npz sans 'groups'.")
+        return
+    groups = data["groups"]
+    print(f"[finetune] {len(X)} chiffres, {len(np.unique(groups))} etudiants")
 
-    ds = TensorDataset(X, y)
-    n_val = max(1, len(ds) // 6)
-    tr, va = random_split(ds, [len(ds) - n_val, n_val],
-                          generator=torch.Generator().manual_seed(0))
+    base_path = os.path.join(os.path.dirname(os.path.abspath(MODEL_PATH)),
+                             "digit_cnn_emnist.pt")
+    if not os.path.isfile(base_path):
+        print(f"[finetune] ERREUR : base EMNIST absente ({base_path}).")
+        return
+    base_state = torch.load(base_path, map_location=device)
 
     def augment(batch):
         import torchvision.transforms.functional as TF
@@ -205,38 +217,56 @@ def finetune(args):
                                  scale=1.0, shear=[0.0, 0.0]))
         return torch.stack(out)
 
-    tr_dl = DataLoader(tr, batch_size=64, shuffle=True)
-    va_dl = DataLoader(va, batch_size=256)
-
-    model = build_model().to(device)
-    if os.path.isfile(MODEL_PATH):
-        model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
-        print("[finetune] poids EMNIST charges (transfert).")
-    opt = torch.optim.Adam(model.parameters(), lr=3e-4)
     crit = nn.CrossEntropyLoss()
-
-    def acc(dl):
-        model.eval(); ok = tot = 0
-        with torch.no_grad():
-            for xb, yb in dl:
-                xb, yb = xb.to(device), yb.to(device)
-                ok += (model(xb).argmax(1) == yb).sum().item(); tot += yb.numel()
-        return 100.0 * ok / max(1, tot)
-
-    best = 0.0
     epochs = max(args.epochs if args.epochs else 30, 25)
-    for ep in range(1, epochs + 1):
-        model.train(); run = 0.0
-        for xb, yb in tr_dl:
-            xb = augment(xb).to(device); yb = yb.to(device)
-            opt.zero_grad(); loss = crit(model(xb), yb); loss.backward(); opt.step()
-            run += loss.item() * xb.size(0)
-        va = acc(va_dl)
-        print(f"[finetune] epoch {ep}/{epochs} loss={run/len(tr):.4f} val_acc={va:.2f}%")
-        if va >= best:
-            best = va
-            torch.save(model.state_dict(), MODEL_PATH)
-    print(f"[finetune] termine. best val_acc={best:.2f}% -> {MODEL_PATH}")
+
+    def train_once(tr_idx, va_idx=None, tag=""):
+        model = build_model().to(device)
+        model.load_state_dict({k: v.clone() for k, v in base_state.items()})
+        opt = torch.optim.Adam(model.parameters(), lr=3e-4)
+        tr_dl = DataLoader(TensorDataset(X[tr_idx], y[tr_idx]),
+                           batch_size=64, shuffle=True, num_workers=0)
+        va_dl = (DataLoader(TensorDataset(X[va_idx], y[va_idx]),
+                            batch_size=256, num_workers=0)
+                 if va_idx is not None else None)
+
+        def acc(dl):
+            model.eval(); ok = tot = 0
+            with torch.no_grad():
+                for xb, yb in dl:
+                    xb, yb = xb.to(device), yb.to(device)
+                    ok += (model(xb).argmax(1) == yb).sum().item()
+                    tot += yb.numel()
+            return 100.0 * ok / max(1, tot)
+
+        best = 0.0
+        for ep in range(1, epochs + 1):
+            model.train()
+            for xb, yb in tr_dl:
+                xb = augment(xb).to(device); yb = yb.to(device)
+                opt.zero_grad(); loss = crit(model(xb), yb)
+                loss.backward(); opt.step()
+            if va_dl is not None:
+                best = max(best, acc(va_dl))
+        if va_dl is not None:
+            print(f"[finetune]{tag} val_acc(best)={best:.2f}%")
+        return model, best
+
+    from sklearn.model_selection import GroupKFold
+    K = 5
+    scores = []
+    for k, (tr_idx, va_idx) in enumerate(
+            GroupKFold(n_splits=K).split(X, y, groups), start=1):
+        _, sc = train_once(torch.as_tensor(tr_idx),
+                           torch.as_tensor(va_idx), tag=f" fold {k}/{K}")
+        scores.append(sc)
+    print(f"[finetune] CV {K}-fold (par etudiant) : "
+          f"{float(np.mean(scores)):.2f}% +/- {float(np.std(scores)):.2f}  "
+          "(folds: " + " ".join(f"{s:.1f}" for s in scores) + ")")
+
+    model, _ = train_once(torch.arange(len(X)), None, tag=" final")
+    torch.save(model.state_dict(), MODEL_PATH)
+    print(f"[finetune] modele final (100% des donnees) -> {MODEL_PATH}")
 
 
 if __name__ == "__main__":

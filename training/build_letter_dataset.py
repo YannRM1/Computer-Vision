@@ -78,17 +78,19 @@ def is_single_token(name):
 
 
 def _first_n_cells(norm, y_range, n):
-    """Renvoie les n premieres cases de la grille de lettres (ajustee par
-    formulaire). Les noms sont ecrits a partir de la 1re case, contigus et
-    alignes a gauche : on apparie donc directement case k <-> lettre k, sans
-    dependre d'une detection vide/pleine (qui tronquait les lettres fines comme
-    I/J et faisait chuter le rendement du jeu de donnees)."""
+    """Renvoie les n premieres cases NON VIDES de tete de la grille de lettres
+    (ajustee par formulaire), pour appariement case k <-> lettre k.
+
+    Le fit de grille peut s'ancrer une case trop a gauche (bord du peigne pris
+    pour un separateur) : sans le saut des cases vides de tete, tout le nom
+    serait apparie avec un decalage d'une case et ses labels corrompus."""
     from utils.page1_parser import _fit_name_grid, NAME_CELLS
     from utils.ocr_utils import _to_gray
+    import numpy as _np
     y0, y1 = y_range
     x0, pitch = _fit_name_grid(norm, y_range)
-    cells = []
-    for k in range(min(n, NAME_CELLS)):
+
+    def cell_at(k):
         xa = int(round(x0 + k * pitch))
         xb = int(round(x0 + (k + 1) * pitch))
         cell = norm[y0:y1, xa:xb]
@@ -96,8 +98,30 @@ def _first_n_cells(norm, y_range, n):
             return None
         g = _to_gray(cell)
         ch, cw = g.shape
-        cells.append(g[3:max(4, ch - 3), 4:max(5, cw - 4)])
-    return cells
+        return g[3:max(4, ch - 3), 4:max(5, cw - 4)]
+
+    def is_empty(g):
+        # prep_cell retire les lignes collees aux bords (cadre du peigne) :
+        # une case de tete ne contenant que le bord gauche du peigne est bien
+        # vue vide, la ou un simple comptage d'encre la croyait pleine et
+        # empechait le saut (laissant l'appariement decale d'une case).
+        return letter_cnn.prep_cell(g) is None
+
+    # saute les cases vides de tete (au plus 2 : ancrage decale d'une case)
+    start = 0
+    while start < 2:
+        g = cell_at(start)
+        if g is None or not is_empty(g):
+            break
+        start += 1
+
+    cells = []
+    for k in range(start, min(start + n, NAME_CELLS)):
+        g = cell_at(k)
+        if g is None:
+            return None
+        cells.append(g)
+    return cells if len(cells) == n else None
 
 
 def add_samples(norm, name, y_range, X, y, groups, sid, dropped):

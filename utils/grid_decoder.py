@@ -74,11 +74,13 @@ COND_CHECKBOX_W   = 26
 
 CONDITIONS = [
     # (x_YES, x_NO,  has_max, x_max0, x_max1, y_max0, y_max1)
+    # Boites "Max number" mesurees sur les bordures verticales du gabarit
+    # (positions identiques sur les 3 formulaires) : dizaines puis unites.
     (101, 173, False, 0,   0,   0,   0  ),   # Lecture notes
-    (269, 342, True,  286, 346, 816, 842),   # Double-sided sheets
+    (269, 342, True,  325, 370, 817, 843),   # Double-sided sheets
     (438, 511, False, 0,   0,   0,   0  ),   # Laptop
     (608, 681, False, 0,   0,   0,   0  ),   # Calculator
-    (778, 850, True,  812, 858, 816, 842),   # Scratch paper
+    (778, 850, True,  833, 878, 817, 843),   # Scratch paper
 ]
 
 # Cases Note maximale / Note pour valider
@@ -226,12 +228,76 @@ def get_roi(img: np.ndarray, roi: tuple[int, int, int, int]) -> np.ndarray:
 # Lecture du Student ID
 # ---------------------------------------------------------------------------
 
+def _read_id_by_boxes(form_img: np.ndarray, expand: int = 16) -> int | None:
+    """
+    Lit la grille Student ID en LOCALISANT d'abord chacune des 50 cases
+    (composantes connexes carrees de ~20 px), puis en mesurant l'encre de
+    chaque interieur. Insensible aux derives de quelques pixels du recalage
+    (quadrillage fixe coupant les cases en deux) et aux variations de
+    contraste (seuillage adaptatif, pas d'Otsu par cellule).
+    Renvoie None si la structure 5 x 10 n'est pas retrouvee ou si une
+    colonne ne contient aucune coche nette.
+    """
+    x, y, w, h = ROI_STUDENT_ID
+    g = form_img if form_img.ndim == 2 else cv2.cvtColor(form_img, cv2.COLOR_BGR2GRAY)
+    H_img, W_img = g.shape
+    x0, y0 = max(0, x - expand), max(0, y - expand)
+    sub = g[y0:min(H_img, y + h + expand), x0:min(W_img, x + w + expand)]
+    binary = cv2.adaptiveThreshold(sub, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+                                   cv2.THRESH_BINARY_INV, 35, 10)
+    binary = cv2.morphologyEx(binary, cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8))
+    n, _, stats, cent = cv2.connectedComponentsWithStats(binary, connectivity=8)
+    boxes = []
+    for i in range(1, n):
+        bx, by, bw, bh, area = stats[i]
+        if 14 <= bw <= 34 and 14 <= bh <= 34 and 0.6 < bw / bh < 1.6 and area >= 30:
+            boxes.append((cent[i][0], cent[i][1], bx, by, bw, bh))
+    if len(boxes) < 35:
+        return None
+
+    def clusters(vals, gap=12):
+        out, cur = [], [vals[0]]
+        for v in vals[1:]:
+            if v - cur[-1] > gap:
+                out.append(float(np.mean(cur)))
+                cur = []
+            cur.append(v)
+        out.append(float(np.mean(cur)))
+        return out
+
+    cx = clusters(sorted(p[0] for p in boxes))
+    cy = clusters(sorted(p[1] for p in boxes))
+    if len(cx) != STUDENT_ID_COLS or len(cy) != STUDENT_ID_ROWS:
+        return None
+    digits = []
+    for c in range(STUDENT_ID_COLS):
+        vals = []
+        for r in range(STUDENT_ID_ROWS):
+            cand = min(boxes, key=lambda p: (p[0] - cx[c]) ** 2 + (p[1] - cy[r]) ** 2)
+            bx, by, bw, bh = cand[2], cand[3], cand[4], cand[5]
+            mx, my = max(3, bw // 5), max(3, bh // 5)
+            inner = binary[by + my:by + bh - my, bx + mx:bx + bw - mx]
+            vals.append(float((inner > 0).mean()) if inner.size else 0.0)
+        arr = np.array(vals)
+        best = int(arr.argmax())
+        # coche nette exigee : assez d'encre ET nettement au-dessus du fond
+        if arr[best] < 0.05 or arr[best] < 2.0 * max(float(np.median(arr)), 0.01):
+            return None
+        digits.append(str(best))
+    return int("".join(digits))
+
+
 def read_student_id(form_img: np.ndarray, is_photo: bool = False) -> int | None:
     """
     Lit l'identifiant étudiant depuis la grille graphique.
     Retourne un entier (ex: 62445) ou None si lecture impossible.
-    Le ROI utilisé dépend de la source (PDF vs photo).
+
+    Methode principale : localisation des cases par composantes connexes
+    (_read_id_by_boxes). Repli : quadrillage fixe du ROI calibre.
     """
+    by_boxes = _read_id_by_boxes(form_img)
+    if by_boxes is not None:
+        return by_boxes
     roi_coords = ROI_STUDENT_ID_PHOTO if is_photo else ROI_STUDENT_ID
     roi = get_roi(form_img, roi_coords)
     digits = read_grid_one_per_col(roi, rows=STUDENT_ID_ROWS, cols=STUDENT_ID_COLS)
@@ -382,14 +448,21 @@ def _read_two_digit_box(roi: np.ndarray) -> int:
         from utils.ocr_utils import ocr_number
         h, w = roi.shape[:2]
         mid = w // 2
-        tens_roi  = roi[:, :mid]
-        units_roi = roi[:, mid:]
+        # Marge interieure : ecarte les barres verticales du box, que l'OCR
+        # lisait comme des chiffres (« |0| » devenait 7).
+        mx, my = max(3, w // 10), max(2, h // 8)
+        tens_roi  = roi[my:h - my, mx:mid - 2]
+        units_roi = roi[my:h - my, mid + 2:w - mx]
 
         tens  = ocr_number(tens_roi)
         units = ocr_number(units_roi)
 
         tens  = tens  if tens  is not None else 0
         units = units if units is not None else 0
+
+        # Un demi-box ne contient qu'UN chiffre : une lecture multi-chiffres
+        # signale un artefact -> ne garder que le dernier chiffre.
+        tens, units = tens % 10, units % 10
 
         val = tens * 10 + units
         return val if val > 0 else 1

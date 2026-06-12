@@ -327,13 +327,14 @@ def main():
     p.font.size = Pt(18); p.font.bold = True; p.font.color.rgb = BLEU
     for txt, c, sz in [
         ("CV 5-fold, NOUVEAUX scripteurs :", GRIS_F, 15),
-        ("62,7 % ± 4,2", ORANGE, 22),
-        ("(folds : 69,9 / 60,4 / 64,7 / 60,4 / 58,0)", GRIS, 12),
+        ("66,0 % ± 3,5", ORANGE, 22),
+        ("(folds : 70,5 / 62,2 / 68,0 / 67,4 / 61,6)", GRIS, 12),
         ("", GRIS_F, 8),
         ("Test FORM3, scripteurs CONNUS :", GRIS_F, 15),
         ("73,4 %  (70,5 % avant fine-tuning)", VERT, 18),
         ("", GRIS_F, 8),
-        ("Labels nettoyes : 59,5 -> 62,7 % (+3,2).", VERT, 13),
+        ("59,5 -> 62,7 (labels propres) -> 66,0", VERT, 13),
+        ("(lettres I/T entieres + cadrage).", VERT, 13),
         ("L'ecart vs scripteurs connus quantifie", GRIS_F, 13),
         ("la part d'ecriture personnelle apprise.", GRIS_F, 13),
     ]:
@@ -352,7 +353,7 @@ def main():
     # ===== 13. RESULTATS (22:00 -> 24:00) ===================================
     slide_fig_bottom(prs, "Resultats par axe du challenge", "2 min", [
         "Mesure cellule par cellule contre la verite terrain fournie (tools/compare_to_truth.py)",
-        "Generalisation 3 formulaires : 66,2 % global — temps d'execution ~12 min (43 PDF + 32 photos, CPU)",
+        "Generalisation 3 formulaires (130 PDFs) : 75,3 % global — imprime 94,7 / graphique 79,0 / signature 69,2 / manuscrit 35,9",
     ], "fig_results_bar.png",
         "22:00 -> 24:00 (2 min) — Orateur 4\n"
         "Chaque barre 'apres' correspond a un levier presente dans les "

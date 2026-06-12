@@ -236,6 +236,35 @@ def main():
     total_ok = sum(v[0] for v in axis_stats.values())
     total    = sum(v[1] for v in axis_stats.values())
     print(f"{'GLOBAL':<12}{total_ok:>6}{total:>8}{100*total_ok/max(1,total):>9.1f}%")
+
+    # ---- Vue par formulaire (axe en colonnes) -----------------------------
+    data = csv_rows[1:]
+    forms = sorted({r[0] for r in data})
+    axes  = ("imprime", "manuscrit", "graphique", "signature")
+    print(f"\n{'FORM':<8}" + "".join(f"{a:>11}" for a in axes) + f"{'GLOBAL':>9}")
+    for fo in forms:
+        cells, tot = [], [0, 0]
+        for a in axes:
+            sub = [r for r in data if r[0] == fo and r[4] == a]
+            o = sum(r[7] for r in sub)
+            tot[0] += o; tot[1] += len(sub)
+            cells.append(f"{100*o/max(1,len(sub)):>10.1f}%")
+        print(f"{fo:<8}" + "".join(cells)
+              + f"{100*tot[0]/max(1,tot[1]):>8.1f}%")
+
+    # ---- Détail de l'axe manuscrit (composants) ---------------------------
+    def comp(r):
+        if r[3] in ("Prenom", "Nom"): return "Noms"
+        if r[3].endswith("C10"): return "MANTISSE"
+        if r[3].endswith("C11"): return "EXPOSANT"
+        return "UNITE"
+    print(f"\n{'MANUSCRIT':<12}{'OK':>6}{'TOTAL':>8}{'ACC':>10}")
+    man = [r for r in data if r[4] == "manuscrit"]
+    for k in ("MANTISSE", "EXPOSANT", "Noms", "UNITE"):
+        sub = [r for r in man if comp(r) == k]
+        o = sum(r[7] for r in sub)
+        print(f"{k:<12}{o:>6}{len(sub):>8}{100*o/max(1,len(sub)):>9.1f}%")
+
     print(f"\nDétails -> {out_csv}")
 
 

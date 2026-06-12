@@ -91,6 +91,32 @@ _RE_CODE    = re.compile(r"Code\s*[|:\s]\s*([\w-]+)", re.IGNORECASE)
 _RE_DATE_BARE = re.compile(r"\b(\d{1,2}[/.\-]\d{1,2}[/.\-]\d{2,4})\b")
 
 
+def _normalize_module(s: str) -> str:
+    """Corrige les confusions chiffre/lettre de l'OCR dans le code module,
+    dont le format est LL.NNNN (ex: IG.2405) : la partie gauche ne contient
+    que des lettres."""
+    m = re.match(r"^([A-Za-z0-9]{2})\.(\d{3,4})$", s.strip())
+    if not m:
+        return s
+    swap = {"1": "I", "5": "S", "0": "O", "8": "B", "6": "G"}
+    letters = "".join(swap.get(c, c) for c in m.group(1).upper())
+    return f"{letters}.{m.group(2)}"
+
+
+def _normalize_code(s: str) -> str:
+    """Corrige les confusions de l'OCR dans le code examen, de format
+    SN-NN-GN (ex: S1-01-G1) : S et G sont fixes, le reste est numerique."""
+    t = re.sub(r"[^A-Za-z0-9]", "", s.strip().upper())
+    digits = re.sub(r"[A-Z]", "", re.sub(r"[SG]", "", t))
+    # sequence attendue de 4 chiffres apres retrait de S et G (et de leurs
+    # confusions 5/8 en tete, 6/0 en avant-derniere position)
+    m = re.match(r"^[S58]?(\d)(\d{2})[G608]?(\d)$", t) \
+        or (re.match(r"^(\d)(\d{2})(\d)$", digits) if len(digits) == 4 else None)
+    if not m:
+        return s
+    return f"S{m.group(1)}-{m.group(2)}-G{m.group(3)}"
+
+
 def _valid_date(s: str) -> bool:
     """Rejette les dates OCR aberrantes (jour > 31, mois > 12), p.ex. la
     lecture parasite « 52-01-62 » sur une page sans vraie date. Évite d'écrire
@@ -142,9 +168,9 @@ def ocr_top_header(header_img: np.ndarray) -> dict:
     #               code   = token avec tirets (ex: S1-01-G1)
     for tok in tokens:
         if "." in tok and not result["module"]:
-            result["module"] = tok
+            result["module"] = _normalize_module(tok)
         elif "-" in tok and not result["code"]:
-            result["code"] = tok
+            result["code"] = _normalize_code(tok)
 
     return result
 
@@ -179,6 +205,10 @@ def ocr_codes_exam(img: np.ndarray) -> dict:
             val = m.group(1).strip()
             if key == "date" and not _valid_date(val):
                 continue                       # date aberrante -> ignorée
+            if key == "module":
+                val = _normalize_module(val)
+            elif key == "code":
+                val = _normalize_code(val)
             result[key] = val
     return result
 
@@ -262,17 +292,13 @@ def _box_is_empty(img: np.ndarray, margin_frac: float = 0.08,
     return (ink / float(inner.size)) < min_ink_ratio
 
 
-def _segment_mantisse(img_gray: np.ndarray) -> float | None:
+def _mantisse_comps(img_gray: np.ndarray):
     """
-    Segmente et classifie les chiffres d'une mantisse manuscrite (bas niveau).
-
-    Rognage du cadre -> seuillage -> composantes connexes. On ne conserve que :
-      - les composantes « chiffre » : hauteur proche de la plus grande trouvée ;
-      - le « séparateur décimal » : petite composante, étroite, dans la moitié
-        basse de la case (un point/virgule se pose sur la ligne de base).
-    Le bruit et les fragments de cadre sont rejetés (évite d'ajouter de faux
-    chiffres comme 3.1 -> 13.1). Classification par le CNN (repli heuristique).
-    Renvoie None si aucune composante chiffre (case vide / illisible).
+    Segmente une mantisse manuscrite en composantes ordonnees de gauche a
+    droite. Renvoie une liste de (cx, cw, ch, is_sep, char_img) ou None.
+    Partagee entre la lecture (_segment_mantisse) et la construction du jeu
+    de chiffres annotes (training/build_digit_dataset.py) : l'entrainement
+    voit exactement les memes crops que l'inference.
     """
     h, w = img_gray.shape[:2]
     margin = max(3, int(min(h, w) * 0.06))
@@ -321,6 +347,24 @@ def _segment_mantisse(img_gray: np.ndarray) -> float | None:
         comps.append((cx, cw, ch_c, is_sep, char_img))
 
     comps.sort(key=lambda c: c[0])
+    return comps
+
+
+def _segment_mantisse(img_gray: np.ndarray) -> float | None:
+    """
+    Segmente et classifie les chiffres d'une mantisse manuscrite (bas niveau).
+
+    Rognage du cadre -> seuillage -> composantes connexes. On ne conserve que :
+      - les composantes « chiffre » : hauteur proche de la plus grande trouvée ;
+      - le « séparateur décimal » : petite composante, étroite, dans la moitié
+        basse de la case (un point/virgule se pose sur la ligne de base).
+    Le bruit et les fragments de cadre sont rejetés (évite d'ajouter de faux
+    chiffres comme 3.1 -> 13.1). Classification par le CNN (repli heuristique).
+    Renvoie None si aucune composante chiffre (case vide / illisible).
+    """
+    comps = _mantisse_comps(img_gray)
+    if not comps:
+        return None
     digit_imgs = [c[4] for c in comps if not c[3]]
     if not digit_imgs:
         return None
@@ -398,22 +442,21 @@ def ocr_handwritten_mantisse(img: np.ndarray) -> float | None:
     return None
 
 
-def _segment_exposant(img_gray: np.ndarray) -> int | None:
+def _exposant_digits(img_gray: np.ndarray):
     """
-    Segmente et classifie l'exposant manuscrit (entier, signe « - » possible).
+    Segmente l'exposant manuscrit : renvoie (cells, neg) ou (None, False).
+    cells = sous-images des chiffres de gauche a droite ; neg = signe moins
+    detecte. Partagee entre la lecture (_segment_exposant) et la construction
+    du jeu de chiffres annotes.
 
-    Même approche bas niveau que _segment_mantisse : rognage du cadre,
-    seuillage, composantes connexes, rejet des fragments de cadre (qui étaient
-    lus comme des « 1 » par l'ancienne segmentation par projection : 2 -> 121).
-    Le signe moins est une composante large et plate à gauche des chiffres.
+    On travaille sur le crop ENTIER (pas de rognage par marge : les chiffres
+    ecrits contre le cadre seraient amputes). Le cadre et ses fragments sont
+    elimines par filtrage des composantes (bords, traits fins, elongation).
     """
-    # On travaille sur le crop ENTIER (pas de rognage par marge : les chiffres
-    # écrits contre le cadre seraient amputés). Le cadre et ses fragments sont
-    # éliminés par filtrage des composantes (bords, traits fins, élongation).
     inner = img_gray
     ih, iw = inner.shape[:2]
     if inner.size == 0:
-        return None
+        return None, False
 
     _, binary = cv2.threshold(inner, 210, 255, cv2.THRESH_BINARY_INV)
     num, _, stats, _ = cv2.connectedComponentsWithStats(binary, connectivity=8)
@@ -438,7 +481,7 @@ def _segment_exposant(img_gray: np.ndarray) -> int | None:
             continue
         cand.append((cx, cy, cw, ch_c, area))
     if not cand:
-        return None
+        return None, False
 
     h_ref = max(c[3] for c in cand)
     digits, neg = [], False
@@ -454,6 +497,17 @@ def _segment_exposant(img_gray: np.ndarray) -> int | None:
             continue                                                 # bruit
         digits.append(inner[max(0, cy - 1):cy + ch_c + 1,
                             max(0, cx - 1):cx + cw + 1])
+    if not digits:
+        return None, False
+    return digits, neg
+
+
+def _segment_exposant(img_gray: np.ndarray) -> int | None:
+    """
+    Segmente et classifie l'exposant manuscrit (entier, signe « - » possible).
+    Segmentation partagée : _exposant_digits ; classification : CNN chiffres.
+    """
+    digits, neg = _exposant_digits(img_gray)
     if not digits:
         return None
 
@@ -492,10 +546,54 @@ def ocr_handwritten_exposant(img: np.ndarray) -> int | None:
         return None
 
 
+# Unites rencontrees dans les formulaires : vocabulaire ferme, ce qui permet
+# de corriger les confusions de caracteres de l'OCR (Bit lu Blt, KHz lu XHz)
+# par plus proche voisin a distance d'edition <= 1.
+_UNITES = ["bit", "hz", "khz", "mhz", "ghz", "db", "dbm", "v", "mv",
+           "w", "mw", "s", "ms", "us", "mo", "ko", "go", "octet"]
+
+
+def _edit1(a: str, b: str) -> bool:
+    """True si distance d'edition <= 1 (substitution/insertion/suppression)."""
+    if a == b:
+        return True
+    la, lb = len(a), len(b)
+    if abs(la - lb) > 1:
+        return False
+    if la == lb:
+        return sum(x != y for x, y in zip(a, b)) <= 1
+    if la > lb:
+        a, b, la, lb = b, a, lb, la
+    for i in range(lb):
+        if a == b[:i] + b[i + 1:]:
+            return True
+    return False
+
+
+def _normalize_unite(text: str) -> str:
+    t = text.strip()
+    low = re.sub(r"[^a-z]", "", t.lower())
+    if not low:
+        return t
+    if low in _UNITES:
+        return t
+    # privilegier la substitution (meme longueur : XHz -> kHz et non Hz)
+    for u in _UNITES:
+        if len(u) == len(low) and _edit1(low, u):
+            return u
+    for u in _UNITES:
+        if _edit1(low, u):
+            return u
+    return t
+
+
 def ocr_handwritten_unite(img: np.ndarray) -> str | None:
-    """Lit l'unité (texte imprimé ou manuscrit)."""
+    """Lit l'unité (texte imprimé ou manuscrit), normalisée sur le
+    vocabulaire d'unités du formulaire."""
     if img is None or img.size == 0:
         return None
     processed = _upscale_binarize(img, scale=3)
     text = _ocr_raw(processed)
-    return text.strip() if text else None
+    if not text:
+        return None
+    return _normalize_unite(text.strip())

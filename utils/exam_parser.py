@@ -52,7 +52,7 @@ def _find_horizontal_lines(page_bin: np.ndarray,
     Retourne les y-positions des lignes horizontales longues.
     Méthode : ouverture morphologique horizontale (bas niveau).
     """
-    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (min_width, 2))
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (min_width, 1))
     horiz = cv2.morphologyEx(page_bin, cv2.MORPH_OPEN, kernel)
     contours, _ = cv2.findContours(horiz, cv2.RETR_EXTERNAL,
                                    cv2.CHAIN_APPROX_SIMPLE)
@@ -75,6 +75,14 @@ def _merge_close_lines(ys: list[int], tol: int = LINE_MERGE_TOL) -> list[int]:
     return merged
 
 
+def _has_giant_gap(ys: list[int], page_h: int, giant: int = 750) -> bool:
+    """True si l'espacement entre séparateurs successifs (bords de page
+    inclus) dépasse `giant` px : aucune question légitime n'est aussi haute,
+    c'est le signe de séparateurs non détectés."""
+    pts = [HEADER_BAND_H] + sorted(ys) + [page_h]
+    return any(b - a > giant for a, b in zip(pts, pts[1:]))
+
+
 def detect_question_blocks(exam_page: np.ndarray) -> list[tuple[int, int]]:
     """
     Retourne la liste des (y_start, y_end) pour chaque bloc de question.
@@ -85,6 +93,20 @@ def detect_question_blocks(exam_page: np.ndarray) -> list[tuple[int, int]]:
     _, binary = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY_INV)
 
     ys = _find_horizontal_lines(binary)
+
+    # Repli pour les scans aux séparateurs pointillés / pâlis : si la page
+    # produit un bloc géant (fusion manifeste de plusieurs questions), on
+    # recommence avec un seuil plus permissif et un pontage horizontal des
+    # traits. Ce mode n'est PAS utilisé par défaut : sur les pages saines, le
+    # pontage coupe des questions en deux via leurs lignes internes (tableaux).
+    if _has_giant_gap(ys, exam_page.shape[0]):
+        _, b2 = cv2.threshold(gray, 220, 255, cv2.THRESH_BINARY_INV)
+        b2 = cv2.morphologyEx(b2, cv2.MORPH_CLOSE,
+                              cv2.getStructuringElement(cv2.MORPH_RECT, (15, 1)))
+        ys2 = _find_horizontal_lines(b2)
+        if len(ys2) > len(ys):
+            ys = ys2
+
     ys = _merge_close_lines(ys)
 
     H = exam_page.shape[0]
@@ -294,15 +316,15 @@ def _find_answer_boxes(block_img: np.ndarray
     return sorted(boxes, key=lambda b: b[0])
 
 
-def _parse_numerical_answer(block_img: np.ndarray) -> dict:
+def numeric_answer_crops(block_img: np.ndarray):
     """
-    Extrait mantisse, exposant et unité via détection de cadres bordurés.
-    Fallback sur fractions fixes si la détection échoue.
+    Localise les zones de réponse numérique d'un bloc et renvoie les crops
+    (mantisse_img, exposant_img, unite_img) via détection de cadres bordurés,
+    avec repli sur fractions fixes. Partagée entre la lecture
+    (_parse_numerical_answer) et la construction du jeu de chiffres annotés.
     """
     h, w = block_img.shape[:2]
-
     boxes = _find_answer_boxes(block_img)
-
     mantisse_img = exposant_img = unite_img = None
 
     if len(boxes) >= 2:
@@ -330,21 +352,24 @@ def _parse_numerical_answer(block_img: np.ndarray) -> dict:
 
     # Fallback : fractions fixes calibrées sur la structure du formulaire
     # La zone de réponse numérique est toujours dans le tiers inférieur du bloc.
-    # Coordonnées relatives basées sur l'observation des blocs FORM1 :
-    #   - Mantisse  : grande boîte à gauche   (x ~ 2-25%, y ~ 72-95%)
-    #   - Exposant  : petite boîte au centre  (x ~ 25-38%, y ~ 65-85%)
-    #   - Unité     : boîte à droite          (x ~ 42-68%, y ~ 72-95%)
     if mantisse_img is None:
         mantisse_img = block_img[int(h*0.72):int(h*0.95), int(w*0.02):int(w*0.25)]
     if exposant_img is None:
         exposant_img = block_img[int(h*0.65):int(h*0.85), int(w*0.25):int(w*0.38)]
     if unite_img is None:
         unite_img = block_img[int(h*0.72):int(h*0.95), int(w*0.42):int(w*0.68)]
+    return mantisse_img, exposant_img, unite_img
 
+
+def _parse_numerical_answer(block_img: np.ndarray) -> dict:
+    """
+    Extrait mantisse, exposant et unité via détection de cadres bordurés.
+    Fallback sur fractions fixes si la détection échoue.
+    """
+    mantisse_img, exposant_img, unite_img = numeric_answer_crops(block_img)
     mantisse = ocr_handwritten_mantisse(mantisse_img)
     exposant = ocr_handwritten_exposant(exposant_img)
     unite    = ocr_handwritten_unite(unite_img)
-
     return {"mantisse": mantisse, "exposant": exposant, "unite": unite}
 
 
@@ -411,8 +436,20 @@ def parse_exam_pages(pdf_images: list[np.ndarray],
         Liste de dictionnaires, un par question.
     """
     all_questions = []
-    q_num = 1
+    for q_num, block in enumerate(iter_question_blocks(pdf_images,
+                                                       exam_start_page), 1):
+        all_questions.append(parse_question_block(block, q_num))
+    return all_questions
 
+
+def iter_question_blocks(pdf_images: list[np.ndarray],
+                         exam_start_page: int = 4):
+    """
+    Itère sur les blocs de question (images), dans l'ordre des questions,
+    en appliquant les mêmes filtres anti-pied-de-page que la lecture.
+    Partagé entre parse_exam_pages et la construction du jeu de chiffres
+    annotés (l'appariement question <-> vérité terrain exige le même ordre).
+    """
     for page_idx in range(exam_start_page, len(pdf_images)):
         page_img = normalize_page(pdf_images[page_idx])
         blocks   = detect_question_blocks(page_img)
@@ -422,7 +459,7 @@ def parse_exam_pages(pdf_images: list[np.ndarray],
             block = page_img[y_start:y_end, :]
             if block.shape[0] < 150:
                 continue  # bloc de pied de page (numéro, cryptogramme) -> ignorer
-            if y_start > page_h - 170:
+            if y_start > page_h - 180:
                 continue  # bande de pied de page, même si le bloc dépasse 150 px
             # Bloc final quasi vide touchant le bas de page = pied de page
             # (cryptogramme + numero), pas une question : le compter
@@ -435,11 +472,7 @@ def parse_exam_pages(pdf_images: list[np.ndarray],
                             cv2.THRESH_BINARY_INV)[1] > 0).mean())
                 if ink < 0.022:
                     continue
-            q_data = parse_question_block(block, q_num)
-            all_questions.append(q_data)
-            q_num += 1
-
-    return all_questions
+            yield block
 
 
 # ---------------------------------------------------------------------------

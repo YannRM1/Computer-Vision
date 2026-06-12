@@ -334,7 +334,7 @@ def fig_cnn():
 def fig_results():
     axes_n = ["Imprime", "Graphique", "Signature", "Manuscrit", "GLOBAL"]
     avant = [83.6, 61.5, 58.5, 22.9, 63.2]
-    apres = [84.5, 80.7, 78.0, 41.4, 75.1]
+    apres = [88.2, 85.1, 78.0, 48.8, 79.5]
     x = np.arange(len(axes_n)); w = 0.36
     fig, ax = plt.subplots(figsize=(8.6, 4.4))
     b1 = ax.bar(x - w / 2, avant, w, label="Avant", color=GRIS)
