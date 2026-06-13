@@ -301,8 +301,34 @@ def identify_signature(query_img, desc_db, threshold=0.18, margin=0.0):
     return best_id, best_score
 
 
-def match_signature_to_id(query_img, desc_db, expected_id=None, threshold=0.30):
-    identified, _ = identify_signature(query_img, desc_db, threshold)
+def verify_signature(query_img, desc_db, expected_id, threshold=0.20):
+    """Verification 1-contre-1 : la signature est-elle coherente avec
+    l'etudiant REVENDIQUE (deja connu via la grille STUDENT ID) ?
+
+    On compare la requete a la SEULE reference de `expected_id` et on valide
+    si le score depasse le seuil. C'est le bon cadre ici : l'identite est
+    revendiquee, pas a deviner. Exiger que l'etudiant sorte 1er parmi ~60
+    (identification) rejetait a tort des signatures authentiques dont une
+    voisine ressemble davantage : l'attendu finissait 2e-4e malgre un bon
+    score propre (0.39-0.47). Mesure : scores propres 0.27-0.72, donc le
+    seuil distingue une vraie signature d'une case vide ou d'un gribouillage."""
+    if not desc_db or expected_id not in desc_db:
+        return False
+    pp_q = preprocess_signature(query_img)
+    if (pp_q > 0).sum() < MIN_INK_PIXELS:
+        return False
+    d = desc_db[expected_id]
+    nccs = np.array([_ncc_template(pp_q, t) for t in d["tpl"]], dtype=np.float32)
+    score = float((W_NCC * nccs + W_HOG * _cos(_hog_vec(pp_q), d["hog"])
+                   + W_HU * _cos(_hu_vec(pp_q), d["hu"])).max())
+    return score >= threshold
+
+
+def match_signature_to_id(query_img, desc_db, expected_id=None, threshold=0.20):
+    """Champ « Validation signature » : verification 1-contre-1 quand l'ID est
+    connu (cas du formulaire), sinon identification 1-parmi-N (compatibilite)."""
     if expected_id is not None:
-        return identified, (identified == expected_id)
+        ok = verify_signature(query_img, desc_db, expected_id, threshold)
+        return (expected_id if ok else None), ok
+    identified, _ = identify_signature(query_img, desc_db, threshold)
     return identified, (identified is not None)

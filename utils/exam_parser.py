@@ -326,36 +326,45 @@ def numeric_answer_crops(block_img: np.ndarray):
     h, w = block_img.shape[:2]
     boxes = _find_answer_boxes(block_img)
     mantisse_img = exposant_img = unite_img = None
+    mbox = None
 
     if len(boxes) >= 2:
-        # Trier par taille : le plus grand = mantisse, le plus petit = exposant
-        by_area = sorted(boxes, key=lambda b: b[2] * b[3], reverse=True)
-        # Mantisse : grande boîte la plus à gauche parmi les grandes
-        large = [b for b in by_area if b[2] * b[3] >= by_area[0][2] * by_area[0][3] * 0.4]
-        large_sorted_x = sorted(large, key=lambda b: b[0])
+        def _crop(b):
+            bx, by, bw, bh = b
+            return block_img[by:by + bh, bx:bx + bw]
+        # Exposant = case ecrite en SUPERSCRIPT : nettement plus HAUTE que la
+        # mantisse et l'unite (alignees sur la ligne de base) et plus petite.
+        # Selection par position verticale -- le seuil d'aire (< moitie de la
+        # mantisse) etait trop fragile : une case exposant le frisant retombait
+        # sur le repli, qui lit le « .10 » imprime (« -1 » lu « 101 »).
+        top = min(boxes, key=lambda b: b[1])
+        rest = [b for b in boxes if b is not top]
+        if (rest and top[1] + 10 < min(b[1] for b in rest)
+                and top[2] * top[3] < max(b[2] * b[3] for b in rest)):
+            exposant_img = _crop(top)
+        else:
+            rest = boxes
+        rest_x = sorted(rest, key=lambda b: b[0])
+        mbox = rest_x[0]
+        mantisse_img = _crop(mbox)
+        if len(rest_x) >= 2:
+            unite_img = _crop(rest_x[-1])
 
-        if large_sorted_x:
-            bx, by, bw, bh = large_sorted_x[0]
-            mantisse_img = block_img[by:by + bh, bx:bx + bw]
-
-        # Exposant : petite boîte au-dessus du ".10" = le plus haut (y le plus petit)
-        small = [b for b in boxes if b[2] * b[3] < by_area[0][2] * by_area[0][3] * 0.5]
-        if small:
-            small_sorted_y = sorted(small, key=lambda b: b[1])
-            bx, by, bw, bh = small_sorted_y[0]
-            exposant_img = block_img[by:by + bh, bx:bx + bw]
-
-        # Unité : boîte la plus à droite parmi les grandes
-        if len(large_sorted_x) >= 2:
-            bx, by, bw, bh = large_sorted_x[-1]
-            unite_img = block_img[by:by + bh, bx:bx + bw]
-
-    # Fallback : fractions fixes calibrées sur la structure du formulaire
-    # La zone de réponse numérique est toujours dans le tiers inférieur du bloc.
+    # Repli : la mantisse occupe le tiers inferieur gauche du bloc.
     if mantisse_img is None:
         mantisse_img = block_img[int(h*0.72):int(h*0.95), int(w*0.02):int(w*0.25)]
+    # Repli exposant : ancre sur la mantisse (superscript juste au-dessus-droite)
+    # si elle est connue, sinon fraction fixe -- jamais sur le « .10 ».
     if exposant_img is None:
-        exposant_img = block_img[int(h*0.65):int(h*0.85), int(w*0.25):int(w*0.38)]
+        if mbox is not None:
+            bx, by, bw, bh = mbox
+            ex0 = min(w - 1, bx + bw + int(0.05 * w))
+            ex1 = min(w, ex0 + int(0.11 * w))
+            ey0 = max(0, by - int(0.55 * bh))
+            ey1 = by + int(0.55 * bh)
+            exposant_img = block_img[ey0:ey1, ex0:ex1]
+        else:
+            exposant_img = block_img[int(h*0.55):int(h*0.78), int(w*0.31):int(w*0.43)]
     if unite_img is None:
         unite_img = block_img[int(h*0.72):int(h*0.95), int(w*0.42):int(w*0.68)]
     return mantisse_img, exposant_img, unite_img

@@ -456,7 +456,7 @@ def parse_page1(
     if desc_db:
         sid_str = str(expected_student_id) if expected_student_id else str(student_id)
         _, validated = match_signature_to_id(
-            sig_img, desc_db, expected_id=sid_str, threshold=0.18
+            sig_img, desc_db, expected_id=sid_str, threshold=0.20
         )
         sig_valid = 1 if validated else 0
 
