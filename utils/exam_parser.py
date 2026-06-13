@@ -442,6 +442,44 @@ def parse_exam_pages(pdf_images: list[np.ndarray],
     return all_questions
 
 
+def read_page_number(page_img: np.ndarray):
+    """
+    Lit le numero de page imprime (bas-centre du repere canonique).
+
+    Texte imprime -> OCR autorise (§4.1). Bas niveau pour isoler le chiffre :
+    Otsu + composantes connexes -> plus grosse composante de taille « chiffre »
+    dans la bande de pied de page, recadree et agrandie avant OCR.
+    Renvoie l'entier lu ou None.
+    """
+    from utils.ocr_utils import _get_reader
+    strip = page_img[1205:1270, 340:560]
+    if strip.size == 0:
+        return None
+    g = cv2.cvtColor(strip, cv2.COLOR_BGR2GRAY) if strip.ndim == 3 else strip
+    binv = cv2.threshold(g, 0, 255,
+                         cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
+    n, _, stats, _ = cv2.connectedComponentsWithStats(binv, 8)
+    best = None
+    for i in range(1, n):
+        x, y, w, h, a = stats[i]
+        if 10 < h < 55 and 4 < w < 45 and a > 30 \
+                and (best is None or a > best[0]):
+            best = (a, x, y, w, h)
+    if best is None:
+        return None
+    _, x, y, w, h = best
+    d = binv[max(0, y - 4):y + h + 4, max(0, x - 4):x + w + 4]
+    d = cv2.copyMakeBorder(cv2.bitwise_not(d), 12, 12, 12, 12,
+                           cv2.BORDER_CONSTANT, value=255)
+    d = cv2.resize(d, (d.shape[1] * 4, d.shape[0] * 4),
+                   interpolation=cv2.INTER_CUBIC)
+    for t in _get_reader().readtext(d, detail=0, allowlist="0123456789"):
+        s = "".join(c for c in str(t) if c.isdigit())
+        if s:
+            return int(s[0])
+    return None
+
+
 def iter_question_blocks(pdf_images: list[np.ndarray],
                          exam_start_page: int = 4):
     """
@@ -450,8 +488,19 @@ def iter_question_blocks(pdf_images: list[np.ndarray],
     Partagé entre parse_exam_pages et la construction du jeu de chiffres
     annotés (l'appariement question <-> vérité terrain exige le même ordre).
     """
-    for page_idx in range(exam_start_page, len(pdf_images)):
-        page_img = normalize_page(pdf_images[page_idx])
+    # Réordonner les pages d'examen selon le numero imprime : un scan
+    # recto-verso peut les inverser par paires, ce qui placerait les reponses
+    # dans le desordre. On ne reordonne que si TOUS les numeros sont lus et
+    # forment une permutation strictement desordonnee (sinon on garde l'ordre
+    # du fichier : conservateur, jamais de degradation).
+    pages = [normalize_page(pdf_images[i])
+             for i in range(exam_start_page, len(pdf_images))]
+    nums = [read_page_number(p) for p in pages]
+    if (len(pages) > 1 and all(v is not None for v in nums)
+            and len(set(nums)) == len(nums) and nums != sorted(nums)):
+        pages = [p for _, p in sorted(zip(nums, pages), key=lambda t: t[0])]
+
+    for page_img in pages:
         blocks   = detect_question_blocks(page_img)
 
         page_h = page_img.shape[0]
