@@ -195,8 +195,8 @@ def collect_name_cells(form_img: np.ndarray, y_range: tuple) -> list:
     grises (interieur de case) des cases NON VIDES, dans l'ordre.
 
     La grille (origine, pas) est ré-estimée sur chaque formulaire par
-    _fit_name_grid (le recalage global laisse un jeu de quelques pixels qui
-    faisait dériver l'ancienne grille fixe d'une demi-case en fin de rangée).
+    _fit_name_grid : le recalage global laisse un jeu de quelques pixels, qu'une
+    grille fixe accumulerait jusqu'à une demi-case en fin de rangée.
 
     Reutilise par la lecture des noms ET par la generation du jeu de donnees
     de fine-tuning (build_letter_dataset.py). Arret apres 2 cases vides

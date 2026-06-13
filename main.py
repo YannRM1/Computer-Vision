@@ -64,6 +64,12 @@ def main(exam_name: str = EXAM_NAME,
          pdf_dir: str | None = None) -> None:
     t0 = time.time()
 
+    # Tolère « FORM2 » comme « EXAM_FORM2 » : on garantit le préfixe attendu
+    # par le cahier des charges, pour des sorties toujours conformes
+    # (EXAM_FORMXX_RESULTS, EXAM_FORMXX_PRESENCES.xlsx).
+    if not exam_name.upper().startswith("EXAM_"):
+        exam_name = "EXAM_" + exam_name
+
     # Répertoires déduits du nom d'examen si non fournis explicitement.
     if presences_dir is None or pdf_dir is None:
         _pres, _pdf = _dirs_for_exam(exam_name)

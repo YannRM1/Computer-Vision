@@ -139,9 +139,9 @@ def register_to_template(img_bgr: np.ndarray, template):
     if H is None:
         return None
     # Garde-fou : un recalage fiable laisse beaucoup d'inliers RANSAC. Quand il
-    # y en a très peu, l'homographie est estimée sur des appariements erronés et
-    # produit un redressement absurde (zoom sur une page d'examen, cf. photo
-    # 62766 lue « 9001 »). On exige donc nettement plus que le minimum de calcul.
+    # y en a tres peu, l'homographie est estimee sur des appariements errones et
+    # produit un redressement absurde. On exige donc nettement plus que le
+    # minimum de calcul.
     if inliers < _MIN_INLIERS:
         return None
     return cv2.warpPerspective(img_bgr, H, (template.w, template.h))

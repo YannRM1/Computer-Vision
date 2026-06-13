@@ -175,9 +175,9 @@ def _keep_aligned_column(boxes: list[tuple[int, int, int, int]],
 
     Les vraies cases à cocher MCQ sont empilées en colonne dans la marge gauche,
     toutes au même x. Des fragments de l'énoncé (lettres, morceaux d'équation)
-    tombent parfois dans la bande de recherche et étaient comptés comme des
-    cases, décalant l'assignation des lettres (A,B,…). En gardant le groupe le
-    plus nombreux partageant le même x, on élimine ces intrus.
+    peuvent tomber dans la bande de recherche et décaler l'assignation des
+    lettres (A, B, …). En gardant le groupe le plus nombreux partageant le même
+    x, on élimine ces intrus.
     """
     if len(boxes) <= 1:
         return boxes
@@ -254,9 +254,9 @@ def _has_numerical_answer(block_img: np.ndarray) -> bool:
     Détecte si le bloc contient une zone de réponse numérique
     (structure 'mantisse x 10^exposant').
 
-    Critères robustes (ordre d'évaluation) :
-      1. Grand rectangle dans le tiers inférieur du bloc (case mantisse).
-         Seuil abaissé + binarisation Otsu pour les blocs clairs.
+    Critères (ordre d'évaluation) :
+      1. Grand rectangle dans le tiers inférieur du bloc (case mantisse),
+         via binarisation Otsu pour rester robuste sur les blocs clairs.
       2. Si pas de rectangle mais aucune checkbox MCQ -> probablement numérique.
     """
     h, w = block_img.shape[:2]
@@ -276,7 +276,7 @@ def _has_numerical_answer(block_img: np.ndarray) -> bool:
                                                              connectivity=8)
         for i in range(1, num):
             x, y, bw, bh, area = stats[i]
-            # Critères assouplis : petite case exposant aussi acceptable
+            # Tolere aussi une petite case (celle de l'exposant)
             if bw > w * 0.08 and bh > h * 0.05 and area > 150:
                 return True
 
@@ -334,9 +334,9 @@ def numeric_answer_crops(block_img: np.ndarray):
             return block_img[by:by + bh, bx:bx + bw]
         # Exposant = case ecrite en SUPERSCRIPT : nettement plus HAUTE que la
         # mantisse et l'unite (alignees sur la ligne de base) et plus petite.
-        # Selection par position verticale -- le seuil d'aire (< moitie de la
-        # mantisse) etait trop fragile : une case exposant le frisant retombait
-        # sur le repli, qui lit le « .10 » imprime (« -1 » lu « 101 »).
+        # On la selectionne par sa position verticale, plus robuste qu'un seuil
+        # d'aire : une case exposant proche de la moitie de l'aire mantisse
+        # serait mal classee et le repli lirait le « .10 » imprime a la place.
         top = min(boxes, key=lambda b: b[1])
         rest = [b for b in boxes if b is not top]
         if (rest and top[1] + 10 < min(b[1] for b in rest)

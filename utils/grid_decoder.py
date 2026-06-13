@@ -21,8 +21,8 @@ from utils.checkbox_reader import (
 )
 
 # ---------------------------------------------------------------------------
-# Constantes de calibration – coordonnées dans le formulaire 900 x 1270 px
-# Calibrées empiriquement sur FORM2_62445 (Student ID 62445, Group G02B)
+# Constantes de calibration – coordonnées dans le repère canonique 900 x 1270 px
+# (mesurées sur le gabarit de référence du formulaire).
 # ---------------------------------------------------------------------------
 
 # CODES EXAM (bande colorée : Module, Professeur, Date, Code)
@@ -165,11 +165,10 @@ def normalize_page(img: np.ndarray, is_photo: bool | None = None,
     """
     Normalise un formulaire vers le repère (FORM_W, FORM_H).
 
-    Étape 1 (nouvelle) : si on détecte les 4 L-brackets de coin, applique
-    une correction perspective qui ramène l'image dans un rectangle
-    légèrement plus grand que le formulaire utile (pour conserver
-    compatibilité avec les ROIs calibrées). Sinon on continue avec
-    l'image originale.
+    Étape 1 : si on détecte les 4 L-brackets de coin, applique une correction
+    perspective qui ramène l'image dans un rectangle légèrement plus grand que
+    le formulaire utile (pour rester compatible avec les ROIs calibrées). Sinon
+    on continue avec l'image originale.
 
     Étape 2 : deskew (si photo) + crop bbox des pixels actifs + resize
     final vers (FORM_W, FORM_H). C'est cette étape qui produit le
@@ -204,7 +203,7 @@ def normalize_page(img: np.ndarray, is_photo: bool | None = None,
         if is_photo:
             img = deskew(img)
     elif is_photo:
-        # Pas de template fourni : ancien comportement (deskew + bbox).
+        # Pas de template fourni : deskew + bbox.
         img = deskew(img)
 
     # Étape 2 : crop bbox + resize vers le repère final
@@ -476,8 +475,8 @@ def _read_condition(form_img: np.ndarray, cond: tuple) -> int:
     roi_yes = form_img[y0:y1, x_yes:x_yes + w]
     roi_no  = form_img[y0:y1, x_no:x_no + w]
 
-    # Seuil abaissé : 0.15 (était 0.25) — les cases YES/NO sont parfois
-    # cochées légèrement (peu d'encre) et passaient en faux négatif.
+    # Seuil 0.15 : les cases YES/NO sont parfois cochées légèrement (peu
+    # d'encre) ; un seuil plus haut les manquerait.
     yes_filled = is_filled_square(roi_yes, threshold=0.15)
     no_filled  = is_filled_square(roi_no,  threshold=0.15)
 

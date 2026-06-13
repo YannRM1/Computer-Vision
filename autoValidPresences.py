@@ -104,9 +104,7 @@ def autoValidID(img_path: str,
     # 4. Comparer la signature à la base de données
     if sig_img is not None and sig_img.size > 100 and desc_db:
         # Seuil bas : pour la colonne studentID_signature on veut le meilleur
-        # candidat (identification), pas une validation stricte. Le ROI de
-        # signature étant désormais correctement recadré (intérieur de la boîte,
-        # sans le label), le meilleur score est fiable.
+        # candidat (identification 1-parmi-N), pas une validation stricte.
         id_sig, score = identify_signature(sig_img, desc_db, threshold=0.05)
     else:
         id_sig = None

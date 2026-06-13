@@ -29,7 +29,7 @@ PDF_DPI = 150
 HEADER_BAND_H = 82
 
 # Détection des lignes horizontales séparant les blocs de question.
-MIN_LINE_WIDTH = 380     # largeur min d'une ligne (abaissé de 480 pour scans moyens)
+MIN_LINE_WIDTH = 380     # largeur min d'une ligne séparatrice (px)
 LINE_MERGE_TOL = 60      # fusion des lignes proches (px)
 
 # Cases à cocher MCQ (colonne de gauche du bloc).

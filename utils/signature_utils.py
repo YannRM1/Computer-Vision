@@ -30,54 +30,69 @@ W_NCC, W_HOG, W_HU = 0.6, 0.35, 0.05
 
 # ---------------------- Chargement de la base ----------------------------
 
+_IMG_EXTS = (".png", ".jpg", ".jpeg", ".bmp")
+
+
 def _decode(data):
     return cv2.imdecode(np.frombuffer(data, dtype=np.uint8), cv2.IMREAD_GRAYSCALE)
+
+
+def _sid_from_name(path):
+    """Déduit l'identifiant étudiant d'un chemin de signature, quel que soit le
+    rangement : « 19283_000.png », « 19283.png », ou « .../19283/sig.png ».
+    On prend le premier candidat purement numérique parmi : préfixe avant le
+    dernier « _ », nom complet, dossier parent."""
+    stem   = os.path.splitext(os.path.basename(path))[0]
+    parent = os.path.basename(os.path.dirname(path.rstrip("/")))
+    for cand in (stem.rsplit("_", 1)[0], stem, parent):
+        if cand.isdigit():
+            return cand
+    return stem.rsplit("_", 1)[0] if "_" in stem else stem
 
 
 def load_signatures_from_zip(zip_path):
     db = {}
     with zipfile.ZipFile(zip_path, "r") as z:
         for name in z.namelist():
-            if not name.lower().endswith((".png", ".jpg", ".jpeg", ".bmp")):
+            if name.endswith("/") or not name.lower().endswith(_IMG_EXTS):
                 continue
-            parts = [p for p in name.split("/") if p]
-            if len(parts) < 2:
-                continue
-            sid = parts[-2]
-            fname = os.path.splitext(parts[-1])[0]
-            if "_" in fname:
-                sid = fname.rsplit("_", 1)[0]
             img = _decode(z.read(name))
             if img is not None:
-                db.setdefault(sid, []).append(img)
+                db.setdefault(_sid_from_name(name), []).append(img)
     return db
 
 
 def load_signatures_from_dir(directory):
+    """Parcours récursif : trouve toutes les images, où qu'elles soient
+    (à plat dans le dossier, dans un sous-dossier par étudiant, ou imbriquées).
+    Robuste à la façon dont l'enseignant range la base STUDENT_CLASS_SIGNATURES."""
     db = {}
-    for sid in os.listdir(directory):
-        sub = os.path.join(directory, sid)
-        if not os.path.isdir(sub):
-            continue
-        for fname in os.listdir(sub):
-            if not fname.lower().endswith((".png", ".jpg", ".jpeg")):
+    for root, _, files in os.walk(directory):
+        for fname in files:
+            if not fname.lower().endswith(_IMG_EXTS):
                 continue
-            img = cv2.imread(os.path.join(sub, fname), cv2.IMREAD_GRAYSCALE)
+            path = os.path.join(root, fname)
+            img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
             if img is not None:
-                db.setdefault(sid, []).append(img)
+                db.setdefault(_sid_from_name(path), []).append(img)
     return db
 
 
 def load_signatures(sig_path):
+    """Charge la base de signatures depuis un .zip, un dossier de .zip, un
+    dossier d'images à plat, ou des sous-dossiers par étudiant (récursif)."""
     db = {}
-    if os.path.isfile(sig_path) and sig_path.endswith(".zip"):
+    if os.path.isfile(sig_path) and sig_path.lower().endswith(".zip"):
         return load_signatures_from_zip(sig_path)
     if os.path.isdir(sig_path):
+        # .zip au niveau racine -> on les lit (évite de compter deux fois une
+        # base déjà dézippée à côté de son archive, ou un zip imbriqué). Sinon,
+        # parcours récursif des images (dossier à plat ou sous-dossiers).
         zips = [f for f in os.listdir(sig_path) if f.lower().endswith(".zip")]
         if zips:
             for z in zips:
-                p = load_signatures_from_zip(os.path.join(sig_path, z))
-                for sid, imgs in p.items():
+                for sid, imgs in load_signatures_from_zip(
+                        os.path.join(sig_path, z)).items():
                     db.setdefault(sid, []).extend(imgs)
             return db
         return load_signatures_from_dir(sig_path)
@@ -92,12 +107,10 @@ def _clean_frame_artifacts(binary):
     largeur ou toute la hauteur de la vignette), sans toucher au tracé de la
     signature.
 
-    NB : l'ancienne règle « composante touchant le bord ET d'aire importante
-    -> cadre » supprimait par erreur des signatures entières, car une signature
-    cursive est souvent une grande composante unique dont une boucle atteint le
-    bord (cas 62401, 62411 : tout le tracé était effacé). On ne rejette
-    désormais qu'une composante simultanément TRÈS allongée ET TRÈS fine ET
-    proche d'un bord — la signature d'un cadre rectangulaire.
+    On ne retire qu'une composante simultanement tres allongee ET tres fine ET
+    proche d'un bord (la signature geometrique d'une barre de cadre). Une regle
+    plus large supprimerait de vraies signatures : une signature cursive est
+    souvent une seule grande composante dont une boucle atteint le bord.
     """
     H, W = binary.shape
     n, labels, stats, _ = cv2.connectedComponentsWithStats(binary, connectivity=8)
@@ -305,13 +318,11 @@ def verify_signature(query_img, desc_db, expected_id, threshold=0.20):
     """Verification 1-contre-1 : la signature est-elle coherente avec
     l'etudiant REVENDIQUE (deja connu via la grille STUDENT ID) ?
 
-    On compare la requete a la SEULE reference de `expected_id` et on valide
-    si le score depasse le seuil. C'est le bon cadre ici : l'identite est
-    revendiquee, pas a deviner. Exiger que l'etudiant sorte 1er parmi ~60
-    (identification) rejetait a tort des signatures authentiques dont une
-    voisine ressemble davantage : l'attendu finissait 2e-4e malgre un bon
-    score propre (0.39-0.47). Mesure : scores propres 0.27-0.72, donc le
-    seuil distingue une vraie signature d'une case vide ou d'un gribouillage."""
+    L'identite etant revendiquee sur le formulaire, on compare la requete a la
+    SEULE reference de `expected_id` (NCC + HOG + Hu sur les pixels) et on
+    valide si le score depasse le seuil. C'est de la verification, pas de
+    l'identification 1-parmi-N : il ne faut pas exiger que l'etudiant soit le
+    plus proche de tous, seulement que sa propre signature corresponde."""
     if not desc_db or expected_id not in desc_db:
         return False
     pp_q = preprocess_signature(query_img)

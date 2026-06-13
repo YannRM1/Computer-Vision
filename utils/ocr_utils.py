@@ -403,7 +403,7 @@ def ocr_handwritten_mantisse(img: np.ndarray) -> float | None:
     """
     if img is None or img.size == 0:
         return None
-    if _box_is_empty(img):              # case vide -> pas de mantisse (anti-hallucination)
+    if _box_is_empty(img):              # case vide -> None, pas de valeur inventée
         return None
 
     def _try_parse(text: str) -> float | None:
@@ -528,7 +528,7 @@ def ocr_handwritten_exposant(img: np.ndarray) -> int | None:
     """Lit l'exposant manuscrit (entier, éventuellement négatif)."""
     if img is None or img.size == 0:
         return None
-    if _box_is_empty(img):              # case vide -> exposant None (anti-hallucination)
+    if _box_is_empty(img):              # case vide -> exposant None, pas inventé
         return None
     gray = _to_gray(img)
     clahe = cv2.createCLAHE(clipLimit=4.0, tileGridSize=(2, 2))
