@@ -19,8 +19,8 @@ from openpyxl.styles import Font
 
 from utils.pdf_utils      import pdf_to_images
 from utils.grid_decoder   import (normalize_page, extract_cryptogram,
-                                  set_photo_template)
-from utils.template_register import get_photo_template
+                                  set_photo_template, get_active_template)
+from utils.template_register import get_photo_template, estimate_rotation_deg
 from utils.page1_parser   import parse_page1
 from utils.exam_parser    import parse_exam_pages, questions_to_exam_rows, CHOICE_COLS
 from utils.signature_utils import (load_signatures, build_descriptor_db,
@@ -125,6 +125,15 @@ def autoReadFormID(pdf_path: str,
     if not images:
         print("-> 0 pages !")
         return xlsx_path
+
+    # 1b. Correction d'orientation : un PDF scanné à l'envers (180°) fait
+    # dériver le comptage des questions (le pied de page passe en tête). Le
+    # recalage ORB de la page 1 (déjà invariant en rotation) révèle l'angle ;
+    # si ~±180°, on retourne TOUTES les pages -- un PDF = un seul scan, donc
+    # une orientation uniforme. À l'endroit (angle ≈ 0), rien n'est touché.
+    angle = estimate_rotation_deg(images[0], get_active_template())
+    if angle is not None and abs(angle) > 135:
+        images = [cv2.rotate(im, cv2.ROTATE_180) for im in images]
 
     # 2. Extraire les cryptogrammes de toutes les pages (sauf page 1)
     crypto_pages = []

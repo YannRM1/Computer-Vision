@@ -93,13 +93,13 @@ def get_photo_template(*pdf_dirs: str):
     return build_form_template(ref_pdf) if ref_pdf else None
 
 
-def register_to_template(img_bgr: np.ndarray, template):
+def _homography_to_template(img_bgr: np.ndarray, template):
     """
-    Recale `img_bgr` sur `template` et renvoie l'image redressée dans le repère
-    canonique (template.w x template.h), ou None si le recalage échoue.
+    Calcule l'homographie ORB + RANSAC qui recale `img_bgr` sur `template`.
+    Renvoie (H, n_inliers) ou (None, 0) si le recalage est trop faible.
     """
     if template is None or template.des is None:
-        return None
+        return None, 0
 
     gray = (img_bgr if img_bgr.ndim == 2
             else cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY))
@@ -114,25 +114,49 @@ def register_to_template(img_bgr: np.ndarray, template):
 
     kp2, des2 = _ORB.detectAndCompute(small, None)
     if des2 is None or len(kp2) < _MIN_GOOD:
-        return None
+        return None, 0
 
     matches = _BF.knnMatch(template.des, des2, k=2)
     good = [m for m, n in matches if m.distance < 0.75 * n.distance]
     if len(good) < _MIN_GOOD:
-        return None
+        return None, 0
 
     src = np.float32([template.kp[m.queryIdx].pt for m in good]).reshape(-1, 1, 2)
     dst = np.float32([kp2[m.trainIdx].pt for m in good]).reshape(-1, 1, 2) / s
 
     H, mask = cv2.findHomography(dst, src, cv2.RANSAC, 5.0)
     if H is None:
+        return None, 0
+    return H, (int(mask.sum()) if mask is not None else 0)
+
+
+def register_to_template(img_bgr: np.ndarray, template):
+    """
+    Recale `img_bgr` sur `template` et renvoie l'image redressée dans le repère
+    canonique (template.w x template.h), ou None si le recalage échoue.
+    """
+    H, inliers = _homography_to_template(img_bgr, template)
+    if H is None:
         return None
     # Garde-fou : un recalage fiable laisse beaucoup d'inliers RANSAC. Quand il
     # y en a très peu, l'homographie est estimée sur des appariements erronés et
     # produit un redressement absurde (zoom sur une page d'examen, cf. photo
     # 62766 lue « 9001 »). On exige donc nettement plus que le minimum de calcul.
-    inliers = int(mask.sum()) if mask is not None else 0
     if inliers < _MIN_INLIERS:
         return None
-
     return cv2.warpPerspective(img_bgr, H, (template.w, template.h))
+
+
+def estimate_rotation_deg(img_bgr: np.ndarray, template):
+    """
+    Angle de rotation (degrés) du recalage de `img_bgr` sur `template`.
+
+    Sert à détecter une page (donc un PDF) scannée à l'envers : ORB étant
+    invariant en rotation, l'homographie absorbe le 180° et son terme linéaire
+    le révèle. ~±180° => page renversée. Renvoie None si le recalage n'est pas
+    assez fiable pour conclure.
+    """
+    H, inliers = _homography_to_template(img_bgr, template)
+    if H is None or inliers < _MIN_INLIERS:
+        return None
+    return float(np.degrees(np.arctan2(H[1, 0], H[0, 0])))

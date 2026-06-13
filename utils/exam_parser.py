@@ -461,16 +461,21 @@ def iter_question_blocks(pdf_images: list[np.ndarray],
                 continue  # bloc de pied de page (numéro, cryptogramme) -> ignorer
             if y_start > page_h - 180:
                 continue  # bande de pied de page, même si le bloc dépasse 150 px
-            # Bloc final quasi vide touchant le bas de page = pied de page
-            # (cryptogramme + numero), pas une question : le compter
-            # decalerait la numerotation. Encre mesuree : questions >= 0.029,
-            # pieds de page <= 0.018.
+            # Bloc touchant le bas de page sans en-tete « QUESTION N » juste
+            # sous sa ligne superieure = pied de page (numero + cryptogramme +
+            # equerres de coin), pas une question : le compter decalerait la
+            # numerotation. La bande d'en-tete est un discriminant plus sur que
+            # l'encre totale, contaminee par la ligne separatrice et le
+            # mobilier de pied de page (mesure : questions hdr>=0.050, pieds
+            # <=0.022).
             if y_end >= page_h - 5:
-                gray_b = cv2.cvtColor(block, cv2.COLOR_BGR2GRAY) \
-                         if block.ndim == 3 else block
-                ink = float((cv2.threshold(gray_b, 200, 255,
-                            cv2.THRESH_BINARY_INV)[1] > 0).mean())
-                if ink < 0.022:
+                hdr = block[12:72]
+                gh = (cv2.cvtColor(hdr, cv2.COLOR_BGR2GRAY)
+                      if hdr.ndim == 3 else hdr)
+                hdr_ink = float((cv2.threshold(gh, 200, 255,
+                                 cv2.THRESH_BINARY_INV)[1] > 0).mean()) \
+                          if hdr.size else 0.0
+                if hdr_ink < 0.035:
                     continue
             yield block
 

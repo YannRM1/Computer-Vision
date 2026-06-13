@@ -78,17 +78,19 @@ def is_single_token(name):
 
 
 def _first_n_cells(norm, y_range, n):
-    """Renvoie les n premieres cases NON VIDES de tete de la grille de lettres
-    (ajustee par formulaire), pour appariement case k <-> lettre k.
+    """Localise la suite contigue de n cases non vides correspondant au nom.
 
-    Le fit de grille peut s'ancrer une case trop a gauche (bord du peigne pris
-    pour un separateur) : sans le saut des cases vides de tete, tout le nom
-    serait apparie avec un decalage d'une case et ses labels corrompus."""
-    from utils.page1_parser import _fit_name_grid, NAME_CELLS
+    Le fit de grille peut deriver d'une case a gauche (case de tete vide) ou
+    a droite (premiere lettre hors cadre), et certaines photos donnent un fit
+    faux. Plutot que de corriger ces derives au cas par cas, on evalue le
+    vide de TOUTES les cases de la ligne et on exige une UNIQUE suite
+    contigue de cases non vides de longueur exactement n : toute incoherence
+    (ancrage decale, case parasite, lettre coupee) viole la condition et le
+    formulaire est rejete -- aucun label corrompu ne peut entrer dans le jeu."""
+    from utils.page1_parser import _fit_name_grid, _fit_name_band, NAME_CELLS
     from utils.ocr_utils import _to_gray
-    import numpy as _np
-    y0, y1 = y_range
-    x0, pitch = _fit_name_grid(norm, y_range)
+    y0, y1 = _fit_name_band(norm, y_range)
+    x0, pitch = _fit_name_grid(norm, (y0, y1))
 
     def cell_at(k):
         xa = int(round(x0 + k * pitch))
@@ -100,28 +102,28 @@ def _first_n_cells(norm, y_range, n):
         ch, cw = g.shape
         return g[3:max(4, ch - 3), 4:max(5, cw - 4)]
 
-    def is_empty(g):
-        # prep_cell retire les lignes collees aux bords (cadre du peigne) :
-        # une case de tete ne contenant que le bord gauche du peigne est bien
-        # vue vide, la ou un simple comptage d'encre la croyait pleine et
-        # empechait le saut (laissant l'appariement decale d'une case).
-        return letter_cnn.prep_cell(g) is None
+    cells = [cell_at(k) for k in range(NAME_CELLS)]
+    # Garde-fou contraste : sur une case vide de photo, Otsu binarise le
+    # bruit du capteur et prep_cell croit voir une lettre. Une vraie ecriture
+    # contraste bien plus (mesure : vide std<=9, ecrit std>=46).
+    filled = [c is not None and c.std() >= 15
+              and letter_cnn.prep_cell(c) is not None
+              for c in cells]
 
-    # saute les cases vides de tete (au plus 2 : ancrage decale d'une case)
-    start = 0
-    while start < 2:
-        g = cell_at(start)
-        if g is None or not is_empty(g):
-            break
-        start += 1
-
-    cells = []
-    for k in range(start, min(start + n, NAME_CELLS)):
-        g = cell_at(k)
-        if g is None:
-            return None
-        cells.append(g)
-    return cells if len(cells) == n else None
+    runs, k = [], 0
+    while k < NAME_CELLS:
+        if filled[k]:
+            j = k
+            while j < NAME_CELLS and filled[j]:
+                j += 1
+            runs.append((k, j - k))
+            k = j
+        else:
+            k += 1
+    good = [s for s, length in runs if length == n]
+    if len(good) != 1:
+        return None
+    return cells[good[0]:good[0] + n]
 
 
 def add_samples(norm, name, y_range, X, y, groups, sid, dropped):

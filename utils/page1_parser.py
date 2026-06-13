@@ -45,11 +45,90 @@ NAME_CELL_X0    = 31.0    # bord gauche nominal de la 1re case (x absolu)
 NAME_CELL_PITCH = 24.45   # pas horizontal nominal entre cases
 NAME_CELLS      = 15      # nombre de cases
 NAME_X_BAND     = (20, 430)   # bande de recherche des séparateurs (x absolu)
-# Bande etendue de 4 px vers le haut : les lettres hautes (T, D, M)
-# depassent du rang nominal ; la ligne superieure du peigne incluse par
-# cette extension est filtree par le nettoyage de bord de prep_cell.
+# Bandes NOMINALES ; la position verticale reelle est re-estimee sur chaque
+# formulaire par _fit_name_band (le recalage global laisse un jeu vertical
+# qui coupait le haut des lettres, voire ratait la rangee entiere).
 FIRSTNAME_Y     = (207, 235)
 NAME_Y          = (266, 294)
+
+
+def _count_separators(form_img: np.ndarray, t: int, b: int) -> int:
+    """Nombre de separateurs verticaux du peigne dans la bande [t, b]."""
+    from utils.ocr_utils import _to_gray
+    xa, xb = NAME_X_BAND
+    band = form_img[t + 2:b - 1, xa:xb]
+    if band.size == 0:
+        return 0
+    g = _to_gray(band)
+    # Otsu et non un seuil fixe : sur les photos sombres, tout le papier
+    # passait sous 180 et la structure etait noyee.
+    binv = cv2.threshold(g, 0, 255,
+                         cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
+    col = binv.sum(axis=0) / (255.0 * binv.shape[0])
+    # 0.50 et non 0.70 : sur photo les separateurs fins plafonnent a ~0.6.
+    n, x, w = 0, 0, len(col)
+    while x < w:
+        if col[x] > 0.50:
+            n += 1
+            while x < w and col[x] > 0.50:
+                x += 1
+        else:
+            x += 1
+    return n
+
+
+def _fit_name_band(form_img: np.ndarray, y_range: tuple) -> tuple:
+    """Recale verticalement la bande de cases-lettres sur CE formulaire.
+
+    Le recalage global laisse parfois un jeu vertical (jusqu'a ~30 px sur
+    certains PDF) : la bande nominale tombe alors sur le label imprime et la
+    rangee est perdue, ou les lettres sont coupees en haut. Bas niveau : les
+    rangs sont des peignes OUVERTS en haut (pas de ligne superieure) ;
+    projection horizontale -> rangees quasi pleines = lignes de base
+    candidates, validees par la presence de separateurs verticaux juste
+    au-dessus. Les DEUX lignes (prenom, nom) sont choisies EN PAIRE, a
+    l'ecartement structurel du formulaire (~59 px) : une ligne ne peut pas
+    servir aux deux rangs (sur les photos floues, la bande du nom se calait
+    sinon sur le rang du prenom). La bande remonte de 32 px au-dessus de sa
+    ligne : le maximum qui contienne les lettres hautes (~26 px) sans
+    toucher le label imprime situe ~33 px au-dessus. Repli : bande
+    nominale."""
+    from utils.ocr_utils import _to_gray
+    xa, xb = NAME_X_BAND
+    ya = max(0, FIRSTNAME_Y[0] - 40)
+    yb = min(form_img.shape[0], NAME_Y[1] + 40)
+    g = _to_gray(form_img[ya:yb, xa:xb])
+    if g.size == 0:
+        return y_range
+    binv = cv2.threshold(g, 0, 255,
+                         cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
+    fill = binv.sum(axis=1) / (255.0 * binv.shape[1])
+    cands, i = [], 0
+    while i < len(fill):
+        if fill[i] > 0.40:
+            j = i
+            while j < len(fill) and fill[j] > 0.40:
+                j += 1
+            y1 = ya + i                  # haut de la ligne de base du peigne
+            if _count_separators(form_img, y1 - 28, y1) >= 10:
+                cands.append(y1)
+            i = j
+        else:
+            i += 1
+    best = None                          # paire (ligne prenom, ligne nom)
+    for a in cands:
+        for b in cands:
+            if not 53 <= b - a <= 65:
+                continue
+            d = abs(a - FIRSTNAME_Y[1]) + abs(b - NAME_Y[1])
+            if best is None or d < best[0]:
+                best = (d, a, b)
+    if best is None:
+        return y_range
+    line = best[1] if y_range == FIRSTNAME_Y else best[2]
+    # +3 sous le haut de la ligne de base : le rognage interieur des cases
+    # (3 px) tombe ainsi sur la ligne et non sur les pieds des lettres.
+    return (line - 32, line + 3)
 
 
 def _fit_name_grid(form_img: np.ndarray, y_range: tuple):
@@ -70,16 +149,19 @@ def _fit_name_grid(form_img: np.ndarray, y_range: tuple):
         return NAME_CELL_X0, NAME_CELL_PITCH
     gray = _to_gray(band)
     h = gray.shape[0]
-    binv = cv2.threshold(gray, 180, 255, cv2.THRESH_BINARY_INV)[1]
+    binv = cv2.threshold(gray, 0, 255,
+                         cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
     col_fill = binv.sum(axis=0) / (255.0 * h)
 
     # Centres des runs de colonnes quasi pleines (séparateurs candidats)
     seps, x = [], 0
     w = len(col_fill)
     while x < w:
-        if col_fill[x] > 0.70:
+        # 0.50 : les separateurs fins des photos plafonnent a ~0.6 de la
+        # hauteur de bande ; le vote elimine les traits de lettres parasites.
+        if col_fill[x] > 0.50:
             x2 = x
-            while x2 < w and col_fill[x2] > 0.70:
+            while x2 < w and col_fill[x2] > 0.50:
                 x2 += 1
             seps.append((x + x2 - 1) / 2.0)
             x = x2
@@ -121,10 +203,11 @@ def collect_name_cells(form_img: np.ndarray, y_range: tuple) -> list:
     consecutives une fois au moins une lettre vue (noms contigus).
     """
     from utils.ocr_utils import _to_gray
+    from utils import letter_cnn as _lc
     if form_img is None or form_img.size == 0:
         return []
-    y0, y1 = y_range
-    x0, pitch = _fit_name_grid(form_img, y_range)
+    y0, y1 = _fit_name_band(form_img, y_range)
+    x0, pitch = _fit_name_grid(form_img, (y0, y1))
     cells, empty_run, started = [], 0, False
     for k in range(NAME_CELLS):
         xa = int(round(x0 + k * pitch))
@@ -135,11 +218,10 @@ def collect_name_cells(form_img: np.ndarray, y_range: tuple) -> list:
         gray = _to_gray(cell)
         ch, cw = gray.shape
         inner = gray[3:max(4, ch - 3), 4:max(5, cw - 4)]
-        # Test de vacuité SANS ouverture morphologique : les traits fins
-        # (1 px à 150 dpi) d'un stylo léger étaient effacés par l'ouverture
-        # 2x2, faisant passer des lettres entières pour des cases vides.
-        binv = cv2.threshold(inner, 180, 255, cv2.THRESH_BINARY_INV)[1]
-        if int(np.count_nonzero(binv)) < max(10, int(0.015 * binv.size)):
+        # Test de vacuité : contraste reel (sur les photos sombres, le seuil
+        # fixe prenait le papier pour de l'encre -> lettres fantomes) puis
+        # prep_cell (elimine les residus de cadre).
+        if inner.std() < 15 or _lc.prep_cell(inner) is None:
             if started:
                 empty_run += 1
                 if empty_run >= 2:

@@ -39,17 +39,15 @@ ROI_STUDENT_ID_PHOTO = ROI_STUDENT_ID
 STUDENT_ID_ROWS   = 10
 STUDENT_ID_COLS   = 5
 
-# Grille Group (10 lignes x 3 colonnes : chiffre1, chiffre2, lettre)
-# Colonnes chiffres à x ~ 516-572 ; colonne lettre (checkbox uniquement) à x ~ 582-655
-ROI_GROUP_GRID    = (516, 247, 105, 330)   # utilisé pour les 2 colonnes chiffres
+# Grille Group (10 lignes x 3 colonnes : chiffre1, chiffre2, lettre).
+# Centres des colonnes de cases mesures sur le gabarit : x ~ 540, 569 et 625.
+ROI_GROUP_GRID    = (526, 247, 58, 330)    # les 2 colonnes chiffres (serrees)
 ROI_GROUP_GRID_PHOTO = ROI_GROUP_GRID
 GROUP_ROWS        = 10
 # Proportions relatives des 2 colonnes chiffres dans ROI_GROUP_GRID
-GROUP_COL_WIDTHS  = [0.27, 0.27, 0.46]
-# ROI séparée pour la colonne lettre : exclut les labels imprimés (x < 582)
-# et se concentre sur la zone checkbox (x = 582-655).
-# Calibrée empiriquement : tous les formulaires FORM1 testés donnent 100 %.
-ROI_GROUP_LETTER  = (582, 247, 73, 330)
+GROUP_COL_WIDTHS  = [0.5, 0.5, 0.0]
+# ROI separee pour la colonne lettre (cases uniquement, labels exclus).
+ROI_GROUP_LETTER  = (610, 247, 32, 330)
 
 # Case signature
 ROI_SIGNATURE     = (30, 272, 372, 288)
@@ -114,6 +112,11 @@ def set_photo_template(template) -> None:
     """
     global _PHOTO_TEMPLATE
     _PHOTO_TEMPLATE = template
+
+
+def get_active_template():
+    """Template de recalage actuellement actif (ou None)."""
+    return _PHOTO_TEMPLATE
 
 
 def get_active_area(img: np.ndarray,
@@ -282,7 +285,7 @@ def _read_id_by_boxes(form_img: np.ndarray, expand: int = 16) -> int | None:
         best = int(arr.argmax())
         # coche nette exigee : assez d'encre ET nettement au-dessus du fond
         if arr[best] < 0.05 or arr[best] < 2.0 * max(float(np.median(arr)), 0.01):
-            return None
+            return -1        # structure trouvee mais colonne sans coche -> vide
         digits.append(str(best))
     return int("".join(digits))
 
@@ -296,6 +299,8 @@ def read_student_id(form_img: np.ndarray, is_photo: bool = False) -> int | None:
     (_read_id_by_boxes). Repli : quadrillage fixe du ROI calibre.
     """
     by_boxes = _read_id_by_boxes(form_img)
+    if by_boxes == -1:
+        return None          # grille localisee et vide : pas de repli
     if by_boxes is not None:
         return by_boxes
     roi_coords = ROI_STUDENT_ID_PHOTO if is_photo else ROI_STUDENT_ID
@@ -355,17 +360,81 @@ def _read_grid_col_best_row(col_img: np.ndarray, rows: int) -> int | None:
     return best
 
 
+def _read_group_by_boxes(form_img: np.ndarray, expand: int = 16) -> str | None:
+    """
+    Lit le groupe en LOCALISANT les 30 cases (10 lignes x 3 colonnes) par
+    composantes connexes, comme _read_id_by_boxes : insensible aux derives
+    du recalage, et renvoie None sur grille vide (pas d'hallucination).
+    """
+    x, y, w, h = ROI_GROUP_GRID
+    lx, _, lw, _ = ROI_GROUP_LETTER
+    x0 = max(0, x - expand)
+    x1 = lx + lw + expand
+    g = form_img if form_img.ndim == 2 else cv2.cvtColor(form_img, cv2.COLOR_BGR2GRAY)
+    H_img = g.shape[0]
+    y0 = max(0, y - expand)
+    sub = g[y0:min(H_img, y + h + expand), x0:x1]
+    binary = cv2.adaptiveThreshold(sub, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+                                   cv2.THRESH_BINARY_INV, 35, 10)
+    binary = cv2.morphologyEx(binary, cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8))
+    n, _, stats, cent = cv2.connectedComponentsWithStats(binary, connectivity=8)
+    boxes = []
+    for i in range(1, n):
+        bx, by, bw, bh, area = stats[i]
+        if 14 <= bw <= 34 and 14 <= bh <= 34 and 0.6 < bw / bh < 1.6 and area >= 30:
+            boxes.append((cent[i][0], cent[i][1], bx, by, bw, bh))
+    if len(boxes) < 22:
+        return None
+
+    def clusters(vals, gap=12):
+        out, cur = [], [vals[0]]
+        for v in vals[1:]:
+            if v - cur[-1] > gap:
+                out.append(float(np.mean(cur)))
+                cur = []
+            cur.append(v)
+        out.append(float(np.mean(cur)))
+        return out
+
+    cx = clusters(sorted(p[0] for p in boxes))
+    cy = clusters(sorted(p[1] for p in boxes))
+    if len(cx) != 3 or len(cy) != GROUP_ROWS:
+        return None
+    rows_found = []
+    for c in range(3):
+        vals = []
+        for r in range(GROUP_ROWS):
+            cand = min(boxes, key=lambda p: (p[0] - cx[c]) ** 2 + (p[1] - cy[r]) ** 2)
+            bx, by, bw, bh = cand[2], cand[3], cand[4], cand[5]
+            mx, my = max(3, bw // 5), max(3, bh // 5)
+            inner = binary[by + my:by + bh - my, bx + mx:bx + bw - mx]
+            vals.append(float((inner > 0).mean()) if inner.size else 0.0)
+        arr = np.array(vals)
+        best = int(arr.argmax())
+        if arr[best] < 0.05 or arr[best] < 2.0 * max(float(np.median(arr)), 0.01):
+            return ""        # structure trouvee mais colonne sans coche -> vide
+        rows_found.append(best)
+    return f"G{rows_found[0]}{rows_found[1]}{chr(ord('A') + rows_found[2])}"
+
+
 def read_group(form_img: np.ndarray) -> str | None:
     """
     Lit le code groupe depuis la grille graphique.
     Retourne une chaîne de type 'G02B' ou None.
 
+    Methode principale : localisation des 30 cases par composantes connexes
+    (_read_group_by_boxes). Repli : quadrillage fixe des ROIs calibres.
     Structure (10 lignes x 3 colonnes) :
       col 0 -> 1er chiffre (0-9)  dans ROI_GROUP_GRID
       col 1 -> 2ème chiffre (0-9) dans ROI_GROUP_GRID
       col 2 -> lettre (A-J)       dans ROI_GROUP_LETTER
                                   (ROI séparée, exclut les labels imprimés)
     """
+    by_boxes = _read_group_by_boxes(form_img)
+    if by_boxes == "":
+        return None          # grille localisee et vide : pas de repli (il hallucinerait)
+    if by_boxes is not None:
+        return by_boxes
     # ---- Colonnes chiffres (dans ROI_GROUP_GRID) -------------------------
     roi_digits = get_roi(form_img, ROI_GROUP_GRID)
     cols_all   = _split_group_cols(roi_digits)
