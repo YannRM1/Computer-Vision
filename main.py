@@ -18,29 +18,31 @@ import time
 from autoValidPresences import autoValidPresences
 from autoReadForm       import autoReadForm
 
+
+def _form_folder(exam_name: str) -> str:
+    """Nom du sous-dossier de la base depuis le nom d'examen : on retire le
+    prefixe 'EXAM_' (et non un decoupage au dernier '_', qui casserait un nom
+    contenant un '_' interne). 'EXAM_FORM1' -> 'FORM1'."""
+    return exam_name[5:] if exam_name.upper().startswith("EXAM_") else exam_name
+
+
 # =============================================================================
-# CONFIGURATION – adapter ces chemins pour le challenge (§3.6 de la consigne)
+# CONFIGURATION — tout est ici. Pour tester sur une AUTRE base, il suffit de
+# remplacer ces chemins.
 # =============================================================================
+BDD = "PROJECT 2026 -DATABASE-20260518"   # dossier racine de la base
+EXAM_NAME = "EXAM_FORM1"
+SIGNATURES = "SIGNATURES"                 # sous-dossier des signatures (dans la base)
+
+
+
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-# Nom de l'examen à traiter
-EXAM_NAME = "EXAM_FORM1"
-
-# Répertoire racine des données
-DATA_ROOT = os.path.join(BASE_DIR, "PROJECT 2026 -DATABASE-20260518")
-
-# Répertoire des signatures
-SIGNATURES_DIR = os.path.join(DATA_ROOT, "SIGNATURES")
-
-# Répertoires des données d'examen.
-# Dans la base actuelle, photos et PDFs sont dans le même dossier.
-# Pour le challenge avec répertoires distincts, modifier directement ces deux lignes :
-#   PRESENCES_DIR = r"C:\...\EXAM_FORMXX_PRESENCES"
-#   PDF_DIR       = r"C:\...\EXAM_FORMXX_PDF"
-_form_num     = EXAM_NAME.split("_")[-1]              # ex: "FORM1"
-PRESENCES_DIR = os.path.join(DATA_ROOT, _form_num)    # photos de 1re page
-PDF_DIR       = os.path.join(DATA_ROOT, _form_num)    # formulaires scannés
+# Racine de la base de données.
+DATA_ROOT = os.path.join(BASE_DIR, BDD)
+SIGNATURES_DIR = os.path.join(DATA_ROOT, SIGNATURES)  # base de signatures
+PRESENCES_DIR  = os.path.join(DATA_ROOT, _form_folder(EXAM_NAME))  # photos 1re page
+PDF_DIR        = os.path.join(DATA_ROOT, _form_folder(EXAM_NAME))  # PDFs scannés
 
 # =============================================================================
 # Ne pas modifier ci-dessous
@@ -53,7 +55,7 @@ def _dirs_for_exam(exam_name: str) -> tuple[str, str]:
     `python main.py EXAM_FORM2 ...` traite bien FORM2 et non FORM1 : sans cela,
     les répertoires restaient figés sur ceux dérivés au chargement du module.
     """
-    form_num = exam_name.split("_")[-1]            # ex: "FORM2"
+    form_num = _form_folder(exam_name)             # ex: "FORM2"
     d = os.path.join(DATA_ROOT, form_num)
     return d, d
 
