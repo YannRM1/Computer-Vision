@@ -150,26 +150,55 @@ def compare_exam(prod_ws, truth_ws):
     return rows
 
 
-def find_pairs(data_root, results_root):
-    """Trouve les paires (vérité, production) à comparer."""
-    pairs = []
-    for form in ("FORM1", "FORM2", "FORM3"):
-        truth_dir   = os.path.join(data_root, form)
-        results_dir = os.path.join(results_root, f"EXAM_{form}_RESULTS")
-        if not os.path.isdir(truth_dir):
+def _collect_xlsx(root, production):
+    """Indexe les fichiers EXAM_<FORM>_<ID>.xlsx trouvés sous `root`, par
+    clé (form, id).
+
+    production=True  -> seulement ceux dans un dossier « *_RESULTS » (sorties
+                        générées par le pipeline) ;
+    production=False -> seulement ceux HORS « *_RESULTS » (vérités terrain).
+
+    Cette distinction par nom de dossier permet de pointer SOIT le dossier
+    parent (FORMX/ et EXAM_FORMX_RESULTS/ en sous-dossiers), SOIT directement
+    le dossier contenant les xlsx : le bon ensemble est retenu dans les deux cas."""
+    found = {}
+    for dirpath, _dirs, files in os.walk(root):
+        in_results = os.path.basename(dirpath.rstrip("/\\")).upper().endswith("_RESULTS")
+        if production != in_results:
             continue
-        for f in sorted(os.listdir(truth_dir)):
-            m = re.match(rf"EXAM_{form}_(\d+)\.xlsx", f)
-            if not m: continue
-            truth_path = os.path.join(truth_dir, f)
-            prod_path  = os.path.join(results_dir, f)
-            if os.path.isfile(prod_path):
-                pairs.append((form, m.group(1), truth_path, prod_path))
-    return pairs
+        for f in files:
+            m = re.match(r"EXAM_(\w+)_(\d+)\.xlsx$", f)
+            if m:
+                found[(m.group(1), m.group(2))] = os.path.join(dirpath, f)
+    return found
+
+
+def find_pairs(data_root, results_root):
+    """Paires (form, id, chemin_vérité, chemin_production) à comparer.
+
+    Les fichiers sont appariés par leur NOM (EXAM_<FORM>_<ID>.xlsx), quelle
+    que soit l'arborescence : on peut indiquer le dossier parent ou
+    directement le dossier des xlsx, et la vérité/production peuvent être dans
+    des emplacements totalement séparés."""
+    truth = _collect_xlsx(data_root, production=False)
+    prod  = _collect_xlsx(results_root, production=True)
+    return [(form, sid, truth[(form, sid)], prod[(form, sid)])
+            for (form, sid) in sorted(truth.keys() & prod.keys())]
+
+
+def _default_data_root():
+    """Base par défaut = celle configurée dans main.py (source unique : si on
+    change BDD là-bas, la comparaison suit). Repli sur le nom standard."""
+    try:
+        sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        from main import DATA_ROOT
+        return DATA_ROOT
+    except Exception:
+        return "PROJECT 2026 -DATABASE-20260518"
 
 
 def main():
-    data_root    = sys.argv[1] if len(sys.argv) > 1 else "PROJECT 2026 -DATABASE-20260518"
+    data_root    = sys.argv[1] if len(sys.argv) > 1 else _default_data_root()
     results_root = sys.argv[2] if len(sys.argv) > 2 else "."
 
     pairs = find_pairs(data_root, results_root)
