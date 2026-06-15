@@ -159,7 +159,7 @@ def _collect_xlsx(root, production):
         if production != in_results:
             continue
         for f in files:
-            m = re.match(r"EXAM_(\w+)_(\d+)\.xlsx$", f)
+            m = re.match(r"(?:EXAM_)?(\w+?)_(\d+)\.xlsx$", f)
             if m:
                 found[(m.group(1), m.group(2))] = os.path.join(dirpath, f)
     return found
@@ -183,7 +183,7 @@ def _pairs_in_dirs(truth_dir, results_dir):
     if not (os.path.isdir(truth_dir) and os.path.isdir(results_dir)):
         return pairs
     for f in sorted(os.listdir(truth_dir)):
-        m = re.match(r"EXAM_(\w+)_(\d+)\.xlsx$", f)
+        m = re.match(r"(?:EXAM_)?(\w+?)_(\d+)\.xlsx$", f)
         if m and os.path.isfile(os.path.join(results_dir, f)):
             pairs.append((m.group(1), m.group(2),
                           os.path.join(truth_dir, f),
@@ -215,7 +215,11 @@ def main():
     else:
         data_root, form = _main_config()
         results_root = "."
-        pairs = _pairs_in_dirs(os.path.join(data_root, form),
+        # dossier vérité : 'FORM1' ou 'EXAM_FORM1' selon le nommage de la prof
+        truth_dir = next((os.path.join(data_root, n) for n in (form, "EXAM_" + form)
+                          if os.path.isdir(os.path.join(data_root, n))),
+                         os.path.join(data_root, form))
+        pairs = _pairs_in_dirs(truth_dir,
                                os.path.join(results_root, f"EXAM_{form}_RESULTS"))
         base_label = os.path.basename(data_root.rstrip("/\\")) or data_root
         form_label = form

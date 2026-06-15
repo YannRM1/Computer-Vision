@@ -22,7 +22,6 @@ from utils.ocr_utils import (
     ocr_handwritten_mantisse,
     ocr_handwritten_exposant,
     ocr_handwritten_unite,
-    ocr_text,
 )
 
 # ---------------------------------------------------------------------------
@@ -35,10 +34,7 @@ from utils.config import (
     MCQ_FILLED_CANCEL,
     HEADER_BAND_H, MIN_LINE_WIDTH, LINE_MERGE_TOL,
     MCQ_X_START, MCQ_X_END, MCQ_MIN_SZ, MCQ_MAX_SZ, MCQ_MIN_AREA,
-    CHECKED_INK_THRESHOLD, MCQ_CHOICES,
-    MANTISSE_X_FRAC, MANTISSE_Y_FRAC,
-    EXPOSANT_X_FRAC, EXPOSANT_Y_FRAC,
-    UNITE_X_FRAC, UNITE_Y_FRAC,
+    MCQ_CHOICES,
 )
 
 

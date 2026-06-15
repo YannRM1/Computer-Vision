@@ -10,23 +10,15 @@ Produit : EXAM_FORMXX_PRESENCES.xlsx
 """
 
 import os
-import cv2
-import numpy as np
 import openpyxl
 from openpyxl import Workbook
 from openpyxl.styles import Font
 
-from utils.form_aligner import deskew
 from utils.grid_decoder  import (normalize_page, read_student_id,
                                  extract_signature_roi, set_photo_template)
 from utils.image_io import imread_robust
 from utils.template_register import get_photo_template
-from utils.signature_utils import (
-    load_signatures,
-    build_descriptor_db,
-    identify_signature,
-    get_descriptor_db,
-)
+from utils.signature_utils import identify_signature, get_descriptor_db
 
 # Extensions d'images acceptées
 IMG_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".tif"}

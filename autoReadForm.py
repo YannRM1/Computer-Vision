@@ -12,8 +12,6 @@ Produit : un fichier XLSX par PDF, avec deux onglets :
 
 import os
 import cv2
-import numpy as np
-import openpyxl
 from openpyxl import Workbook
 from openpyxl.styles import Font
 
@@ -23,8 +21,7 @@ from utils.grid_decoder   import (normalize_page, extract_cryptogram,
 from utils.template_register import get_photo_template, estimate_rotation_deg
 from utils.page1_parser   import parse_page1
 from utils.exam_parser    import parse_exam_pages, questions_to_exam_rows, CHOICE_COLS
-from utils.signature_utils import (load_signatures, build_descriptor_db,
-                                   get_descriptor_db)
+from utils.signature_utils import get_descriptor_db
 
 # Paramètres centralisés (cf. utils/config.py)
 from utils.config import EXAM_START_PAGE, PDF_DPI

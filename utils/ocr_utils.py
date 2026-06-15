@@ -72,7 +72,7 @@ def _ocr_raw(img: np.ndarray, allowlist: str | None = None) -> str:
         return ""
 
 
-def ocr_text(img: np.ndarray, lang: str = "en", scale: int = 3) -> str:
+def ocr_text(img: np.ndarray, scale: int = 3) -> str:
     """Texte générique. scale=6 recommandé pour les ROIs très petites (< 30 px)."""
     processed = _upscale_binarize(img, scale=scale)
     return _ocr_raw(processed)

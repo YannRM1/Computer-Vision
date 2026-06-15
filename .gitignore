@@ -15,6 +15,7 @@ dataset_preview.png
 # === Sorties générées par le pipeline (régénérées par main.py) ===
 EXAM_*_RESULTS/
 calibration_output/
+PROJECT 2026 -DATABASE-20260518
 
 # === Logs / images de debug régénérables ===
 *.log

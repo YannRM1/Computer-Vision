@@ -1,14 +1,6 @@
 """
 Programme principal – Correction automatique d'examens
 PROJET COMPUTER VISION IG.2405 – 2026
-
-Usage :
-    python main.py [exam_name] [sig_dir] [presences_dir] [pdf_dir]
-
-  exam_name     (optionnel) : nom de l'examen, ex. 'EXAM_FORM2'
-  sig_dir       (optionnel) : chemin vers la base de signatures
-  presences_dir (optionnel) : répertoire des photos de 1re page
-  pdf_dir       (optionnel) : répertoire des formulaires PDF scannés
 """
 
 import os
@@ -19,34 +11,32 @@ from autoValidPresences import autoValidPresences
 from autoReadForm       import autoReadForm
 
 
+# =============================================================================
+# CONFIGURATION tout est ici. Pour tester sur une AUTRE base, il suffit de
+# remplacer ces chemins.
+# =============================================================================
+BDD = "PROJECT 2026 -DATABASE-20260518"   # dossier racine de la base
+EXAM_NAME = "FORM3"                  #Exam a tester
+SIGNATURES = "SIGNATURES"                 # sous-dossier des signatures (dans la base)
+
+# =============================================================================
+# Ne pas modifier ci-dessous
+# =============================================================================
+
+
 def _form_folder(exam_name: str) -> str:
     """Nom du sous-dossier de la base depuis le nom d'examen : on retire le
     prefixe 'EXAM_' (et non un decoupage au dernier '_', qui casserait un nom
     contenant un '_' interne). 'EXAM_FORM1' -> 'FORM1'."""
     return exam_name[5:] if exam_name.upper().startswith("EXAM_") else exam_name
 
-
-# =============================================================================
-# CONFIGURATION — tout est ici. Pour tester sur une AUTRE base, il suffit de
-# remplacer ces chemins.
-# =============================================================================
-BDD = "PROJECT 2026 -DATABASE-20260518"   # dossier racine de la base
-EXAM_NAME = "EXAM_FORM1"
-SIGNATURES = "SIGNATURES"                 # sous-dossier des signatures (dans la base)
-
-
-
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # Racine de la base de données.
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_ROOT = os.path.join(BASE_DIR, BDD)
 SIGNATURES_DIR = os.path.join(DATA_ROOT, SIGNATURES)  # base de signatures
 PRESENCES_DIR  = os.path.join(DATA_ROOT, _form_folder(EXAM_NAME))  # photos 1re page
 PDF_DIR        = os.path.join(DATA_ROOT, _form_folder(EXAM_NAME))  # PDFs scannés
 
-# =============================================================================
-# Ne pas modifier ci-dessous
-# =============================================================================
 
 def _dirs_for_exam(exam_name: str) -> tuple[str, str]:
     """

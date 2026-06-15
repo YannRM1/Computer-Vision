@@ -7,7 +7,6 @@ pour produire le dictionnaire PAGE-01 attendu par autoReadForm.
 
 import cv2
 import numpy as np
-from datetime import datetime
 
 from utils.grid_decoder import (
     normalize_page,
