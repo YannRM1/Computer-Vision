@@ -151,16 +151,8 @@ def compare_exam(prod_ws, truth_ws):
 
 
 def _collect_xlsx(root, production):
-    """Indexe les fichiers EXAM_<FORM>_<ID>.xlsx trouvés sous `root`, par
-    clé (form, id).
-
-    production=True  -> seulement ceux dans un dossier « *_RESULTS » (sorties
-                        générées par le pipeline) ;
-    production=False -> seulement ceux HORS « *_RESULTS » (vérités terrain).
-
-    Cette distinction par nom de dossier permet de pointer SOIT le dossier
-    parent (FORMX/ et EXAM_FORMX_RESULTS/ en sous-dossiers), SOIT directement
-    le dossier contenant les xlsx : le bon ensemble est retenu dans les deux cas."""
+    """Indexe les EXAM_<FORM>_<ID>.xlsx sous `root` par (form, id).
+    production=True : ceux dans un dossier *_RESULTS ; False : les autres."""
     found = {}
     for dirpath, _dirs, files in os.walk(root):
         in_results = os.path.basename(dirpath.rstrip("/\\")).upper().endswith("_RESULTS")
@@ -173,39 +165,64 @@ def _collect_xlsx(root, production):
     return found
 
 
-def find_pairs(data_root, results_root):
-    """Paires (form, id, chemin_vérité, chemin_production) à comparer.
-
-    Les fichiers sont appariés par leur NOM (EXAM_<FORM>_<ID>.xlsx), quelle
-    que soit l'arborescence : on peut indiquer le dossier parent ou
-    directement le dossier des xlsx, et la vérité/production peuvent être dans
-    des emplacements totalement séparés."""
+def find_pairs(data_root, results_root, only_form=None):
+    """Paires (form, id, vérité, production), appariées par nom de fichier.
+    only_form ('FORM1') restreint à un formulaire ; None/'ALL' = tous."""
     truth = _collect_xlsx(data_root, production=False)
     prod  = _collect_xlsx(results_root, production=True)
-    return [(form, sid, truth[(form, sid)], prod[(form, sid)])
-            for (form, sid) in sorted(truth.keys() & prod.keys())]
+    keys = truth.keys() & prod.keys()
+    if only_form and only_form.upper() != "ALL":
+        keys = {(f, i) for (f, i) in keys if f.upper() == only_form.upper()}
+    return [(f, i, truth[(f, i)], prod[(f, i)]) for (f, i) in sorted(keys)]
 
 
-def _default_data_root():
-    """Base par défaut = celle configurée dans main.py (source unique : si on
-    change BDD là-bas, la comparaison suit). Repli sur le nom standard."""
+def _pairs_in_dirs(truth_dir, results_dir):
+    """Paires entre deux dossiers précis, appariées par nom de fichier
+    (le jeton FORM des noms peut différer du dossier ; on ne s'y fie pas)."""
+    pairs = []
+    if not (os.path.isdir(truth_dir) and os.path.isdir(results_dir)):
+        return pairs
+    for f in sorted(os.listdir(truth_dir)):
+        m = re.match(r"EXAM_(\w+)_(\d+)\.xlsx$", f)
+        if m and os.path.isfile(os.path.join(results_dir, f)):
+            pairs.append((m.group(1), m.group(2),
+                          os.path.join(truth_dir, f),
+                          os.path.join(results_dir, f)))
+    return pairs
+
+
+def _main_config():
+    """(base, formulaire) repris de main.py : sans argument on compare le
+    seul examen configuré là-bas (EXAM_NAME)."""
     try:
         sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        from main import DATA_ROOT
-        return DATA_ROOT
+        from main import DATA_ROOT, EXAM_NAME, _form_folder
+        return DATA_ROOT, _form_folder(EXAM_NAME)
     except Exception:
-        return "PROJECT 2026 -DATABASE-20260518"
+        return "PROJECT 2026 -DATABASE-20260518", None
 
 
 def main():
-    data_root    = sys.argv[1] if len(sys.argv) > 1 else _default_data_root()
-    results_root = sys.argv[2] if len(sys.argv) > 2 else "."
+    # Sans argument : config de main.py -> on cible les dossiers de l'examen
+    # choisi (<base>/<form> et EXAM_<form>_RESULTS), appariés par nom de
+    # fichier. Avec arguments : base donnée, 3e argument = formulaire (sinon tous).
+    if len(sys.argv) > 1:
+        data_root    = sys.argv[1]
+        results_root = sys.argv[2] if len(sys.argv) > 2 else "."
+        only_form    = sys.argv[3] if len(sys.argv) > 3 else None
+        pairs = find_pairs(data_root, results_root, only_form)
+        base_label, form_label = data_root, (only_form or "tous")
+    else:
+        data_root, form = _main_config()
+        results_root = "."
+        pairs = _pairs_in_dirs(os.path.join(data_root, form),
+                               os.path.join(results_root, f"EXAM_{form}_RESULTS"))
+        base_label = os.path.basename(data_root.rstrip("/\\")) or data_root
+        form_label = form
 
-    pairs = find_pairs(data_root, results_root)
     if not pairs:
-        print(f"[!] Aucun fichier de production trouvé.")
-        print(f"    Vérité   : {data_root}/FORM*/EXAM_FORM*_NNNNN.xlsx")
-        print(f"    Prod     : {results_root}/EXAM_FORM*_RESULTS/EXAM_FORM*_NNNNN.xlsx")
+        print(f"[!] Aucun fichier de production trouvé pour {form_label}.")
+        print(f"    Vérité : {base_label}  |  Production : {results_root}")
         print(f"    -> Lance d'abord 'python main.py' pour générer les xlsx de prod.")
         return
 
@@ -254,7 +271,8 @@ def main():
     with open(out_csv, "w", newline="") as f:
         csv.writer(f).writerows(csv_rows)
 
-    print(f"\n=== Comparaison vérité vs production ({len(pairs)} xlsx) ===\n")
+    print(f"\n=== Comparaison vérité vs production ({len(pairs)} xlsx) ===")
+    print(f"Base : {base_label}  |  Formulaire : {form_label}\n")
     print(f"{'AXE':<12}{'OK':>6}{'TOTAL':>8}{'ACC':>10}")
     print("-" * 36)
     for axis in ("imprime", "manuscrit", "graphique", "signature", "autre"):
