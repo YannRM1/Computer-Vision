@@ -59,10 +59,10 @@ ROI_SIGNATURE_INNER = (120, 358, 264, 150)
 
 # Cellules prénom manuscrit (grille de lettres individuelles)
 # y=211 = ligne supérieure des cellules, h=24 = hauteur intérieure
-ROI_FIRSTNAME     = (3, 211, 415, 24)
+ROI_FIRSTNAME     = (3, 205, 415, 38)
 
 # Cellules nom manuscrit (après la ligne "NAME / NOM")
-ROI_NAME          = (3, 270, 415, 24)
+ROI_NAME          = (3, 262, 415, 46)
 
 # Section CONDITIONS D'EXAMEN
 # Cases YES/NO à y ~ 784 (taille 26x26)
